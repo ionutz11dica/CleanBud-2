@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import licenta.books.cleanbud.R;
 
 
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.activity_login);
-
+        ButterKnife.bind(this);
 
 
 
