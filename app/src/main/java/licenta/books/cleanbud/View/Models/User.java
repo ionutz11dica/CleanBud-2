@@ -1,19 +1,32 @@
 package licenta.books.cleanbud.View.Models;
 
 
+import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.relation.ToMany;
 
 @Entity
 public class User {
     @Id
-    long id;
+    public long id;
 
-    String name;
-    String email;
-    String mobilePhone;
-    String password;
+    private String name;
+    private String email;
+    private String mobilePhone;
+    private String password;
 
+    @Backlink
+    ToMany<Budget> budgets;
+
+
+    public ToMany<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(ToMany<Budget> budgets) {
+        this.budgets = budgets;
+    }
 
     public long getId() {
         return id;
