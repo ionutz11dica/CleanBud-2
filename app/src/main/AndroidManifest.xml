@@ -4,7 +4,7 @@
     package="licenta.books.cleanbud">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".View.CleanBudApplication"
@@ -15,7 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".View.LoginActivity">
+        <activity android:name=".View.Activities.StartActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".View.Activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".View.RegisterActivity"
+            android:name=".View.Activities.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

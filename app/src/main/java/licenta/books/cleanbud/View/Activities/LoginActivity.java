@@ -1,4 +1,4 @@
-package licenta.books.cleanbud.View;
+package licenta.books.cleanbud.View.Activities;
 
 import android.content.Intent;
 import android.os.Build;
@@ -41,7 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),StartActivity.class));
+                finish();
+            }
+        });
 
 
     }

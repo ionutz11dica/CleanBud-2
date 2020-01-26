@@ -5,6 +5,7 @@ import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.relation.ToMany;
+import io.objectbox.relation.ToOne;
 
 @Entity
 public class User {
@@ -18,7 +19,15 @@ public class User {
 
     @Backlink
     ToMany<Budget> budgets;
+    ToOne<Currency> currency;
 
+    public ToOne<Currency> getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(ToOne<Currency> currencyToOne) {
+        this.currency = currencyToOne;
+    }
 
     public ToMany<Budget> getBudgets() {
         return budgets;

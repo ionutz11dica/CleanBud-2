@@ -16,8 +16,8 @@ public class Budget {
     private float amount;
     private Date date;
 
-    ToOne<User> userToOne;
-    ToOne<BudgetType> budgetTypeToOne;
+    ToOne<User> user;
+    ToOne<BudgetType> budgetType;
 
     @Backlink
     ToMany<Record> records;
@@ -54,20 +54,20 @@ public class Budget {
         this.date = date;
     }
 
-    public ToOne<User> getUserToOne() {
-        return userToOne;
+    public ToOne<User> getUser() {
+        return user;
     }
 
-    public void setUserToOne(ToOne<User> userToOne) {
-        this.userToOne = userToOne;
+    public void setUser(ToOne<User> userToOne) {
+        this.user = userToOne;
     }
 
-    public ToOne<BudgetType> getBudgetTypeToOne() {
-        return budgetTypeToOne;
+    public ToOne<BudgetType> getBudgetType() {
+        return budgetType;
     }
 
-    public void setBudgetTypeToOne(ToOne<BudgetType> budgetTypeToOne) {
-        this.budgetTypeToOne = budgetTypeToOne;
+    public void setBudgetType(ToOne<BudgetType> budgetTypeToOne) {
+        this.budgetType = budgetTypeToOne;
     }
 
     public ToMany<Record> getRecords() {

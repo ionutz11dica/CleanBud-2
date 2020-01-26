@@ -1,4 +1,4 @@
-package licenta.books.cleanbud.View;
+package licenta.books.cleanbud.View.Activities;
 
 import android.content.Intent;
 import android.os.Build;

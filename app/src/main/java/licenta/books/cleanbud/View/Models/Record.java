@@ -14,7 +14,9 @@ public class Record {
     long id;
     private String titleRecord;
 
-    ToOne<Budget> budgetToOne;
+    ToOne<Budget> budget;
+    ToOne<Income> income;
+    ToOne<Expense> expense;
 
 
     public long getId() {
@@ -25,6 +27,22 @@ public class Record {
         this.id = id;
     }
 
+    public ToOne<Income> getIncome() {
+        return income;
+    }
+
+    public void setIncome(ToOne<Income> incomeToOne) {
+        this.income = incomeToOne;
+    }
+
+    public ToOne<Expense> getExpense() {
+        return expense;
+    }
+
+    public void setExpense(ToOne<Expense> expenseToOne) {
+        this.expense = expenseToOne;
+    }
+
     public String getTitleRecord() {
         return titleRecord;
     }
@@ -33,11 +51,11 @@ public class Record {
         this.titleRecord = titleRecord;
     }
 
-    public ToOne<Budget> getBudgetToOne() {
-        return budgetToOne;
+    public ToOne<Budget> getBudgetT() {
+        return budget;
     }
 
-    public void setBudgetToOne(ToOne<Budget> budgetToOne) {
-        this.budgetToOne = budgetToOne;
+    public void setBudget(ToOne<Budget> budgetToOne) {
+        this.budget = budgetToOne;
     }
 }

@@ -11,7 +11,8 @@ public class Expense {
     long id;
     private float amountExpense;
 
-    ToOne<ExpenseCategory> expenseCategoryToOne;
+    ToOne<ExpenseCategory> expenseCategory;
+    ToOne<Record> recordToOne;
 
 
     public long getId() {
@@ -30,11 +31,11 @@ public class Expense {
         this.amountExpense = amountExpense;
     }
 
-    public ToOne<ExpenseCategory> getExpenseCategoryToOne() {
-        return expenseCategoryToOne;
+    public ToOne<ExpenseCategory> getExpenseCategory() {
+        return expenseCategory;
     }
 
-    public void setExpenseCategoryToOne(ToOne<ExpenseCategory> expenseCategoryToOne) {
-        this.expenseCategoryToOne = expenseCategoryToOne;
+    public void setExpenseCategory(ToOne<ExpenseCategory> expenseCategoryToOne) {
+        this.expenseCategory = expenseCategoryToOne;
     }
 }
