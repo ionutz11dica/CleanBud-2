@@ -71,6 +71,11 @@ dependencies {
     // Timber
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     // Lifecycle
     implementation "android.arch.lifecycle:runtime:$lifeCycleVersion"
     implementation "android.arch.lifecycle:extensions:$lifeCycleVersion"

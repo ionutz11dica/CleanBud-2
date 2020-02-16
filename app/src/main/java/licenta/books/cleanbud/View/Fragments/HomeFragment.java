@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -30,16 +31,33 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.cv_myBudget)
     CardView cvBudgets;
 
+    @BindView(R.id.cv_currency)
+    CardView cvCurrency;
+
+    @BindView(R.id.home_toolbar)
+    Toolbar toolbar;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment,container,false);
         ButterKnife.bind(this,view);
-        listener.onHomeButtonsPressed(55555);
+        toolbar.setTitle("Home");
+        toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
+        currencyClick();
+
 
         return view;
     }
 
+    private void currencyClick(){
+        cvCurrency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onHomeButtonsPressed(3);
+            }
+        });
+    }
 
     @Override
     public void onAttach(@NotNull Context context) {
