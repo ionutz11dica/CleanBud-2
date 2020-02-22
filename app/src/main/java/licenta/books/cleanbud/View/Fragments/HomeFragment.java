@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
         toolbar.setTitle("Home");
         toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
         currencyClick();
-
+        budgetsClick();
 
         return view;
     }
@@ -55,6 +55,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.onHomeButtonsPressed(3);
+            }
+        });
+    }
+
+    private void budgetsClick(){
+        cvBudgets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onHomeButtonsPressed(2);
             }
         });
     }

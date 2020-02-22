@@ -2,6 +2,12 @@
     <string name="app_name">ModernLogin</string>
     <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Password</string>
+    <string-array name="StatesSpn">
+
+        <item>In Progress</item>
+        <item>Paid</item>
+
+    </string-array>
 
     <!--for facebook login-->
 

@@ -122,7 +122,7 @@ public class CurrencyFragment  extends Fragment implements SwipeRefreshLayout.On
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onBackButtonPressed(getTargetFragment());
+                listener.onBackButtonPressed("homeF");
             }
         });
     }
@@ -205,6 +205,6 @@ public class CurrencyFragment  extends Fragment implements SwipeRefreshLayout.On
     }
 
     public interface CurrencyFragmentInteractionListener{
-            void onBackButtonPressed(Fragment fragment);
+            void onBackButtonPressed(String fragment);
     }
 }
