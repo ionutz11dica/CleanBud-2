@@ -1,34 +1,50 @@
 package licenta.books.cleanbud.View.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import licenta.books.cleanbud.R;
 import licenta.books.cleanbud.View.API.APIClient;
 import licenta.books.cleanbud.View.API.APIService;
+import licenta.books.cleanbud.View.Adapter.CurrencyRecylerAdapter;
+import licenta.books.cleanbud.View.Adapter.PaginationListener;
+import licenta.books.cleanbud.View.Models.Currency;
 import licenta.books.cleanbud.View.Utils.CurrencyApi;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CurrencyFragment  extends Fragment {
+
+
+public class CurrencyFragment  extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     //Delegate -> Listener
     private CurrencyFragmentInteractionListener listener;
@@ -39,6 +55,34 @@ public class CurrencyFragment  extends Fragment {
     //Retrofit -> Networking
     private APIService apiService;
 
+    //List
+
+    @BindView(R.id.recyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout swipeRefresh;
+    private CurrencyRecylerAdapter adapter;
+    private int currentPage = PAGE_START;
+
+    private List<Currency> items=new ArrayList<>();
+    LinearLayoutManager layoutManager;
+
+    //Components
+    @BindView(R.id.tv_euro_currency)
+    TextView tvEuro;
+    @BindView(R.id.tv_my_budget_euro)
+    TextView tvMyBudEuro;
+
+    @BindView(R.id.tv_dolar_currency)
+    TextView tvDollar;
+    @BindView(R.id.tv_my_budget_dolar)
+    TextView tvMyBudDollar;
+
+    @BindView(R.id.tv_ron_currency)
+    TextView tvRon;
+    @BindView(R.id.tv_my_budget_ron)
+    TextView tvMyBudRon;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,14 +92,30 @@ public class CurrencyFragment  extends Fragment {
 
         getCurrencyRates();
         backListener();
+
+
+
+
         return view;
     }
-
+    private static final int PAGE_START = 0;
     private void initComponents(){
         apiService = APIClient.getRetrofit().create(APIService.class);
         toolbar.setTitle("Currency");
         toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+        swipeRefresh.setOnRefreshListener(this);
+        mRecyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        adapter = new CurrencyRecylerAdapter(new ArrayList<>());
+        mRecyclerView.setAdapter(adapter);
+
+
+
     }
 
     private void backListener(){
@@ -70,9 +130,45 @@ public class CurrencyFragment  extends Fragment {
     private void getCurrencyRates() {
         Call<CurrencyApi> call =  apiService.getCurrencyRates();
         call.enqueue(new Callback<CurrencyApi>() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onResponse(Call<CurrencyApi> call, Response<CurrencyApi> response) {
-                Toast.makeText(getContext(),response.body().toString(),Toast.LENGTH_LONG).show();
+                Iterator hmIterator = response.body().getRates().entrySet().iterator();
+                DecimalFormat df = new DecimalFormat("#.##");
+               while (hmIterator.hasNext() ){
+                   Map.Entry mapElement = (Map.Entry)hmIterator.next();
+
+                   Currency currency = new Currency();
+                   currency.setCurrencyName(mapElement.getKey().toString());
+                   currency.setValue((Float) mapElement.getValue());
+                   switch (mapElement.getKey().toString()) {
+                       case "RON" : {
+                           tvRon.setText("Value: "+String.format("%.2f",mapElement.getValue())+"€");
+                           break;
+                       }
+                       case "USD" : {
+                           tvDollar.setText("Value: "+String.format("%.2f",mapElement.getValue())+"$");
+                           break;
+                       }
+                       case "EUR" : {
+                           tvEuro.setText("Value: "+String.format("%.2f",mapElement.getValue())+"LEI");
+                           break;
+                       }
+                   }
+
+                   items.add(currency);
+               }
+                /**
+                 * manage progress view
+                 */
+                if (currentPage != PAGE_START) adapter.removeLoading();
+
+                adapter.addItems(items);
+
+
+                //Toast.makeText(getContext(),String.valueOf(itemCount),Toast.LENGTH_LONG).show();
+
+                swipeRefresh.setRefreshing(false);
 
             }
 
@@ -83,7 +179,6 @@ public class CurrencyFragment  extends Fragment {
         });
 
     }
-
 
     @Override
     public void onAttach(@NotNull Context context) {
@@ -100,6 +195,13 @@ public class CurrencyFragment  extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    @Override
+    public void onRefresh() {
+
+        adapter.clear();
+        getCurrencyRates();
     }
 
     public interface CurrencyFragmentInteractionListener{

@@ -16,4 +16,114 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_height="150dp">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_euro"/>
+
+            <TextView
+                android:id="@+id/tv_euro_currency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="200 $"
+                android:textAlignment="center"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_my_budget_euro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="My Bud: 940"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_dolar"/>
+            <TextView
+                android:id="@+id/tv_dolar_currency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:id="@+id/tv_my_budget_dolar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_ron"/>
+            <TextView
+                android:id="@+id/tv_ron_currency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                android:textAlignment="center"
+                />
+            <TextView
+                android:id="@+id/tv_my_budget_ron"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </LinearLayout>
