@@ -67,7 +67,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     @Override
     public void onBackButtonPressed(String  fragment) {
         fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(fragment))).commit();
-        active = fm.findFragmentByTag(fragment);;
+        active = fm.findFragmentByTag(fragment);
     }
 
     @Override
