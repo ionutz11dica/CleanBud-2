@@ -13,9 +13,16 @@ public class BudgetType {
 
     String title;
 
+    int idImage;
+
     @Backlink
     ToMany<Budget> budgets;
 
+
+    public BudgetType(String title, int idImage) {
+        this.title = title;
+        this.idImage = idImage;
+    }
 
     public long getId() {
         return id;
@@ -39,5 +46,13 @@ public class BudgetType {
 
     public void setBudgets(ToMany<Budget> budgets) {
         this.budgets = budgets;
+    }
+
+    public int getIdImage() {
+        return idImage;
+    }
+
+    public void setIdImage(int idImage) {
+        this.idImage = idImage;
     }
 }
