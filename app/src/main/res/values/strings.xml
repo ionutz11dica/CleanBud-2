@@ -8,6 +8,9 @@
         <item>Paid</item>
 
     </string-array>
+    <string name="permission_request">This app need to access files on your device.</string>
+    <string name="no_text">No text found</string>
+
 
     <!--for facebook login-->
 

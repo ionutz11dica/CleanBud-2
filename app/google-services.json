@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "537745274121",
+    "firebase_url": "https://cleanbud-da6a6.firebaseio.com",
+    "project_id": "cleanbud-da6a6",
+    "storage_bucket": "cleanbud-da6a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537745274121:android:c52ce3f187a80b0e1a4fd8",
+        "android_client_info": {
+          "package_name": "ro.disertatie.cleanbud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537745274121-vijq0qu1vq63o8sa4u7e1alec3tfpmgh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZb0J8ccngRGSkjKrb22YubjznqwzGODA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537745274121-vijq0qu1vq63o8sa4u7e1alec3tfpmgh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
