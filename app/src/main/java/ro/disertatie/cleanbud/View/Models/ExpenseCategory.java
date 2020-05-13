@@ -1,20 +1,22 @@
 package ro.disertatie.cleanbud.View.Models;
 
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "expense_category")
 public class ExpenseCategory {
-
-    long id;
+    @PrimaryKey(autoGenerate = true)
+    private Integer expenseCategoryId;
     private String titleExpCategory;
 
 
-
-    public long getId() {
-        return id;
+    public Integer getExpenseCategoryId() {
+        return expenseCategoryId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setExpenseCategoryId(Integer expenseCategoryId) {
+        this.expenseCategoryId = expenseCategoryId;
     }
 
     public String getTitleExpCategory() {
@@ -24,7 +26,4 @@ public class ExpenseCategory {
     public void setTitleExpCategory(String titleExpCategory) {
         this.titleExpCategory = titleExpCategory;
     }
-
-
-
 }

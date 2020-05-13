@@ -1,6 +1,7 @@
 package ro.disertatie.cleanbud.View.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class BudgetTypeRecyclerViewAdapter extends RecyclerView.Adapter<BudgetTy
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context context ;
-
+    int selected_position = 0;
     // data is passed into the constructor
     public BudgetTypeRecyclerViewAdapter(Context context, List<Integer> colors, List<BudgetType> budgets) {
         this.context = context;
@@ -50,6 +51,31 @@ public class BudgetTypeRecyclerViewAdapter extends RecyclerView.Adapter<BudgetTy
         holder.myBudgetLinearTitle.setBackgroundColor(color);
         holder.myView.setImageDrawable(ContextCompat.getDrawable(context,budget.getIdImage()));
         holder.myTextView.setText(budget.getTitle());
+
+        if (selected_position == position) {
+            holder.itemView.setAlpha( 0.5f  );
+
+        } else {
+            holder.itemView.setAlpha( 1  );
+
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selected_position==position){
+                    selected_position=-1;
+                    mClickListener.onItemClick(v,selected_position);
+                    notifyDataSetChanged();
+                    return;
+                }
+                selected_position = position;
+                mClickListener.onItemClick(v,selected_position);
+                notifyDataSetChanged();
+
+            }
+        });
+
     }
 
     // total number of rows
@@ -59,7 +85,7 @@ public class BudgetTypeRecyclerViewAdapter extends RecyclerView.Adapter<BudgetTy
     }
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
         LinearLayout myBudgetLinear;
         LinearLayout myBudgetLinearTitle;
         ImageView myView;
@@ -71,13 +97,14 @@ public class BudgetTypeRecyclerViewAdapter extends RecyclerView.Adapter<BudgetTy
             myBudgetLinearTitle = itemView.findViewById(R.id.ll_budget_title);
             myView = itemView.findViewById(R.id.type_budget_imv);
             myTextView = itemView.findViewById(R.id.type_budget_tv);
-            itemView.setOnClickListener(this);
+//            itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
-        }
+//        @Override
+//        public void onClick(View view) {
+////            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+//
+//        }
     }
 
     // convenience method for getting data agt click position

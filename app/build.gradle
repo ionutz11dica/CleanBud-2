@@ -22,6 +22,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 def supportVersion = '27.1.1'
@@ -31,6 +35,7 @@ def rxJavaVersion = '2.2.6'
 def daggerVersion = '2.15'
 def timberVersion = '4.7.1'
 def butterKnifeVersion = '10.2.1'
+def room_version = "2.2.5"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -88,13 +93,14 @@ dependencies {
     //noinspection LifecycleAnnotationProcessorWithJava8
     annotationProcessor "android.arch.lifecycle:compiler:$lifeCycleVersion"
 
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // For Kotlin use kapt instead of annotationProcessor
+    implementation "androidx.room:room-rxjava2:$room_version"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
-    //Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.3'
-    implementation 'com.google.firebase:firebase-ml-vision:24.0.1'
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.1'
+    implementation 'com.google.android.gms:play-services-vision:18.0.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
-    implementation 'com.google.android.gms:play-services-vision:19.0.0'
 }
-
-apply plugin: 'com.google.gms.google-services'

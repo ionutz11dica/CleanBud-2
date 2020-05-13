@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/topLayout"
     android:layout_width="match_parent"
@@ -18,4 +18,12 @@
 
     </ro.disertatie.cleanbud.View.uiCamera.CameraSourcePreview>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/button_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Capture"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

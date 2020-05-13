@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ro.disertatie.cleanbud">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -22,7 +23,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".View.OCR.OcrCaptureActivity"></activity>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr"/>
+        <activity android:name=".View.Activities.TestOcrActivity"></activity>
+        <activity android:name=".View.OCR.OcrCaptureActivity" />
         <activity android:name=".View.Activities.ReportsActivity" />
         <activity
             android:name=".View.Activities.BudgetCreatorActivity"
@@ -41,6 +46,15 @@
         <activity
             android:name=".View.Activities.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path"/>
+        </provider>
     </application>
 
 </manifest>

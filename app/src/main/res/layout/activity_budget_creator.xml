@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -120,7 +120,7 @@
         android:layout_height="match_parent"
         android:gravity="center|bottom">
         <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
-            android:id="@+id/cirLoginButton"
+            android:id="@+id/cirAddBudget"
             style="@style/loginButton"
             app:spinning_bar_width="4dp"
             app:spinning_bar_color="#FFF"
@@ -134,3 +134,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+</layout>

@@ -1,24 +1,85 @@
 package ro.disertatie.cleanbud.View.Models;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-public class User {
+@Entity(tableName = "user")
+public class User implements Parcelable {
 
-    public long id;
-
+    @PrimaryKey(autoGenerate = true)
+    private Integer userId;
     private String name;
     private String email;
     private String mobilePhone;
     private String password;
 
 
-    public long getId() {
-        return id;
+    @Ignore
+    public User() {
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public User(String name, String email, String mobilePhone, String password) {
+        this.name = name;
+        this.email = email;
+        this.mobilePhone = mobilePhone;
+        this.password = password;
+    }
+
+
+    protected User(Parcel in) {
+        if (in.readByte() == 0) {
+            userId = null;
+        } else {
+            userId = in.readInt();
+        }
+        name = in.readString();
+        email = in.readString();
+        mobilePhone = in.readString();
+        password = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (userId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(userId);
+        }
+        dest.writeString(name);
+        dest.writeString(email);
+        dest.writeString(mobilePhone);
+        dest.writeString(password);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getName() {

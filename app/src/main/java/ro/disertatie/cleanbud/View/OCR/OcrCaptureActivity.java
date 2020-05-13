@@ -18,6 +18,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,6 +61,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
     private GraphicOverlay<OcrGraphic> mGraphicOverlay;
+    private Button buttonCapture;
 
     // Helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;
@@ -74,6 +76,7 @@ public final class OcrCaptureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ocr_capture);
 
         mPreview = findViewById(R.id.preview);
+        buttonCapture = findViewById(R.id.button_capture);
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
 
         // read parameters from the intent used to launch the activity.
@@ -307,6 +310,8 @@ public final class OcrCaptureActivity extends AppCompatActivity {
      * @param rawY - the raw position of the tap.
      * @return true if the activity is ending.
      */
+
+
     private boolean onTap(float rawX, float rawY) {
         OcrGraphic graphic = mGraphicOverlay.getGraphicAtLocation(rawX, rawY);
         TextBlock text = null;

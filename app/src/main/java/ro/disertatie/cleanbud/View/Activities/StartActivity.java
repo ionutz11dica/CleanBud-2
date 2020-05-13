@@ -50,8 +50,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         switch (idBtn){
             case 1 :{
 //                fm.beginTransaction().hide(active).show(reportsFragment).commit();
-////                active = reportsFragment;
-                startActivity(new Intent(getApplicationContext(),ReportsActivity.class));
+//                active = reportsFragment;
+                startActivity(new Intent(getApplicationContext(),TestOcrActivity.class));
                 break;
             }
             case 2 : {

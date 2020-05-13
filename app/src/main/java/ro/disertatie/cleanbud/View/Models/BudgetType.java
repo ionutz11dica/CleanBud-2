@@ -1,30 +1,31 @@
 package ro.disertatie.cleanbud.View.Models;
 
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import ro.disertatie.cleanbud.R;
+
+@Entity(tableName = "budgetType")
 public class BudgetType {
-
-    long id;
-
-    String title;
-
-    int idImage;
+    @PrimaryKey
+    private Integer budgetTypeId;
+    private String title;
+    private int idImage;
 
 
-
-
-    public BudgetType(String title, int idImage) {
+    public BudgetType(Integer budgetTypeId, String title, int idImage) {
+        this.budgetTypeId = budgetTypeId;
         this.title = title;
         this.idImage = idImage;
     }
 
-
-    public long getId() {
-        return id;
+    public Integer getBudgetTypeId() {
+        return budgetTypeId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setBudgetTypeId(Integer budgetTypeId) {
+        this.budgetTypeId = budgetTypeId;
     }
 
     public String getTitle() {
@@ -42,4 +43,16 @@ public class BudgetType {
     public void setIdImage(int idImage) {
         this.idImage = idImage;
     }
+
+    public static BudgetType[] populateBudgetTypes(){
+        return new BudgetType[] {
+                new BudgetType(1,"Long Term Bud.",R.drawable.ic_long_term),
+                new BudgetType(2,"Short Term Bud.",R.drawable.ic_short),
+                new BudgetType(3,"Flexible  Bud.",R.drawable.ic_flexible),
+                new BudgetType(4,"Financial Bud.",R.drawable.ic_help),
+                new BudgetType(5,"Expense Bud.",R.drawable.ic_budget_expense)
+        };
+    }
+
+
 }
