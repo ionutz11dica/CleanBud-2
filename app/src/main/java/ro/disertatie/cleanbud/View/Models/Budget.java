@@ -7,6 +7,7 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import ro.disertatie.cleanbud.View.Models.Converters.TimestampConverter;
@@ -31,7 +32,7 @@ import static androidx.room.ForeignKey.CASCADE;
                 @Index(value = "userId",unique = true),
                 @Index(value = "budgetTypeId")
         })
-public class Budget {
+public class Budget implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private Integer budgetId;
@@ -42,6 +43,8 @@ public class Budget {
     private Integer userId;
     private String budgetDescription;
     private Integer budgetTypeId;
+
+
 
 
     public Integer getBudgetId() {

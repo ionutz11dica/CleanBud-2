@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/budget_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-1dp"
+        android:background="#35438E"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="NameBudget" />
+
+    <LinearLayout
+        android:background="#35438E"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="55dp"
+            android:weightSum="3"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/left_change_arrow"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:onClick="leftArrowClick"
+                android:layout_weight="0.8"
+                android:src="@drawable/ic_arrow_left"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+                <TextView
+
+                    android:id="@+id/budget_sum_tv"
+                    android:layout_width="wrap_content"
+                    android:text="124.99"
+                    android:textSize="46dp"
+                    android:textColor="@color/whiteTextColor"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/budget_currency_tv"
+                    android:layout_width="wrap_content"
+                    android:text="LEI"
+                    android:textSize="20sp"
+                    android:textColor="#80ffffff"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/right_change_arrow"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:background="@null"
+                android:onClick="rightArrowClick"
+                android:layout_weight="0.8"
+                android:src="@drawable/ic_arrow_right"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingTop="20dp"
+            android:paddingBottom="45dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/add_income"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/rounded_button"
+
+                    android:src="@drawable/ic_attach_money_black_24dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Income"
+                    android:textSize="14dp"
+                    android:textColor="#80ffffff"
+                    android:layout_height="wrap_content"
+                   />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/add_expense"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:background="@drawable/rounded_button"
+
+                    android:src="@drawable/ic_money_off_black_24dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="Expense"
+                    android:textSize="14dp"
+                    android:textColor="#80ffffff"
+                    android:layout_height="wrap_content"
+                    />
+
+            </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.85"
+            android:textSize="14dp"
+            android:layout_marginStart="5dp"
+            android:padding="15dp"
+            android:layout_height="wrap_content"
+            android:text="Transaction History"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/ic_arrow_right"/>
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/record_lv"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

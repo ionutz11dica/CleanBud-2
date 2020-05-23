@@ -17,9 +17,7 @@ import static androidx.room.ForeignKey.CASCADE;
                     onDelete = CASCADE,
                     onUpdate = CASCADE
             ),
-              indices = {@Index(value = "budgetId"),
-                      @Index(value = "expenseCategoryId",unique = true),
-                      @Index(value = "incomeCategoryId",unique = true)}
+              indices = {@Index(value = "budgetId")}
 
 )
 public class Record {
@@ -28,15 +26,27 @@ public class Record {
     private Integer recordId;
     private String titleRecord;
     private Integer budgetId;
-    private Integer expenseCategoryId;
-    private Integer incomeCategoryId;
+    private byte[] receipt;
+    private boolean recordType; // 0 - Expense , 1 - Income
 
-    public Integer getExpenseCategoryId() {
-        return expenseCategoryId;
+
+    //type currency
+
+
+    public byte[] getReceipt() {
+        return receipt;
     }
 
-    public void setExpenseCategoryId(Integer expenseCategoryId) {
-        this.expenseCategoryId = expenseCategoryId;
+    public void setReceipt(byte[] receipt) {
+        this.receipt = receipt;
+    }
+
+    public boolean isRecordType() {
+        return recordType;
+    }
+
+    public void setRecordType(boolean recordType) {
+        this.recordType = recordType;
     }
 
     public Integer getRecordId() {
@@ -63,11 +73,5 @@ public class Record {
         this.budgetId = budgetId;
     }
 
-    public Integer getIncomeCategoryId() {
-        return incomeCategoryId;
-    }
 
-    public void setIncomeCategoryId(Integer incomeCategoryId) {
-        this.incomeCategoryId = incomeCategoryId;
-    }
 }

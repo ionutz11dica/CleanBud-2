@@ -10,20 +10,31 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import ro.disertatie.cleanbud.View.Models.Converters.TimestampConverter;
+import ro.disertatie.cleanbud.View.Utils.RecordProtocol;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "income",
-        foreignKeys = @ForeignKey(entity = Record.class,
-                parentColumns = "incomeCategoryId",
-                childColumns = "incomeCategoryId",
-                onDelete = CASCADE
-        ),
-
-        indices = {@Index(value = {"incomeCategoryId"},unique = true)})
-public class Income {
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Record.class,
+                        parentColumns = "recordId",
+                        childColumns = "recordId",
+                        onDelete = CASCADE
+                ),
+                @ForeignKey(
+                        entity = IncomeCategory.class,
+                        parentColumns = "incomeCategoryId",
+                        childColumns = "incomeCategoryId")
+        },
+        indices = {
+                @Index(value = "incomeCategoryId"),
+                @Index(value = "recordId")
+        })
+public class Income implements RecordProtocol {
     @PrimaryKey(autoGenerate = true)
     private Integer incomeId;
+    private String titleIncome;
     private float amountIncome;
     @TypeConverters({TimestampConverter.class})
     private Date dateIncome;
@@ -41,6 +52,14 @@ public class Income {
 
     public Integer getIncomeId() {
         return incomeId;
+    }
+
+    public String getTitleIncome() {
+        return titleIncome;
+    }
+
+    public void setTitleIncome(String titleIncome) {
+        this.titleIncome = titleIncome;
     }
 
     public void setIncomeId(Integer incomeId) {
@@ -69,5 +88,10 @@ public class Income {
 
     public void setIncomeCategoryId(Integer incomeCategoryId) {
         this.incomeCategoryId = incomeCategoryId;
+    }
+
+    @Override
+    public boolean checkRecordType(int bool) {
+        return bool != 0;
     }
 }

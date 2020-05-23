@@ -26,6 +26,22 @@ android {
     dataBinding {
         enabled = true
     }
+//
+//    sourceSets {
+//        main {
+//            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+//            jni.srcDirs = ['src/main/jni', 'src/main/jniLibs/']
+//        }
+//    }
+//
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+//            universalApk true
+//        }
+//    }
 }
 
 def supportVersion = '27.1.1'
@@ -87,6 +103,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
     // Lifecycle
     implementation "android.arch.lifecycle:runtime:$lifeCycleVersion"
     implementation "android.arch.lifecycle:extensions:$lifeCycleVersion"
@@ -102,5 +119,7 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-vision:18.0.0'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
+
+//    implementation project(path: ':opencv')
 
 }

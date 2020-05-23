@@ -10,21 +10,33 @@ import androidx.room.TypeConverters;
 import java.util.Date;
 
 import ro.disertatie.cleanbud.View.Models.Converters.TimestampConverter;
+import ro.disertatie.cleanbud.View.Utils.RecordProtocol;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "expense",
-        foreignKeys = @ForeignKey(entity = Record.class,
-                parentColumns = "expenseCategoryId",
-                childColumns = "expenseCategoryId"
-
-        ),
-        indices = {@Index(value = {"expenseCategoryId"},unique = true)})
-public class Expense {
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Record.class,
+                        parentColumns = "recordId",
+                        childColumns = "recordId",
+                        onDelete = CASCADE
+                ),
+                @ForeignKey(
+                        entity = ExpenseCategory.class,
+                        parentColumns = "expenseCategoryId",
+                        childColumns = "expenseCategoryId")
+        },
+        indices = {
+                @Index(value = "expenseCategoryId"),
+                @Index(value = "recordId")
+        })
+public class Expense implements RecordProtocol {
 
     @PrimaryKey(autoGenerate = true)
     private Integer expenseId;
     private float amountExpense;
+    private String titleExpense;
     @TypeConverters({TimestampConverter.class})
     private Date expenseDate;
     private Integer expenseCategoryId;
@@ -50,6 +62,14 @@ public class Expense {
         return expenseDate;
     }
 
+    public String getTitleExpense() {
+        return titleExpense;
+    }
+
+    public void setTitleExpense(String titleExpense) {
+        this.titleExpense = titleExpense;
+    }
+
     public void setExpenseDate(Date expenseDate) {
         this.expenseDate = expenseDate;
     }
@@ -68,5 +88,10 @@ public class Expense {
 
     public void setRecordId(Integer recordId) {
         this.recordId = recordId;
+    }
+
+    @Override
+    public boolean checkRecordType(int bool) {
+        return bool != 0;
     }
 }

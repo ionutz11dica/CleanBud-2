@@ -30,19 +30,21 @@
 
         android:layout_height="160dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
 
-            android:id="@+id/state_budget_image"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="15dp"
-            android:layout_weight="0.25"
-            android:backgroundTint="@color/whiteTextColor"
-            android:scaleType="center"
-            android:src="@drawable/ic_write"
-
-            />
+        <TextView
+            android:id="@+id/tv_char_record"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circle_list"
+            android:text="T"
+            android:textSize="20dp"
+            android:layout_marginEnd="12dp"
+android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/whiteTextColor"
+            android:textAlignment="center"
+            android:gravity="center_vertical"
+            tools:ignore="RtlCompat" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -67,12 +69,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="18dp"/>
 
-            <Spinner
-                android:id="@+id/typeState_spn"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                />
+
 
 
         </LinearLayout>

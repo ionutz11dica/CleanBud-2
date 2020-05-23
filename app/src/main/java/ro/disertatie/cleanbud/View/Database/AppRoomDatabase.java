@@ -21,13 +21,15 @@ import ro.disertatie.cleanbud.View.Models.ExpenseCategory;
 import ro.disertatie.cleanbud.View.Models.Income;
 import ro.disertatie.cleanbud.View.Models.IncomeCategory;
 import ro.disertatie.cleanbud.View.Models.Record;
+import ro.disertatie.cleanbud.View.Models.Trip;
 import ro.disertatie.cleanbud.View.Models.User;
+import ro.disertatie.cleanbud.View.Models.UserTrip;
 
 import static ro.disertatie.cleanbud.View.Utils.Constants.DATABASE_NAME;
 
 
 @Database(entities = {User.class, Budget.class, BudgetType.class, Expense.class, ExpenseCategory.class, Income.class, IncomeCategory.class,
-        Record.class},version = 4,exportSchema = false)
+        Record.class, Trip.class, UserTrip.class},version = 6,exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
     //database object
     public abstract UserDAO getUserDao();

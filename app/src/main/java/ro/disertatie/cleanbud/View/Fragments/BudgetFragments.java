@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,57 +27,33 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Activities.BudgetCreatorActivity;
+import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Utils.Constants;
+import ro.disertatie.cleanbud.View.ViewModel.BudgetFragmentViewModel;
+import ro.disertatie.cleanbud.databinding.BudgetFragmentBinding;
+import ro.disertatie.cleanbud.databinding.ReportsFragmentBinding;
 
 import static android.app.Activity.RESULT_OK;
+import static ro.disertatie.cleanbud.View.Utils.Constants.ADD_BUDGET_KEY;
 
 public class BudgetFragments extends Fragment {
     private BudgetInteractionListener listener;
-
-    @BindView(R.id.budget_toolbar)
-    Toolbar toolbar;
-
-    @BindView(R.id.fab_add_budget)
-    FloatingActionButton fabAdd;
-
-    @BindView(R.id.ll_placeholder)
-    LinearLayout llPlaceHolder;
+    private BudgetFragmentViewModel budgetFragmentViewModel;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.budget_fragment, container, false);
-        ButterKnife.bind(this,view);
-        toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+        BudgetFragmentBinding budgetFragmentBinding = DataBindingUtil.inflate(inflater,R.layout.budget_fragment,container,false);
+         budgetFragmentViewModel = new BudgetFragmentViewModel(this,budgetFragmentBinding);
+        budgetFragmentViewModel.setComplexDetails();
+        budgetFragmentViewModel.fabAddClick();
 
 
-        backListener();
-        fabAddClick();
-        return view;
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void backListener(){
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onBackButtonPressedBudget("homeF");
-            }
-        });
-    }
-
-
-    private void fabAddClick(){
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), BudgetCreatorActivity.class);
-                Objects.requireNonNull(getActivity()).startActivityForResult(intent, Constants.REQUEST_BUDGET_CREATOR);
-            }
-        });
+        return budgetFragmentBinding.getRoot();
     }
 
 
@@ -85,7 +62,11 @@ public class BudgetFragments extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data != null){
             if (requestCode == Constants.REQUEST_BUDGET_CREATOR){
-                // ------ for complete
+                Budget budget = (Budget) data.getSerializableExtra(ADD_BUDGET_KEY);
+                if(budget!=null){
+                    budgetFragmentViewModel.addNewBudget(budget);
+                }
+
             }
         }
     }

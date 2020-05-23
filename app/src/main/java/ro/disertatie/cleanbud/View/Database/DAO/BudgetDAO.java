@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import ro.disertatie.cleanbud.View.Models.Budget;
 

@@ -1,10 +1,13 @@
 package ro.disertatie.cleanbud.View.Database.DAOMethods;
 
 
+import android.util.Log;
+
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -55,11 +58,13 @@ public class BudgetMethods implements BudgetDAO {
 
                     @Override
                     public void onComplete() {
+                        Log.d("Budget","Success");
                         Timber.d("Successful");
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d("Budget",e.getMessage());
                         Timber.d(e);
                     }
                 });

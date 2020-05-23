@@ -23,6 +23,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
+
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Single;
@@ -55,6 +57,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     GoogleSignInClient mGoogleSignInClient;
     UserDAO userDao;
     UserMethods userMethods;
+
+
+    private static String TAG = "LoginActivity";
+    static
+    {
+
+//        if(OpenCVLoader.initDebug()){
+//            Log.d(TAG,"opencv is configurate");
+//        }else {
+//            Log.d(TAG,"pula");
+//        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

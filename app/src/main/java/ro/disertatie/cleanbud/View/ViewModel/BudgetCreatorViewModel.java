@@ -1,6 +1,8 @@
 package ro.disertatie.cleanbud.View.ViewModel;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +27,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Activities.BudgetCreatorActivity;
@@ -39,6 +42,8 @@ import ro.disertatie.cleanbud.View.Uitility.Utility;
 import ro.disertatie.cleanbud.View.Utils.SpinnerClass;
 import ro.disertatie.cleanbud.databinding.ActivityBudgetCreatorBinding;
 
+import static ro.disertatie.cleanbud.View.Utils.Constants.ADD_BUDGET_KEY;
+
 public class BudgetCreatorViewModel {
     private BudgetCreatorActivity budgetCreatorActivity;
     private ActivityBudgetCreatorBinding activityBudgetCreatorBinding;
@@ -50,8 +55,9 @@ public class BudgetCreatorViewModel {
     public BudgetCreatorViewModel(BudgetCreatorActivity budgetCreatorActivity, ActivityBudgetCreatorBinding activityBudgetCreatorBinding) {
         this.budgetCreatorActivity = budgetCreatorActivity;
         this.activityBudgetCreatorBinding = activityBudgetCreatorBinding;
+        RxJavaPlugins.setErrorHandler(throwable -> {});
         openDB();
-        test();
+
     }
 
     public void setUpToolbar() {
@@ -85,10 +91,7 @@ public class BudgetCreatorViewModel {
         spinnerClassList.add(new SpinnerClass(R.drawable.ic_write,"In Progress"));
         spinnerClassList.add(new SpinnerClass(R.drawable.ic_paid,"Paid"));
 
-        SpinnerAdapter adapter = new ro.disertatie.cleanbud.View.Adapter.SpinnerAdapter(budgetCreatorActivity,
-                R.layout.row_spinner, R.id.state_tv,spinnerClassList);
-        activityBudgetCreatorBinding.typeStateSpn.setAdapter(adapter);
-        activityBudgetCreatorBinding.typeStateSpn.setSelection(1);
+
     }
 
 
@@ -123,7 +126,7 @@ public class BudgetCreatorViewModel {
     }
 
 
-    public void addNewBudgetOnClick(){
+    public void addNewBudgetOnClick(Intent intent){
         activityBudgetCreatorBinding.cirAddBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +139,9 @@ public class BudgetCreatorViewModel {
                     budget.setDate(Calendar.getInstance().getTime());
                     budget.setUserId(1);
                     budgetMethods.insertBudget(budget);
-                    Toast.makeText(budgetCreatorActivity.getApplicationContext(),"A mers",Toast.LENGTH_LONG).show();
+                    intent.putExtra(ADD_BUDGET_KEY,budget);
+                    budgetCreatorActivity.setResult(Activity.RESULT_OK,intent);
+                    budgetCreatorActivity.finish();
                 }
             }
         });
@@ -171,28 +176,7 @@ public class BudgetCreatorViewModel {
 
 
 
-    private void test(){
-        Single<List<Budget>> single = budgetMethods.getAllBudgets(1);
-        single.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Budget>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onSuccess(List<Budget> budgets) {
-                        Toast.makeText(budgetCreatorActivity.getApplicationContext(),budgets.get(0).toString(),Toast.LENGTH_LONG).show();
-//                        Log.d("Test",budgets.get(0).toString());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
-    }
 
 
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+
+    >
+
+    <TextView
+        android:id="@+id/tv_char_record"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circle_list"
+        android:text="T"
+        android:textSize="20dp"
+
+        android:textStyle="bold"
+        android:textColor="@color/whiteTextColor"
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        tools:ignore="RtlCompat" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title record"
+            android:textColor="#000000"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_date_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="date record"
+            android:textColor="#888888"
+            android:textSize="13dp"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_sum_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- USD 50,000"
+        android:textColor="#000000"
+        android:textAlignment="textEnd"
+        android:layout_marginEnd="20dp"
+        android:textSize="17dp"/>
+</LinearLayout>
