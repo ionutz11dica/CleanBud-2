@@ -46,11 +46,11 @@ public class BudgetType {
 
     public static BudgetType[] populateBudgetTypes(){
         return new BudgetType[] {
-                new BudgetType(1,"Long Term Bud.",R.drawable.ic_long_term),
-                new BudgetType(2,"Short Term Bud.",R.drawable.ic_short),
-                new BudgetType(3,"Flexible  Bud.",R.drawable.ic_flexible),
-                new BudgetType(4,"Financial Bud.",R.drawable.ic_help),
-                new BudgetType(5,"Expense Bud.",R.drawable.ic_budget_expense)
+                new BudgetType(0,"Long Term Bud.",R.drawable.ic_long_term),
+                new BudgetType(1,"Short Term Bud.",R.drawable.ic_short),
+                new BudgetType(2,"Flexible  Bud.",R.drawable.ic_flexible),
+                new BudgetType(3,"Financial Bud.",R.drawable.ic_help),
+                new BudgetType(4,"Expense Bud.",R.drawable.ic_budget_expense)
         };
     }
 

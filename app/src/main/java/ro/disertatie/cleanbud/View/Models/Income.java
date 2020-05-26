@@ -7,8 +7,10 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
 
+import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Models.Converters.TimestampConverter;
 import ro.disertatie.cleanbud.View.Utils.RecordProtocol;
 
@@ -17,9 +19,9 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "income",
         foreignKeys = {
                 @ForeignKey(
-                        entity = Record.class,
-                        parentColumns = "recordId",
-                        childColumns = "recordId",
+                        entity = Budget.class,
+                        parentColumns = "budgetId",
+                        childColumns = "budgetId",
                         onDelete = CASCADE
                 ),
                 @ForeignKey(
@@ -29,9 +31,9 @@ import static androidx.room.ForeignKey.CASCADE;
         },
         indices = {
                 @Index(value = "incomeCategoryId"),
-                @Index(value = "recordId")
+                @Index(value = "budgetId")
         })
-public class Income implements RecordProtocol {
+public class Income implements RecordProtocol, Serializable {
     @PrimaryKey(autoGenerate = true)
     private Integer incomeId;
     private String titleIncome;
@@ -39,15 +41,15 @@ public class Income implements RecordProtocol {
     @TypeConverters({TimestampConverter.class})
     private Date dateIncome;
     private Integer incomeCategoryId;
-    private Integer recordId;
+    private Integer budgetId;
 
 
-    public Integer getRecordId() {
-        return recordId;
+    public Integer getBudgetId() {
+        return budgetId;
     }
 
-    public void setRecordId(Integer recordId) {
-        this.recordId = recordId;
+    public void setBudgetId(Integer budgetId) {
+        this.budgetId = budgetId;
     }
 
     public Integer getIncomeId() {
@@ -94,4 +96,5 @@ public class Income implements RecordProtocol {
     public boolean checkRecordType(int bool) {
         return bool != 0;
     }
+
 }

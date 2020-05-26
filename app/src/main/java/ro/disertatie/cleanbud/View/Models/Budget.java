@@ -17,7 +17,7 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "budget",
         foreignKeys = {
             @ForeignKey(
-                    entity = Budget.class,
+                    entity = User.class,
                     parentColumns = "userId",
                     childColumns = "userId",
                     onDelete = CASCADE
@@ -29,7 +29,7 @@ import static androidx.room.ForeignKey.CASCADE;
             )
         },
         indices = {
-                @Index(value = "userId",unique = true),
+                @Index(value = "userId"),
                 @Index(value = "budgetTypeId")
         })
 public class Budget implements Serializable {
@@ -37,7 +37,8 @@ public class Budget implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private Integer budgetId;
     private String title;
-    private float amount;
+    private float initialAmount;
+    private float currentAmount;
     @TypeConverters({TimestampConverter.class})
     private Date date;
     private Integer userId;
@@ -63,12 +64,20 @@ public class Budget implements Serializable {
         this.title = title;
     }
 
-    public float getAmount() {
-        return amount;
+    public float getCurrentAmount() {
+        return currentAmount;
     }
 
-    public void setAmount(float amount) {
-        this.amount = amount;
+    public void setCurrentAmount(float currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    public float getInitialAmount() {
+        return initialAmount;
+    }
+
+    public void setInitialAmount(float initialAmount) {
+        this.initialAmount = initialAmount;
     }
 
     public Date getDate() {
@@ -103,16 +112,5 @@ public class Budget implements Serializable {
         this.budgetDescription = budgetDescription;
     }
 
-    @Override
-    public String toString() {
-        return "Budget{" +
-                "budgetId=" + budgetId +
-                ", title='" + title + '\'' +
-                ", amount=" + amount +
-                ", date=" + date +
-                ", userId=" + userId +
-                ", budgetDescription='" + budgetDescription + '\'' +
-                ", budgetTypeId=" + budgetTypeId +
-                '}';
-    }
+
 }

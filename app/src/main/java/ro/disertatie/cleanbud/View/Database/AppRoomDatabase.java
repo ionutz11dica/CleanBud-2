@@ -13,6 +13,10 @@ import java.util.concurrent.Executors;
 import io.reactivex.annotations.NonNull;
 import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.BudgetTypeDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.ExpenseDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.ExpensesTypeDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.IncomeDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.IncomeTypeDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
 import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Models.BudgetType;
@@ -20,7 +24,6 @@ import ro.disertatie.cleanbud.View.Models.Expense;
 import ro.disertatie.cleanbud.View.Models.ExpenseCategory;
 import ro.disertatie.cleanbud.View.Models.Income;
 import ro.disertatie.cleanbud.View.Models.IncomeCategory;
-import ro.disertatie.cleanbud.View.Models.Record;
 import ro.disertatie.cleanbud.View.Models.Trip;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Models.UserTrip;
@@ -29,12 +32,16 @@ import static ro.disertatie.cleanbud.View.Utils.Constants.DATABASE_NAME;
 
 
 @Database(entities = {User.class, Budget.class, BudgetType.class, Expense.class, ExpenseCategory.class, Income.class, IncomeCategory.class,
-        Record.class, Trip.class, UserTrip.class},version = 6,exportSchema = false)
+       Trip.class, UserTrip.class},version = 12,exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
     //database object
     public abstract UserDAO getUserDao();
     public abstract BudgetDAO getBudgetDao();
     public abstract BudgetTypeDAO budgetTypeDao();
+    public abstract ExpenseDAO expenseDAO();
+    public abstract ExpensesTypeDAO expensesTypeDAO();
+    public abstract IncomeDAO incomeDAO();
+    public abstract IncomeTypeDAO incomeCategoryDAO();
 
     private static volatile AppRoomDatabase appRoomDatabase=null;
 
@@ -62,6 +69,8 @@ public abstract class AppRoomDatabase extends RoomDatabase {
                             @Override
                             public void run() {
                                 getInstance(context).budgetTypeDao().insertBudgetTypes(BudgetType.populateBudgetTypes());
+                                getInstance(context).expensesTypeDAO().insertExpensesTypes(ExpenseCategory.populateExpenseTypes());
+                                getInstance(context).incomeCategoryDAO().insertIncomesTypes(IncomeCategory.populateIncomeTypes());
                             }
                         });
                     }

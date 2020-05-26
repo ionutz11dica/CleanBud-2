@@ -1,9 +1,11 @@
 package ro.disertatie.cleanbud.View.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,11 +26,17 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
 
     FragmentManager fm ;
     Fragment active;
+    private static final int REQUEST_WRITE_PERMISSION = 20;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        ActivityCompat.requestPermissions(StartActivity.this, new
+                String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+
 
         homeFragment = new HomeFragment();
         currencyFragment = new CurrencyFragment();

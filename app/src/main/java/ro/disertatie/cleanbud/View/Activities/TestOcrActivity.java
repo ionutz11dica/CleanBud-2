@@ -217,7 +217,6 @@ public class TestOcrActivity extends AppCompatActivity {
                 Bitmap bitmap = decodeBitmapUri(this, imageUri);
                 Bitmap bitmap2 = createContrast(bitmap,25);
 
-//                apiService = APIClient.getRetrofit().create(APIService.class);
                 apiService = APIClient.getRetrofit2().create(APIService.class);
 
 
@@ -270,41 +269,7 @@ public class TestOcrActivity extends AppCompatActivity {
                     }
                 });
 
-//                if (detector.isOperational() && bitmap != null) {
-//                    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-//                    SparseArray<TextBlock> textBlocks = detector.detect(frame);
-//                    String blocks = "";
-//                    String lines = "";
-//                    String words = "";
-//                    for (int index = 0; index < textBlocks.size(); index++) {
-//                        //extract scanned text blocks here
-//                        TextBlock tBlock = textBlocks.valueAt(index);
-//                        blocks = blocks + tBlock.getValue() + "\n" + "\n";
-//                        for (Text line : tBlock.getComponents()) {
-//                            //extract scanned text lines here
-//                            lines = lines + line.getValue() + "\n";
-//                            for (Text element : line.getComponents()) {
-//                                //extract scanned text words here
-//                                words = words + element.getValue() + ", ";
-//                            }
-//                        }
-//                    }
-//                    if (textBlocks.size() == 0) {
-//                        scanResults.setText("Scan Failed: Found nothing to scan");
-//                    } else {
-//                        scanResults.setText(scanResults.getText() + "Blocks: " + "\n");
-//                        scanResults.setText(scanResults.getText() + blocks + "\n");
-//                        scanResults.setText(scanResults.getText() + "---------" + "\n");
-//                        scanResults.setText(scanResults.getText() + "Lines: " + "\n");
-//                        scanResults.setText(scanResults.getText() + lines + "\n");
-//                        scanResults.setText(scanResults.getText() + "---------" + "\n");
-//                        scanResults.setText(scanResults.getText() + "Words: " + "\n");
-//                        scanResults.setText(scanResults.getText() + words + "\n");
-//                        scanResults.setText(scanResults.getText() + "---------" + "\n");
-//                    }
-//                } else {
-//                    scanResults.setText("Could not set up the detector!");
-//                }
+
             } catch (Exception e) {
                 Toast.makeText(this, "Failed to load Image", Toast.LENGTH_SHORT)
                         .show();

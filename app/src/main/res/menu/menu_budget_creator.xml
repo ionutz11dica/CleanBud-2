@@ -2,15 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
     <item
-        android:id="@+id/menu_main_setting"
+        android:id="@+id/menu_main_delete"
         android:icon="@drawable/ic_delete_black_24dp"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:title="Delete" />
+    <item
+        android:id="@+id/menu_main_addnew"
+        android:icon="@drawable/ic_fiber_new_black_24dp"
+        android:orderInCategory="200"
+        app:showAsAction="always"
+        android:title="Share" />
 
     <item
-        android:id="@+id/menu_main_setting2"
+        android:id="@+id/menu_main_pdf"
         android:icon="@drawable/ic_share_black_24dp"
         android:orderInCategory="200"
         app:showAsAction="always"

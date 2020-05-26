@@ -46,8 +46,63 @@ public class BudgetMethods implements BudgetDAO {
     }
 
     @Override
+    public float getCurrentBudgetAmount() {
+        return budgetDAO.getCurrentBudgetAmount();
+    }
+
+    @Override
     public void insertBudget(Budget... budgets) {
         Completable.fromAction(() -> budgetDAO.insertBudget(budgets))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("Budget","Success");
+                        Timber.d("Successful");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Budget",e.getMessage());
+                        Timber.d(e);
+                    }
+                });
+    }
+
+    @Override
+    public void updateBudget(Budget... budgets) {
+        Completable.fromAction(() -> budgetDAO.updateBudget(budgets))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("Budget","Success");
+                        Timber.d("Successful");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Budget",e.getMessage());
+                        Timber.d(e);
+                    }
+                });
+    }
+
+    @Override
+    public void deleteBudget(Integer budgetId) {
+        Completable.fromAction(() -> budgetDAO.deleteBudget(budgetId))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new CompletableObserver() {

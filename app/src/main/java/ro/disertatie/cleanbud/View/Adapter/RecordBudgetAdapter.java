@@ -10,6 +10,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -32,17 +34,16 @@ import ro.disertatie.cleanbud.View.Utils.RecordProtocol;
 public class RecordBudgetAdapter extends BaseAdapter {
     private final Activity context;
 
-    private ArrayList<RecordProtocol> protocols;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd, MMM, yyyy");
+    private List<RecordProtocol> protocols;
+    @SuppressLint("SimpleDateFormat")
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd, MMM, yyyy");
 
 
-    public RecordBudgetAdapter(Activity context, ArrayList<Expense> expenses, ArrayList<Income> incomes) {
+    public RecordBudgetAdapter(Activity context, List<RecordProtocol> protocols) {
+
         this.context = context;
-        protocols = new ArrayList<>();
-
-        protocols.addAll(incomes);
-        protocols.addAll(expenses);
-        Collections.shuffle(protocols);
+        this.protocols = protocols;
+        Collections.shuffle(this.protocols);
     }
 
 
@@ -58,8 +59,10 @@ public class RecordBudgetAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
+
+
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
@@ -92,7 +95,7 @@ public class RecordBudgetAdapter extends BaseAdapter {
             titleRecord.setText(expense.getTitleExpense());
             dateRecord.setText(simpleDateFormat.format(expense.getExpenseDate()));
             //tipul monedei trb adaugat in bd
-            sumRecord.setText("-$ "+String.format("%.2f",expense.getAmountExpense()));
+            sumRecord.setText("-Lei "+String.format("%.2f",expense.getAmountExpense()));
 
 
         }else if(protocols.get(position) instanceof Income) {
@@ -103,7 +106,7 @@ public class RecordBudgetAdapter extends BaseAdapter {
 
             dateRecord.setText(simpleDateFormat.format(expense.getDateIncome()));
             //tipul monedei trb adaugat in bd
-            sumRecord.setText("+$ "+String.format("%.2f",expense.getAmountIncome()));
+            sumRecord.setText("+Lei "+String.format("%.2f",expense.getAmountIncome()));
         }
 
 

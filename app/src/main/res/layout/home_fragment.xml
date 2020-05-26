@@ -64,52 +64,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             >
-                <androidx.cardview.widget.CardView
-                    android:layout_margin="10dp"
-                    android:id="@+id/cv_myreports"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    app:cardBackgroundColor="#403e206d"
-                    app:cardUseCompatPadding="true"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="0dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:layout_height="match_parent"
-                    android:focusable="true">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-
-
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                                <ImageView
-                                    android:layout_width="64dp"
-                                    android:layout_height="64dp"
-                                    android:src="@drawable/ic_reports"
-                                    android:padding="5dp"/>
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0.75dp"
-                                    android:padding="10dp"
-                                    android:layout_margin="5dp"
-                                    android:background="#20f5eaea"/>
-
-                                <TextView
-                                    android:text="My Reports"
-                                    android:textStyle="bold"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/whiteTextColor"
-                                    android:layout_marginTop="5dp"/>
-
-                        </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_margin="10dp"

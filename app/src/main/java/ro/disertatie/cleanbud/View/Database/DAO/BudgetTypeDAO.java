@@ -14,8 +14,7 @@ import ro.disertatie.cleanbud.View.Models.BudgetType;
 
 @Dao
 public interface BudgetTypeDAO {
-    @Query("SELECT * FROM budgetType")
-    Single<List<BudgetType>> getAll();
+
 
     @Insert
     void insertBudgetTypes(BudgetType... budgets);

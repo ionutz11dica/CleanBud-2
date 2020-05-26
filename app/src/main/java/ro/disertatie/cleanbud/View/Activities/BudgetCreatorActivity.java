@@ -51,7 +51,6 @@ public class BudgetCreatorActivity extends AppCompatActivity implements  BudgetT
         viewModel.setUpToolbar();
         viewModel.addNewBudgetOnClick(getIntent());
 
-
     }
 
 

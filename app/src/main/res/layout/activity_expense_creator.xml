@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#ededed"
+        android:layout_margin="16dp"
+        android:weightSum="10"
+        tools:context=".View.Activities.ExpenseCreatorActivity">
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/select_category_expense"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+
+                    android:background="@drawable/rounded_button"
+                    android:src="@drawable/ic_grid"
+                    />
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/black"
+                    android:textStyle="normal"
+                    android:text="Select Category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp"
+                    android:weightSum="1" >
+
+                    <TextView
+                        android:layout_marginTop="2dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:text="Category: "
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/tv_expense_category"
+                        android:layout_marginTop="2dp"
+                        android:textSize="14dp"
+                        android:textColor="@color/black"
+                        android:textStyle="normal"
+                        android:text="Food"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="0dp"
+                android:background="@color/colorPrimaryDark"
+                android:layout_height="match_parent"
+                android:layout_weight="0.03"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="10dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imv_receipt"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_bill" />
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="Title"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+
+                android:layout_weight="7">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_title_expense"
+                    android:hint="ex: McDonald"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="Sum"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sum_expense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="ex: 500,00"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="4.5"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center|bottom"
+                android:text="Description"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+
+                android:layout_weight="4">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_expense_description"
+                    android:layout_width="match_parent"
+                    android:lines="2"
+                    android:layout_height="match_parent"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="Date"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_date_expense"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="7"
+                    android:gravity="center"
+                    android:text="dd, MMM, yyyy"
+                    android:textColor="#888888"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_marginTop="20dp"
+                android:id="@+id/add_date_expense"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_button"
+                android:src="@drawable/ic_date_range_black_24dp"
+                />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_add_expense"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+
+            android:layout_weight="1"
+            android:background="@drawable/bkg_btn_add"
+            android:gravity="center"
+            android:text="Add"
+            android:textColor="#ffffff" />
+
+
+    </LinearLayout>
+</layout>

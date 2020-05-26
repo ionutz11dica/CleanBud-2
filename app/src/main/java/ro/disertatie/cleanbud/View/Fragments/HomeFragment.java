@@ -24,8 +24,7 @@ public class HomeFragment extends Fragment {
     private OnHomeFragmentInteractionListener listener;
 
     //Attributes
-    @BindView(R.id.cv_myreports)
-    CardView cvReports;
+
 
     @BindView(R.id.cv_myBudget)
     CardView cvBudgets;
@@ -45,7 +44,6 @@ public class HomeFragment extends Fragment {
         toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
         currencyClick();
         budgetsClick();
-        myReportsClick();
         return view;
     }
 
@@ -58,14 +56,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void myReportsClick(){
-        cvReports.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onHomeButtonsPressed(1);
-            }
-        });
-    }
+
 
     private void budgetsClick(){
         cvBudgets.setOnClickListener(new View.OnClickListener() {

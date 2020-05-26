@@ -48,7 +48,6 @@ public class BudgetCreatorViewModel {
     private BudgetCreatorActivity budgetCreatorActivity;
     private ActivityBudgetCreatorBinding activityBudgetCreatorBinding;
     private BudgetTypeRecyclerViewAdapter adapterBud;
-    private BudgetDAO budgetDAO;
     private BudgetMethods budgetMethods;
     private List<BudgetType> budgetTypes = new ArrayList<>();
 
@@ -61,7 +60,7 @@ public class BudgetCreatorViewModel {
     }
 
     public void setUpToolbar() {
-        activityBudgetCreatorBinding.budgetCreatorToolbar.inflateMenu(R.menu.menu_budget_creator);
+//        activityBudgetCreatorBinding.budgetCreatorToolbar.inflateMenu(R.menu.menu_budget_creator);
 
         activityBudgetCreatorBinding.budgetCreatorToolbar.setTitleTextAppearance(budgetCreatorActivity.getApplicationContext(),R.style.Widget_AppCompat_ActionBar_Solid);
         activityBudgetCreatorBinding.budgetCreatorToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -133,7 +132,8 @@ public class BudgetCreatorViewModel {
                 if(validate(v)){
                     Budget budget = new Budget();
                     budget.setTitle(activityBudgetCreatorBinding.edBudgetTitle.getText().toString());
-                    budget.setAmount(Float.parseFloat(activityBudgetCreatorBinding.etBudgetSum.getText().toString()));
+                    budget.setInitialAmount(Float.parseFloat(activityBudgetCreatorBinding.etBudgetSum.getText().toString()));
+                    budget.setCurrentAmount(Float.parseFloat(activityBudgetCreatorBinding.etBudgetSum.getText().toString()));
                     budget.setBudgetDescription(activityBudgetCreatorBinding.etBudgetDescription.getText().toString());
                     budget.setBudgetTypeId(budgetTypes.get(budgetCreatorActivity.selectedBudgetType).getBudgetTypeId());
                     budget.setDate(Calendar.getInstance().getTime());
@@ -181,7 +181,7 @@ public class BudgetCreatorViewModel {
 
 
     private void openDB(){
-        budgetDAO = AppRoomDatabase.getInstance(budgetCreatorActivity.getApplicationContext()).getBudgetDao();
+        BudgetDAO budgetDAO = AppRoomDatabase.getInstance(budgetCreatorActivity.getApplicationContext()).getBudgetDao();
         budgetMethods = BudgetMethods.getInstance(budgetDAO);
     }
 }
