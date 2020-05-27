@@ -50,10 +50,7 @@ public class BudgetCreatorActivity extends AppCompatActivity implements  BudgetT
         viewModel.setDescriptionBudget();
         viewModel.setUpToolbar();
         viewModel.addNewBudgetOnClick(getIntent());
-
     }
-
-
 
     @Override
     public void onItemClick(View view, int position) {

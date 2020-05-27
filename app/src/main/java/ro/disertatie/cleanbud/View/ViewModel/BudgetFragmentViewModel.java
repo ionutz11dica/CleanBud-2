@@ -337,6 +337,7 @@ public class BudgetFragmentViewModel {
 
         if(recordProtocol instanceof Expense) {
             Expense expense = (Expense) recordProtocol;
+
             budget.setCurrentAmount(budget.getCurrentAmount() - expense.getAmountExpense());
 
         }else{
@@ -404,18 +405,20 @@ public class BudgetFragmentViewModel {
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 Intent intent = new Intent(budgetFragments.getActivity(), ExpenseCreatorActivity.class);
+                intent.putExtra(Constants.BUDGET_ID_KEY,budgetsList.get(cursorBudgets).getBudgetId());
+                intent.putExtra(Constants.CURRENT_BUDGET_KEY,budgetsList.get(cursorBudgets).getCurrentAmount());
                 switch (item.getItemId()) {
 
                     case R.id.manual_menu_expense :
                         intent.putExtra(Constants.IS_SCAN_KEY,false);
-                        intent.putExtra(Constants.BUDGET_ID_KEY,budgetsList.get(cursorBudgets).getBudgetId());
+
                         budgetFragments.startActivityForResult(intent,Constants.REQUEST_EXPENSE_CREATOR);
                         break;
 
                         //fa ceva aici
                     case R.id.scan_menu_expense :
                         intent.putExtra(Constants.IS_SCAN_KEY,true);
-                        intent.putExtra(Constants.BUDGET_ID_KEY,budgetsList.get(cursorBudgets).getBudgetId());
+
                         budgetFragments.startActivityForResult(intent,Constants.REQUEST_EXPENSE_CREATOR);
                         break;
                         // sa ma duc pe scan

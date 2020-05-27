@@ -16,4 +16,5 @@ public interface Constants {
     String BUDGET_ID_KEY = "budgetidKey";
     String ADD_INCOME_KEY = "addIncomeKey";
 
+    String CURRENT_BUDGET_KEY = "currentbudgetKey";
 }
