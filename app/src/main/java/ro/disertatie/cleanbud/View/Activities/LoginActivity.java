@@ -39,6 +39,7 @@ import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Utils.CheckForNetwork;
 import ro.disertatie.cleanbud.View.Utils.Constants;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
@@ -59,16 +60,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     UserMethods userMethods;
 
 
-    private static String TAG = "LoginActivity";
-    static
-    {
-
-//        if(OpenCVLoader.initDebug()){
-//            Log.d(TAG,"opencv is configurate");
-//        }else {
-//            Log.d(TAG,"pula");
-//        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +192,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                     @Override
                     public synchronized void onSuccess(User user) {
+                        StaticVar.USER_ID = user.getUserId();
                         startActivity(intent);
                     }
 
@@ -233,6 +225,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                     @Override
                     public synchronized void onSuccess(User user) {
+                        StaticVar.USER_ID = user.getUserId();
                         startActivity(intent);
                     }
 

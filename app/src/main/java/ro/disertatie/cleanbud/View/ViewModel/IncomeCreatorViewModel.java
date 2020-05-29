@@ -2,6 +2,7 @@ package ro.disertatie.cleanbud.View.ViewModel;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -28,6 +29,9 @@ public class IncomeCreatorViewModel {
     private ImageButton[] buttons ;
     private IncomeMethods incomeMethods;
     private int selectedCateg = -1;
+    private int incomeId = 0;
+    private boolean isUpdate = false;
+    private int budgetId = 0;
 //    private IncomeBottomSheetDialog.BottomSheetListener listener;
 
     String myFormat = "dd-MM-yyyy"; //In which you need put here
@@ -46,11 +50,26 @@ public class IncomeCreatorViewModel {
         income.setTitleIncome(bottomSheetBinding.etBsTitleIncome.getText().toString());
         income.setAmountIncome(Float.parseFloat(bottomSheetBinding.etBsAmountIncome.getText().toString()));
         income.setDateIncome(sdf.parse(bottomSheetBinding.tieDateIncome.getText().toString()));
-        income.setBudgetId(1);
+        income.setBudgetId(budgetId);
         income.setIncomeCategoryId(selectedCateg);
         return income;
     }
 
+    public void setAlphaForButtons(int pos){
+        for ( int i = 0 ;i < buttons.length;i++){
+            if(pos != -1){
+                if(pos == i){
+                    buttons[i].setAlpha(0.5f);
+                    selectedCateg = i;
+                }else{
+                    buttons[i].setAlpha(1f);
+                }
+            }else{
+                buttons[i].setAlpha(1f);
+            }
+
+        }
+    }
 
     public void selectCategory(){
         for(int i =0 ;i<buttons.length;i++){
@@ -59,11 +78,12 @@ public class IncomeCreatorViewModel {
                 @Override
                 public void onClick(View v) {
                     if(selectedCateg == pos){
-                        buttons[pos].setAlpha(1f);
                         selectedCateg = -1;
+                        setAlphaForButtons(selectedCateg);
                     }else{
-                        buttons[pos].setAlpha(0.5f);
                         selectedCateg = pos;
+                        setAlphaForButtons(selectedCateg);
+
                     }
 
 
@@ -91,15 +111,44 @@ public class IncomeCreatorViewModel {
         });
     }
 
+
+
+    public void fillIncome(Bundle bundle){
+       if(bundle != null) {
+           Income income = (Income) bundle.getSerializable(Constants.UPDATE_INCOME_KEY);
+           int idbdg = bundle.getInt(Constants.BUDGET_ID_KEY,-1);
+           if (income !=null){
+              isUpdate = true;
+              incomeId = income.getIncomeId();
+              setAlphaForButtons(income.getIncomeCategoryId());
+              bottomSheetBinding.etBsTitleIncome.setText(income.getTitleIncome());
+              bottomSheetBinding.etBsAmountIncome.setText(String.valueOf(income.getAmountIncome()));
+              bottomSheetBinding.tieDateIncome.setText(sdf.format(income.getDateIncome()));
+           }
+           if (idbdg != -1) {
+               budgetId = idbdg;
+           }
+       }
+    }
+
+
+
     private void sendResult() throws ParseException {
         Income income = createIncome();
         Intent intent = new Intent();
-        intent.putExtra(Constants.ADD_INCOME_KEY,income);
+        if(isUpdate){
+            income.setIncomeId(incomeId);
+            intent.putExtra(Constants.UPDATE_INCOME_KEY,income);
+
+        }else{
+            intent.putExtra(Constants.ADD_INCOME_KEY,income);
+
+        }
+
         incomeMethods.insertIncome(income);
         incomeBottomSheetDialog.getTargetFragment().onActivityResult(
                 incomeBottomSheetDialog.getTargetRequestCode(), Activity.RESULT_OK, intent);
         incomeBottomSheetDialog.dismiss();
-
     }
 
     private boolean isValid() {

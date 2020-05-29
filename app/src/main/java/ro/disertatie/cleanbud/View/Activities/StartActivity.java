@@ -1,21 +1,41 @@
 package ro.disertatie.cleanbud.View.Activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.R;
+import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
+import ro.disertatie.cleanbud.View.Database.DAO.EconomyBudgetDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.BudgetFragments;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Fragments.ReportsFragment;
+import ro.disertatie.cleanbud.View.Models.User;
+import ro.disertatie.cleanbud.View.Utils.Constants;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
 public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener, ReportsFragment.ReportInteractionListener {
 
@@ -29,14 +49,47 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     private static final int REQUEST_WRITE_PERMISSION = 20;
 
 
+    UserMethods userMethods;
+    UserDAO userDAO;
 
+    private EconomyBudgetMethods economyBudgetMethods;
+    private EconomyBudgetDAO economyBudgetDAO;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         ActivityCompat.requestPermissions(StartActivity.this, new
                 String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+        openDb();
 
+        if(getIntent().hasExtra(Constants.USER_KEY)){
+            User user = getIntent().getParcelableExtra(Constants.USER_KEY);
+            if(user!=null){
+                Single<User> userDb  = userMethods.verifyAvailableAccount(user.getEmail(),user.getPassword());
+                userDb.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleObserver<User>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public synchronized void onSuccess(User user) {
+                                StaticVar.USER_ID = user.getUserId();
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+                        });
+            }
+        }
 
         homeFragment = new HomeFragment();
         currencyFragment = new CurrencyFragment();
@@ -57,9 +110,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     public void onHomeButtonsPressed(int idBtn) {
         switch (idBtn){
             case 1 :{
-//                fm.beginTransaction().hide(active).show(reportsFragment).commit();
-//                active = reportsFragment;
-                startActivity(new Intent(getApplicationContext(),TestOcrActivity.class));
+
                 break;
             }
             case 2 : {
@@ -94,5 +145,12 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     public void onBackButtonPressedBudget(String fragment) {
         fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(fragment))).commit();
         active = fm.findFragmentByTag(fragment);
+    }
+
+    void openDb(){
+        userDAO = AppRoomDatabase.getInstance(getApplicationContext()).getUserDao();
+        userMethods = UserMethods.getInstance(userDAO);
+        economyBudgetDAO = AppRoomDatabase.getInstance(getApplicationContext()).economyBudgetDAO();
+        economyBudgetMethods = EconomyBudgetMethods.getInstance(economyBudgetDAO);
     }
 }

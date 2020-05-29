@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+android:gravity="center"
+
+        android:layout_height="match_parent">
+
+
+
+
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="300dp"
+
+        android:layout_gravity="center"
+            android:layout_height="500dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+
+                android:text="Budget Savings"
+                android:textAlignment="center"
+                android:background="#8F8FC9"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content"
+                android:text="Savings Extraction Percentage"
+                android:textStyle="bold"
+                android:paddingStart="12dp"
+                android:textAlignment="textStart"
+                android:textSize="14dp"
+                android:textColor="@color/black"/>
+
+            <NumberPicker
+                android:id="@+id/numberpicker_main_picker"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+              />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:text="Amount already saved"
+                android:textStyle="bold"
+                android:paddingStart="12dp"
+                android:textAlignment="textStart"
+                android:textSize="14dp"
+                android:textColor="@color/black"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_amount_saved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:clickable="true"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tie_amount_saved"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:hint="ex:200"
+                    android:inputType="number"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/add_saving_budget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="#8F8FC9"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="CREATE BUDGET"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

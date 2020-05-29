@@ -76,6 +76,7 @@ public class ExpenseCreatorActivity extends AppCompatActivity implements Expense
         expenseCreatorViewModel.addExpenseClick();
         expenseCreatorViewModel.addExpenseCategory();
         expenseCreatorViewModel.setBudgetId(getIntent().getIntExtra(Constants.BUDGET_ID_KEY,-1));
+        expenseCreatorViewModel.fillComponentsForEdit(getIntent());
     }
 
     private boolean isScan(){

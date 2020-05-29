@@ -19,7 +19,7 @@ public interface IncomeDAO {
     @Query("SELECT * FROM income INNER JOIN budget on income.budgetId = budget.budgetId where income.budgetId = :budgetId")
     Single<List<Income>> getAllIncomes(Integer budgetId);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertIncome(Income... incomes);
 
 }

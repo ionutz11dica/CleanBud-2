@@ -4,40 +4,43 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ro.disertatie.cleanbud.View.Activities.ExpenseCreatorActivity;
 import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
-import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.ExpenseDAO;
-import ro.disertatie.cleanbud.View.Database.DAOMethods.BudgetMethods;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.ExpenseMethods;
 import ro.disertatie.cleanbud.View.Fragments.Dialogs.ExpenseCategoryDialog;
 import ro.disertatie.cleanbud.View.Models.Expense;
+import ro.disertatie.cleanbud.View.Models.ExpenseCategory;
 import ro.disertatie.cleanbud.View.Uitility.Utility;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.databinding.ActivityExpenseCreatorBinding;
+
 
 public class ExpenseCreatorViewModel {
     private ExpenseCreatorActivity expenseCreatorActivity;
     private ActivityExpenseCreatorBinding activityExpenseCreatorBinding;
     private final Calendar myCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener date;
-    private String myFormat = "dd,MMM,yyyy"; //In which you need put here
+    private String myFormat = "dd,MM,yyyy"; //In which you need put here
     private SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
     private int budgetId;
     private int categId;
     private ExpenseMethods expenseMethods;
-
+    private boolean isUpdate = false;
+    private int expenseId = 0;
 
     public ExpenseCreatorViewModel(ExpenseCreatorActivity expenseCreatorActivity, ActivityExpenseCreatorBinding activityExpenseCreatorBinding) {
         this.expenseCreatorActivity = expenseCreatorActivity;
@@ -47,7 +50,22 @@ public class ExpenseCreatorViewModel {
     }
 
     public void parseDataFromScanner(String scannedData){
-        if (scannedData.matches("(?i).*DATA.*")){
+
+        String[] antrenament = new String[]{"TOTAL","DATA","SUBTOTAL","DATE"};
+        String[] rows = scannedData.split("\n");
+        String regex = "([0-9]{2}).([0-9]{2}).([0-9]{4})";
+
+        for(int i = 0;i <rows.length;i++){
+            Matcher matcher = Pattern.compile(regex).matcher(rows[i]);
+            for(int j = 0 ;j <antrenament.length;j++){
+
+            }
+            if(matcher.find()){
+//                Toast.makeText(expenseCreatorActivity.getApplicationContext(),rows[i].replace(),Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (scannedData.matches("(?i).*TOTAL.*")){
             Toast.makeText(expenseCreatorActivity.getApplicationContext(),"Merge",Toast.LENGTH_LONG).show();
         }
     }
@@ -146,11 +164,21 @@ public class ExpenseCreatorViewModel {
                     try {
                        Expense expense = createExpense();
                        if (expense !=null){
-                            expenseMethods.insertExpense(expense);
-                           Intent intent = expenseCreatorActivity.getIntent();
-                           intent.putExtra(Constants.ADD_EXPENSE_KEY,expense);
-                            expenseCreatorActivity.setResult(Activity.RESULT_OK,intent);
-                            expenseCreatorActivity.finish();
+                           if(isUpdate){
+                               expense.setExpenseId(expenseId);
+                               expenseMethods.insertExpense(expense);
+                               Intent intent = expenseCreatorActivity.getIntent();
+                               intent.putExtra(Constants.UPDATE_EXPENSE_KEY,expense);
+                               expenseCreatorActivity.setResult(Activity.RESULT_OK,intent);
+                               expenseCreatorActivity.finish();
+                           }else{
+                               expenseMethods.insertExpense(expense);
+                               Intent intent = expenseCreatorActivity.getIntent();
+                               intent.putExtra(Constants.ADD_EXPENSE_KEY,expense);
+                               expenseCreatorActivity.setResult(Activity.RESULT_OK,intent);
+                               expenseCreatorActivity.finish();
+                           }
+
                        }else{
 
                        }
@@ -173,7 +201,7 @@ public class ExpenseCreatorViewModel {
         expense.setTitleExpense(activityExpenseCreatorBinding.etTitleExpense.getText().toString());
 
         expense.setBudgetId(budgetId);
-        if(activityExpenseCreatorBinding.tvDateExpense.getText().toString().equals("dd,MMM,yyyy")){
+        if(activityExpenseCreatorBinding.tvDateExpense.getText().toString().equals("dd,MM,yyyy")){
             expense.setExpenseDate(new Date());
         }else{
             expense.setExpenseDate(sdf.parse(activityExpenseCreatorBinding.tvDateExpense.getText().toString()));
@@ -183,6 +211,26 @@ public class ExpenseCreatorViewModel {
         expense.setExpenseCategoryId(categId);
         expense.setDescription(activityExpenseCreatorBinding.etExpenseDescription.getText().toString());
         return expense;
+    }
+
+
+    public void fillComponentsForEdit(Intent intent){
+        if(intent.hasExtra(Constants.UPDATE_EXPENSE_KEY)){
+            isUpdate = true;
+            Expense expense = (Expense) intent.getSerializableExtra(Constants.UPDATE_EXPENSE_KEY);
+
+            DateFormat df = new SimpleDateFormat("dd,MM,yyyy");
+            if(expense != null){
+                expenseId = expense.getExpenseId();
+                activityExpenseCreatorBinding.etTitleExpense.setText(expense.getTitleExpense());
+                for(int i =0 ;i < ExpenseCategory.populateExpenseTypes().length;i++){
+                    activityExpenseCreatorBinding.tvExpenseCategory.setText(ExpenseCategory.populateExpenseTypes()[i].getTitleExpCategory());
+                }
+                activityExpenseCreatorBinding.etSumExpense.setText(String.valueOf(expense.getAmountExpense()));
+                activityExpenseCreatorBinding.etExpenseDescription.setText(expense.getDescription());
+                activityExpenseCreatorBinding.tvDateExpense.setText(df.format(expense.getExpenseDate()));
+            }
+        }
     }
 
     private void openDB(){

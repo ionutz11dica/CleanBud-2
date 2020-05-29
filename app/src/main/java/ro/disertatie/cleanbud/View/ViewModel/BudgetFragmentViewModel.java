@@ -10,11 +10,13 @@ import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -81,6 +83,8 @@ public class BudgetFragmentViewModel {
     private Bitmap scaledBmp;
     private  RecordBudgetAdapter recordBudgetAdapter;
 
+    private int selectedPos = 0;
+
 
     private ArrayList<RecordProtocol> protocols = new ArrayList<>();
     private CustomPowerMenu customPowerMenu;
@@ -106,9 +110,7 @@ public class BudgetFragmentViewModel {
         if (budgets.isEmpty()){
             initToolbar();
 
-
         }else{
-
             initBudgetsView();
             changeNextBudget();
         }
@@ -144,14 +146,16 @@ public class BudgetFragmentViewModel {
         }
 
 
-         recordBudgetAdapter = new RecordBudgetAdapter(budgetFragments.getActivity(),protocols);
+            recordBudgetAdapter = new RecordBudgetAdapter(budgetFragments.getActivity(), protocols);
 
-        budgetFragmentBinding.layoutBudgetList.recordLv.post(new Runnable() {
-            @Override
-            public void run() {
-                budgetFragmentBinding.layoutBudgetList.recordLv.setAdapter(recordBudgetAdapter);
-            }
-        });
+
+            budgetFragmentBinding.layoutBudgetList.recordLv.post(new Runnable() {
+                @Override
+                public void run() {
+                    budgetFragmentBinding.layoutBudgetList.recordLv.setAdapter(recordBudgetAdapter);
+                }
+            });
+
     }
 
 
@@ -207,7 +211,7 @@ public class BudgetFragmentViewModel {
 
                     @Override
                     public void onSuccess(List<Income> incomes) {
-                       initRecords(null,incomes);
+                        initRecords(null,incomes);
                         progressDialogClass.dismissDialog();
                     }
 
@@ -252,12 +256,13 @@ public class BudgetFragmentViewModel {
         complexDetailsBinding.leftChangeArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(cursorBudgets != 0){
                     cursorBudgets -= 1;
                     changeNextBudget();
-                }else{
-                    cursorBudgets = budgetsList.size() - 1;
-                    changeNextBudget();
+
+                    getBudgets();
+
                 }
 
             }
@@ -286,6 +291,9 @@ public class BudgetFragmentViewModel {
             @Override
             public void onClick(View v) {
                 DialogFragment bottomSheetDialog = new IncomeBottomSheetDialog();
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constants.BUDGET_ID_KEY,budgetsList.get(cursorBudgets).getBudgetId());
+                bottomSheetDialog.setArguments(bundle);
                 bottomSheetDialog.setTargetFragment(budgetFragments,Constants.REQUEST_INCOME_CREATOR);
                 bottomSheetDialog.show(budgetFragments.getActivity().getSupportFragmentManager(),"incomecreator");
 //                bottomSheetDialog.show();
@@ -299,8 +307,10 @@ public class BudgetFragmentViewModel {
             @Override
             public void onClick(View v) {
                 if(budgetsList.size() != 1 && cursorBudgets != budgetsList.size() - 1){
+
                     cursorBudgets += 1;
                     changeNextBudget();
+                    getBudgets();
                 }
             }
         });
@@ -340,9 +350,42 @@ public class BudgetFragmentViewModel {
 
             budget.setCurrentAmount(budget.getCurrentAmount() - expense.getAmountExpense());
 
+
+
+
         }else{
             Income income = (Income) recordProtocol;
             budget.setCurrentAmount(budget.getCurrentAmount() + income.getAmountIncome());
+        }
+        budgetMethods.updateBudget(budget);
+
+    }
+
+
+    public void updateBudgetAfterEdit(RecordProtocol recordProtocol){
+        Budget budget = budgetsList.get(cursorBudgets);
+
+        if(recordProtocol instanceof Expense) {
+            Expense oldExp = (Expense) protocols.get(selectedPos);
+            float oldExpAmount = oldExp.getAmountExpense();
+            Expense expense = (Expense) recordProtocol;
+            float newExpAmount = expense.getAmountExpense();
+
+            float diff = oldExpAmount - newExpAmount;
+
+                budget.setCurrentAmount(budget.getCurrentAmount() + diff);
+
+        }else{
+
+            Income oldExp = (Income) protocols.get(selectedPos);
+            float oldExpAmount = oldExp.getAmountIncome();
+            Income expense = (Income) recordProtocol;
+            float newExpAmount = expense.getAmountIncome();
+
+            float diff = newExpAmount - oldExpAmount;
+
+            budget.setCurrentAmount(budget.getCurrentAmount() + diff);
+
         }
         budgetMethods.updateBudget(budget);
 
@@ -378,6 +421,7 @@ public class BudgetFragmentViewModel {
                                    progressDialogClass.dismissDialog();
                                    getBudgetsExpenses(budgets.get(cursorBudgets).getBudgetId());
 
+
                                    initViews(budgets);
 
                                }
@@ -390,9 +434,36 @@ public class BudgetFragmentViewModel {
                     );
     }
 
+
+    public void lvTransactionClick(){
+        budgetFragmentBinding.layoutBudgetList.recordLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedPos = position;
+                if(protocols.get(position) instanceof Expense) {
+                    Expense expense = (Expense) protocols.get(position);
+                    Intent intent = new Intent(budgetFragments.getContext(),ExpenseCreatorActivity.class);
+                    intent.putExtra(Constants.UPDATE_EXPENSE_KEY,expense );
+                    intent.putExtra(Constants.IS_SCAN_KEY,false);
+                    intent.putExtra(Constants.BUDGET_ID_KEY,budgetsList.get(cursorBudgets).getBudgetId());
+
+                    budgetFragments.startActivityForResult(intent,Constants.REQUEST_EXPENSE_UPDATE);
+                }else {
+                    Income income = (Income) protocols.get(position);
+                    IncomeBottomSheetDialog bottomSheetDialog = new IncomeBottomSheetDialog();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(Constants.BUDGET_ID_KEY,budgetsList.get(cursorBudgets).getBudgetId());
+                    bundle.putSerializable(Constants.UPDATE_INCOME_KEY,income);
+                    bottomSheetDialog.setArguments(bundle);
+                    bottomSheetDialog.setTargetFragment(budgetFragments,Constants.REQUEST_INCOME_UPDATE);
+                    bottomSheetDialog.show(budgetFragments.getActivity().getSupportFragmentManager(),"incomecreator");
+                }
+            }
+        });
+    }
+
     public void setComplexDetails(){
         complexDetailsBinding = DataBindingUtil.bind(budgetFragmentBinding.layoutBudgetList.getRoot());
-
     }
 
     private void createMenu(){
@@ -415,7 +486,7 @@ public class BudgetFragmentViewModel {
                         budgetFragments.startActivityForResult(intent,Constants.REQUEST_EXPENSE_CREATOR);
                         break;
 
-                        //fa ceva aici
+                    //fa ceva aici
                     case R.id.scan_menu_expense :
                         intent.putExtra(Constants.IS_SCAN_KEY,true);
 
@@ -430,6 +501,8 @@ public class BudgetFragmentViewModel {
 
         popup.show(); //showing popup menu
     }
+
+
 
 
     public void createPDF(){
@@ -598,8 +671,6 @@ public class BudgetFragmentViewModel {
         }
         pdfDocument.close();
     }
-
-
 
     private void openDB(){
         BudgetDAO budgetDAO = AppRoomDatabase.getInstance(budgetFragments.getContext().getApplicationContext()).getBudgetDao();

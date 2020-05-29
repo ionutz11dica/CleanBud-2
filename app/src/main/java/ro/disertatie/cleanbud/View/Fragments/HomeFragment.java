@@ -1,10 +1,14 @@
 package ro.disertatie.cleanbud.View.Fragments;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +20,19 @@ import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.R;
+import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
+import ro.disertatie.cleanbud.View.Database.DAO.EconomyBudgetDAO;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
+import ro.disertatie.cleanbud.View.Fragments.Dialogs.CreateEconomyBudgetDialog;
+import ro.disertatie.cleanbud.View.Utils.Constants;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
 public class HomeFragment extends Fragment {
 
@@ -32,8 +48,14 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.cv_currency)
     CardView cvCurrency;
 
+    @BindView(R.id.cv_myTrips)
+    CardView cv_myTrips;
+
     @BindView(R.id.home_toolbar)
     Toolbar toolbar;
+
+    private EconomyBudgetMethods economyBudgetMethods;
+    private EconomyBudgetDAO economyBudgetDAO;
 
     @Nullable
     @Override
@@ -42,8 +64,10 @@ public class HomeFragment extends Fragment {
         ButterKnife.bind(this,view);
         toolbar.setTitle("Home");
         toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
+        openDb();
         currencyClick();
         budgetsClick();
+        tripsClick();
         return view;
     }
 
@@ -67,6 +91,62 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void tripsClick(){
+        cv_myTrips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Single<Integer> single = economyBudgetMethods.checkIfEconomyBudgetExists(StaticVar.USER_ID);
+                single.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleObserver<Integer>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(Integer integer) {
+                                if(integer == 0){
+                                    Toast.makeText(getContext(),"Nu exista in bd",Toast.LENGTH_LONG).show();
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                                            builder1.setTitle("Budget Savings");
+                                            builder1.setMessage("Hei!\nWe saw you don't have a budget savings, do you want to create one right now?");
+                                            builder1.setCancelable(false);
+                                            builder1.setPositiveButton(
+                                                    "Yes",
+                                                    (dialog, id) -> {
+                                                        CreateEconomyBudgetDialog createEconomyBudgetDialog = new CreateEconomyBudgetDialog();
+                                                        createEconomyBudgetDialog.setTargetFragment(HomeFragment.this,Constants.REQUEST_CREATE_SAVING_BUDGET);
+                                                        createEconomyBudgetDialog.show(getActivity().getSupportFragmentManager(),"budgSavings");
+
+                                                    });
+
+                                            builder1.setNegativeButton(
+                                                    "No",
+                                                    (dialog, id) -> dialog.cancel());
+
+                                            AlertDialog alert11 = builder1.create();
+                                            alert11.show();
+                                        }
+                                    });
+
+                                }else{
+
+                                }
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+                        });
+            }
+        });
+    }
+
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
@@ -79,6 +159,16 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK && data != null){
+            if (requestCode == Constants.REQUEST_CREATE_SAVING_BUDGET){
+                Toast.makeText(getContext(),"S-a creat",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         listener = null;
@@ -86,5 +176,10 @@ public class HomeFragment extends Fragment {
 
     public interface OnHomeFragmentInteractionListener{
         void onHomeButtonsPressed(int idBtn);
+    }
+
+    void openDb(){
+        economyBudgetDAO = AppRoomDatabase.getInstance(getContext()).economyBudgetDAO();
+        economyBudgetMethods = EconomyBudgetMethods.getInstance(economyBudgetDAO);
     }
 }

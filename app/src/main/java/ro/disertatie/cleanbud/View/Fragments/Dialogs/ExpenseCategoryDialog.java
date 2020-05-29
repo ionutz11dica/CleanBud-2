@@ -17,11 +17,8 @@ import ro.disertatie.cleanbud.View.Adapter.ExpensesCategoryAdapter;
 import ro.disertatie.cleanbud.View.Models.ExpenseCategory;
 
 public class ExpenseCategoryDialog extends DialogFragment {
-    GridView gridView;
-    Bundle bundle;
-    Integer currentColor;
-    Boolean status;
-    OnCompleteListenerColor listener;
+    private GridView gridView;
+    private OnCompleteListenerColor listener;
 
     @Nullable
     @Override

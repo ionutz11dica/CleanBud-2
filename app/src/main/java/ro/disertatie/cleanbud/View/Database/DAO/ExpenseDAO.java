@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.RoomWarnings;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -20,8 +21,9 @@ public interface ExpenseDAO {
     @Query("SELECT * FROM expense INNER JOIN budget on expense.budgetId = budget.budgetId where expense.budgetId = :budgetId")
     Single<List<Expense>> getAllBudgetExpenses(Integer budgetId);
 
+    @Update
+    void updateExpense(Expense... expenses);
 
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertExpense(Expense... expenses);
 }

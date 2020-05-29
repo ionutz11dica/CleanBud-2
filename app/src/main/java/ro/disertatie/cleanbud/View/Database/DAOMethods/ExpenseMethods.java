@@ -44,6 +44,31 @@ public class ExpenseMethods implements ExpenseDAO {
     }
 
     @Override
+    public void updateExpense(Expense... expenses) {
+        Completable.fromAction(() -> expenseDAO.updateExpense(expenses))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("Budget","Success");
+                        Timber.d("Successful");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Budget",e.getMessage());
+                        Timber.d(e);
+                    }
+                });
+    }
+
+    @Override
     public void insertExpense(Expense... expenses) {
         Completable.fromAction(() -> expenseDAO.insertExpense(expenses))
                 .observeOn(AndroidSchedulers.mainThread())

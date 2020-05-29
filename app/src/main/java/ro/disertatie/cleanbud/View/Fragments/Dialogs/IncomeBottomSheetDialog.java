@@ -16,17 +16,18 @@ import ro.disertatie.cleanbud.View.ViewModel.IncomeCreatorViewModel;
 import ro.disertatie.cleanbud.databinding.BottomSheetBinding;
 
 public class IncomeBottomSheetDialog extends BottomSheetDialogFragment  {
-    private IncomeCreatorViewModel incomeCreatorViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        View v = inflater.inflate(R.layout.bottom_sheet,container,false);
         BottomSheetBinding budgetFragmentBinding = DataBindingUtil.inflate(inflater,R.layout.bottom_sheet,container,false);
-        incomeCreatorViewModel = new IncomeCreatorViewModel(this,budgetFragmentBinding);
+        IncomeCreatorViewModel incomeCreatorViewModel = new IncomeCreatorViewModel(this, budgetFragmentBinding);
 
         incomeCreatorViewModel.selectCategory();
         incomeCreatorViewModel.addIncomeDialog();
+
+        incomeCreatorViewModel.fillIncome(getArguments());
 
         return budgetFragmentBinding.getRoot();
 

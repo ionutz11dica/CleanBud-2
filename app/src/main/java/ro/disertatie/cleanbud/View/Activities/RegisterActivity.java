@@ -24,6 +24,7 @@ import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Models.User;
+import ro.disertatie.cleanbud.View.Utils.Constants;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -61,7 +62,10 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setPassword(etPassword.getText().toString());
 
                     userMethods.insertUser(user);
-                    startActivity(new Intent(getApplicationContext(), StartActivity.class));
+                    Intent intent = new Intent(getApplicationContext(), StartActivity.class);
+                    intent.putExtra(Constants.USER_KEY,user);
+
+                    startActivity(intent);
                 }else{
                     Snackbar.make(view, "Please check your inputs", Snackbar.LENGTH_LONG)
                             .show();

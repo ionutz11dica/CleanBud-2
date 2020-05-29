@@ -40,6 +40,7 @@ import ro.disertatie.cleanbud.View.Models.BudgetType;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Uitility.Utility;
 import ro.disertatie.cleanbud.View.Utils.SpinnerClass;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.databinding.ActivityBudgetCreatorBinding;
 
 import static ro.disertatie.cleanbud.View.Utils.Constants.ADD_BUDGET_KEY;
@@ -137,7 +138,7 @@ public class BudgetCreatorViewModel {
                     budget.setBudgetDescription(activityBudgetCreatorBinding.etBudgetDescription.getText().toString());
                     budget.setBudgetTypeId(budgetTypes.get(budgetCreatorActivity.selectedBudgetType).getBudgetTypeId());
                     budget.setDate(Calendar.getInstance().getTime());
-                    budget.setUserId(1);
+                    budget.setUserId(StaticVar.USER_ID);
                     budgetMethods.insertBudget(budget);
                     intent.putExtra(ADD_BUDGET_KEY,budget);
                     budgetCreatorActivity.setResult(Activity.RESULT_OK,intent);

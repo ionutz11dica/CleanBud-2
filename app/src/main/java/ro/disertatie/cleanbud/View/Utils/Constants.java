@@ -17,4 +17,11 @@ public interface Constants {
     String ADD_INCOME_KEY = "addIncomeKey";
 
     String CURRENT_BUDGET_KEY = "currentbudgetKey";
+
+    String UPDATE_EXPENSE_KEY = "updateExpensekey";
+    String UPDATE_INCOME_KEY = "updateIncomekey";
+    int REQUEST_INCOME_UPDATE = 111;
+    int REQUEST_EXPENSE_UPDATE = 112;
+    String USER_KEY = "userkey";
+    int REQUEST_CREATE_SAVING_BUDGET = 199;
 }

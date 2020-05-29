@@ -33,6 +33,8 @@ import static android.app.Activity.RESULT_OK;
 import static ro.disertatie.cleanbud.View.Utils.Constants.ADD_BUDGET_KEY;
 import static ro.disertatie.cleanbud.View.Utils.Constants.ADD_EXPENSE_KEY;
 import static ro.disertatie.cleanbud.View.Utils.Constants.ADD_INCOME_KEY;
+import static ro.disertatie.cleanbud.View.Utils.Constants.UPDATE_EXPENSE_KEY;
+import static ro.disertatie.cleanbud.View.Utils.Constants.UPDATE_INCOME_KEY;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class BudgetFragments extends Fragment implements Toolbar.OnMenuItemClickListener {
@@ -53,6 +55,7 @@ public class BudgetFragments extends Fragment implements Toolbar.OnMenuItemClick
         budgetFragmentViewModel.rightArrowClick();
         budgetFragmentViewModel.expenseClick();
         budgetFragmentViewModel.incomeClick();
+        budgetFragmentViewModel.lvTransactionClick();
         budgetFragmentBinding.layoutBudgetList.budgetToolbar.setOnMenuItemClickListener(this);
         budgetFragmentBinding.layoutBudgetList.budgetToolbar.inflateMenu(R.menu.menu_budget_creator);
 
@@ -81,6 +84,19 @@ public class BudgetFragments extends Fragment implements Toolbar.OnMenuItemClick
                 Income income = (Income) data.getSerializableExtra(ADD_INCOME_KEY);
                 if(income!=null){
                     budgetFragmentViewModel.updateBudget(income);
+                    budgetFragmentViewModel.getBudgets();
+                }
+            }else if(requestCode == Constants.REQUEST_INCOME_UPDATE){
+                Income expense = (Income) data.getSerializableExtra(UPDATE_INCOME_KEY);
+                if(expense!=null){
+                    budgetFragmentViewModel.updateBudgetAfterEdit(expense);
+                    budgetFragmentViewModel.getBudgets();
+                }
+
+            }else if(requestCode == Constants.REQUEST_EXPENSE_UPDATE){
+                Expense expense = (Expense) data.getSerializableExtra(UPDATE_EXPENSE_KEY);
+                if(expense!=null){
+                    budgetFragmentViewModel.updateBudgetAfterEdit(expense);
                     budgetFragmentViewModel.getBudgets();
                 }
             }
