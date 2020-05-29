@@ -51,23 +51,31 @@ public class ExpenseCreatorViewModel {
 
     public void parseDataFromScanner(String scannedData){
 
-        String[] antrenament = new String[]{"TOTAL","DATA","SUBTOTAL","DATE"};
+        String[] training = new String[]{"TOTAL","DATA","SUBTOTAL","DATE", "TOTAL LEI","NUMERAR","NUMERAR LEI"};
         String[] rows = scannedData.split("\n");
-        String regex = "([0-9]{2}).([0-9]{2}).([0-9]{4})";
-
+        String regex = "([0-9]{2})-([0-9]{2})-([0-9]{4})"; //for dates format
+        Pattern p = Pattern.compile("[-]?[0-9]*\\.?,?[0-9]+"); // for float numbers
+        Matcher matcher;
         for(int i = 0;i <rows.length;i++){
-            Matcher matcher = Pattern.compile(regex).matcher(rows[i]);
-            for(int j = 0 ;j <antrenament.length;j++){
+            for(int j = 0 ;j <training.length;j++){
 
             }
-            if(matcher.find()){
+            String[] splits = rows[0].split("\n");
+
+            for(int k=0;k<splits.length;k++){
+                matcher = Pattern.compile(regex).matcher(splits[k]);
+                if(matcher.find()){
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(matcher.group(1)).append("-");
+                    sb.append(matcher.group(2)).append("-");
+                    sb.append(matcher.group(3));
+                    activityExpenseCreatorBinding.tvDateExpense.setText(sb.toString());
 //                Toast.makeText(expenseCreatorActivity.getApplicationContext(),rows[i].replace(),Toast.LENGTH_LONG).show();
+                }
             }
+
         }
 
-        if (scannedData.matches("(?i).*TOTAL.*")){
-            Toast.makeText(expenseCreatorActivity.getApplicationContext(),"Merge",Toast.LENGTH_LONG).show();
-        }
     }
 
 
