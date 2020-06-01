@@ -5,7 +5,7 @@
 <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="#dddddd"
+    android:background="#f0f0f0"
     android:layout_height="match_parent">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/trip_toolbar"
@@ -30,6 +30,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_saving_total"
             android:layout_width="wrap_content"
             android:padding="10dp"
             android:textAlignment="center"
@@ -58,8 +59,8 @@
         android:background="@drawable/bordered_background"
         android:layout_margin="12dp"
         >
-        <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/editTextEmail"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_city"
             style="@style/modifiedEditText"
             android:inputType="textEmailAddress"
             android:layout_gravity="center"
@@ -82,7 +83,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-
+            android:id="@+id/ll_arrive"
             android:layout_width="0dp"
             android:layout_weight="0.49"
             android:layout_marginTop="10dp"
@@ -91,6 +92,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_arrive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -117,6 +119,7 @@
             />
 
         <LinearLayout
+            android:id="@+id/ll_depart"
             android:layout_width="0dp"
             android:layout_weight="0.49"
             android:orientation="vertical"
@@ -125,6 +128,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_depart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -154,7 +158,6 @@
         android:orientation="horizontal">
 
         <LinearLayout
-
             android:layout_width="0dp"
             android:layout_weight="0.22"
             android:layout_gravity="center"
@@ -164,10 +167,12 @@
             android:layout_height="wrap_content">
 
           <ImageButton
+              android:id="@+id/ll_minus_guest"
+
               android:background="@null"
               android:src="@drawable/ic_remove"
               android:layout_gravity="center"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="match_parent"
               />
 
@@ -193,13 +198,14 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_no_guest"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textStyle="bold"
+                android:text="1 guests"
 
                 android:textSize="18dp"
-                android:text="2 guests" />
+                android:textStyle="bold" />
 
 
 
@@ -225,10 +231,11 @@
             android:layout_height="wrap_content">
 
             <ImageButton
+                android:id="@+id/ll_plus_guest"
                 android:background="@null"
                 android:src="@drawable/ic_add_purple"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
 
@@ -247,7 +254,6 @@
         android:orientation="horizontal">
 
         <LinearLayout
-
             android:layout_width="0dp"
             android:layout_weight="0.22"
             android:layout_gravity="center"
@@ -257,10 +263,12 @@
             android:layout_height="wrap_content">
 
             <ImageButton
+                android:id="@+id/ll_minus_rooms"
+
                 android:background="@null"
                 android:src="@drawable/ic_remove"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
 
@@ -286,13 +294,15 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_no_rooms"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textStyle="bold"
 
                 android:textSize="18dp"
-                android:text="2 rooms" />
+                android:text="1 rooms" />
 
 
 
@@ -308,7 +318,6 @@
             />
 
         <LinearLayout
-
             android:layout_width="0dp"
             android:layout_weight="0.22"
             android:layout_gravity="center"
@@ -318,10 +327,12 @@
             android:layout_height="wrap_content">
 
             <ImageButton
+                android:id="@+id/ll_plus_rooms"
+
                 android:background="@null"
                 android:src="@drawable/ic_add_purple"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 />
 
@@ -336,19 +347,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
+app:bar_color="#c060a1"
         android:elevation="2dp"
         app:duration="@android:integer/config_mediumAnimTime"
         app:size="small"
         tools:targetApi="lollipop" />
 
     <Button
+
         android:id="@+id/btn_apply_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:layout_gravity="bottom"
         android:layout_marginTop="30dp"
-        android:background="#8F8FC9"
+        android:background="#80633a82"
         android:textAllCaps="false"
         android:foreground="?attr/selectableItemBackground"
         android:text="Apply filters"

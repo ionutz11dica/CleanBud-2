@@ -37,6 +37,11 @@ public class EconomyBudgetMethods implements EconomyBudgetDAO {
     }
 
     @Override
+    public Single<Float> getSavingsBudget(int userId) {
+        return economyBudgetDAO.getSavingsBudget(userId);
+    }
+
+    @Override
     public void insertEconomyBudget(EconomyBudget... economyBudgets) {
         Completable.fromAction(() -> economyBudgetDAO.insertEconomyBudget(economyBudgets))
                 .observeOn(AndroidSchedulers.mainThread())

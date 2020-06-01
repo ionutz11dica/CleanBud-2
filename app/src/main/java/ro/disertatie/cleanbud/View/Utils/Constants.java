@@ -24,4 +24,5 @@ public interface Constants {
     int REQUEST_EXPENSE_UPDATE = 112;
     String USER_KEY = "userkey";
     int REQUEST_CREATE_SAVING_BUDGET = 199;
+    String HOTELS_LIST_KEY = "hotelListKey";
 }

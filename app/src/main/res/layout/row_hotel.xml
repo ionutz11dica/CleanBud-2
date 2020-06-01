@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_margin="12dp"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imv_hotel"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+        <TextView
+            android:paddingTop="5dp"
+            android:id="@+id/tv_hotel_name"
+            android:text="Hotel name"
+            android:paddingStart="12dp"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="#633a82"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:paddingTop="7dp"
+            android:paddingBottom="10dp"
+            android:text="$79 / night"
+            android:textSize="15dp"
+            android:paddingStart="12dp"
+            android:textStyle="bold"
+            android:textColor="#80633a82"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:id="@+id/btn_view_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:textAlignment="textEnd"
+            android:background="@null"
+            android:paddingEnd="16dp"
+            android:text="View Details"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textSize="16dp"
+            android:textColor="#c060a1"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import io.reactivex.Single;
@@ -32,19 +33,23 @@ import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.BudgetFragments;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
+import ro.disertatie.cleanbud.View.Fragments.HotelsFragment;
 import ro.disertatie.cleanbud.View.Fragments.ReportsFragment;
 import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
+import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
-public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener, ReportsFragment.ReportInteractionListener {
+public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener,
+        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener {
 
     Fragment homeFragment;
     Fragment currencyFragment;
     Fragment budgetsFragment;
     Fragment reportsFragment;
     Fragment tripsFilterFragment;
+    Fragment hotelsFragment;
 
     FragmentManager fm ;
     Fragment active;
@@ -98,7 +103,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         budgetsFragment = new BudgetFragments();
         reportsFragment = new ReportsFragment();
         tripsFilterFragment = new TripFilterFragment();
-
+        hotelsFragment = new HotelsFragment();
 
         fm = getSupportFragmentManager();
 
@@ -109,6 +114,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         fm.beginTransaction().add(R.id.fragment_container,currencyFragment,"currencyF").hide(currencyFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,reportsFragment,"reportsF").hide(reportsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,tripsFilterFragment,"tripFilterF").hide(tripsFilterFragment).commit();
+        fm.beginTransaction().add(R.id.fragment_container,hotelsFragment,"hotelsF").hide(hotelsFragment).commit();
+
     }
 
     @Override
@@ -159,5 +166,27 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         userMethods = UserMethods.getInstance(userDAO);
         economyBudgetDAO = AppRoomDatabase.getInstance(getApplicationContext()).economyBudgetDAO();
         economyBudgetMethods = EconomyBudgetMethods.getInstance(economyBudgetDAO);
+    }
+
+    @Override
+    public void onBackButtonPressedTripFilter(String string) {
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
+    }
+
+    @Override
+    public void passDataToHotels(ArrayList<ResultObjectHotel> list,String fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.HOTELS_LIST_KEY,list);
+        fm.findFragmentByTag(fragment).setArguments(bundle);
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(fragment))).commit();
+
+        active = fm.findFragmentByTag(fragment);
+    }
+
+    @Override
+    public void onBackButtonPressedHotelsListener(String string) {
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:background="#f0f0f0"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/hotels_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Hotels"
+            app:titleTextColor="@color/black"
+            android:layout_marginTop="-1dp"
+            android:background="@color/white"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            />
+
+        <ListView
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="14dp"
+            android:id="@+id/hotels_lv"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="14.0sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+
+</layout>

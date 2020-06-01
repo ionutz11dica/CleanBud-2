@@ -12,7 +12,7 @@ public class APIClient {
     private static final int DEFAULT_TIMEOUT = 15;
     private static Retrofit retrofit = null;
     private static Retrofit retrofit2 = null;
-
+    private static Retrofit retrofit3 = null;
 
 
     public static synchronized Retrofit getRetrofit() {
@@ -42,4 +42,20 @@ public class APIClient {
         return retrofit2;
     }
 
+
+    public static synchronized Retrofit getRetrofit3() {
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .build();
+        if (retrofit3 == null) {
+            retrofit3 = new Retrofit.Builder()
+                    .baseUrl("https://tripadvisor1.p.rapidapi.com/")
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit3;
+    }
 }
