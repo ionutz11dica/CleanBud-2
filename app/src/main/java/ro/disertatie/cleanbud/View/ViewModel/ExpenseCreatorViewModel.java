@@ -57,9 +57,7 @@ public class ExpenseCreatorViewModel {
         Pattern p = Pattern.compile("[-]?[0-9]*\\.?,?[0-9]+"); // for float numbers
         Matcher matcher;
         for(int i = 0;i <rows.length;i++){
-            for(int j = 0 ;j <training.length;j++){
 
-            }
             String[] splits = rows[0].split("\n");
 
             for(int k=0;k<splits.length;k++){
@@ -70,7 +68,6 @@ public class ExpenseCreatorViewModel {
                     sb.append(matcher.group(2)).append("-");
                     sb.append(matcher.group(3));
                     activityExpenseCreatorBinding.tvDateExpense.setText(sb.toString());
-//                Toast.makeText(expenseCreatorActivity.getApplicationContext(),rows[i].replace(),Toast.LENGTH_LONG).show();
                 }
             }
 

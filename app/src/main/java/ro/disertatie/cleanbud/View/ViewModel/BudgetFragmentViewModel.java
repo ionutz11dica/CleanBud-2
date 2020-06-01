@@ -537,8 +537,8 @@ public class BudgetFragmentViewModel {
         paint.setTextAlign(Paint.Align.LEFT);
         paint.setColor(Color.BLACK);
         paint.setTextSize(35f);
-        canvas.drawText("User Name: " + "Ionut",20,590,paint);
-        canvas.drawText("User Email: " + "test@yahoo.com",20,640,paint);
+        canvas.drawText("User Name: " + "Madalina",20,590,paint);
+        canvas.drawText("User Email: " + "madalina@yahoo.com",20,640,paint);
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         canvas.drawText("Date C.: "+ dateFormat.format(date),pageWidth-330,640,paint);

@@ -28,7 +28,7 @@
         android:weightSum="1"
         android:padding="15dp"
 
-        android:layout_height="160dp">
+        android:layout_height="130dp">
 
 
         <TextView

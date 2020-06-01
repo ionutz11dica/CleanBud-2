@@ -33,6 +33,7 @@ import ro.disertatie.cleanbud.View.Fragments.BudgetFragments;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Fragments.ReportsFragment;
+import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
@@ -43,6 +44,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     Fragment currencyFragment;
     Fragment budgetsFragment;
     Fragment reportsFragment;
+    Fragment tripsFilterFragment;
 
     FragmentManager fm ;
     Fragment active;
@@ -95,6 +97,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         currencyFragment = new CurrencyFragment();
         budgetsFragment = new BudgetFragments();
         reportsFragment = new ReportsFragment();
+        tripsFilterFragment = new TripFilterFragment();
+
 
         fm = getSupportFragmentManager();
 
@@ -104,13 +108,15 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         fm.beginTransaction().add(R.id.fragment_container,budgetsFragment,"budgetF").hide(budgetsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,currencyFragment,"currencyF").hide(currencyFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,reportsFragment,"reportsF").hide(reportsFragment).commit();
+        fm.beginTransaction().add(R.id.fragment_container,tripsFilterFragment,"tripFilterF").hide(tripsFilterFragment).commit();
     }
 
     @Override
     public void onHomeButtonsPressed(int idBtn) {
         switch (idBtn){
             case 1 :{
-
+                fm.beginTransaction().hide(active).show(tripsFilterFragment).commit();
+                active = tripsFilterFragment;
                 break;
             }
             case 2 : {
@@ -124,6 +130,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
                 active = currencyFragment;
                 break;
             }
+
 
         }
     }

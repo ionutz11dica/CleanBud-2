@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
                                     });
 
                                 }else{
-
+                                    listener.onHomeButtonsPressed(1);
                                 }
                             }
 
