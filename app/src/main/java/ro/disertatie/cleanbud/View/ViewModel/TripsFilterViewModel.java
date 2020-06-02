@@ -121,9 +121,7 @@ public class TripsFilterViewModel {
 
                 @Override
                 public void onSuccess(Float aFloat) {
-                    savingAmount = aFloat;
-                    initProgressPrice(Math.round(aFloat*0.2f),Math.round(aFloat));
-                    tripFilterFragmentBinding.tvSavingTotal.setText(Math.round(aFloat)+"$");
+                    retriveSavings(aFloat);
                     dialogClass.dismissDialog();
                 }
 
@@ -132,6 +130,12 @@ public class TripsFilterViewModel {
 
                 }
             });
+    }
+
+    private void retriveSavings(Float aFloat) {
+        savingAmount = aFloat;
+        initProgressPrice(Math.round(aFloat*0.2f),Math.round(aFloat));
+        tripFilterFragmentBinding.tvSavingTotal.setText(Math.round(aFloat)+"$");
     }
 
 
@@ -154,6 +158,8 @@ public class TripsFilterViewModel {
     }
 
     public void resetFilters(){
+        noGuest = 1;
+        noRooms = 1;
         tripFilterFragmentBinding.tvArrive.setText("Arrive");
         tripFilterFragmentBinding.tvDepart.setText("Depart");
         tripFilterFragmentBinding.etCity.setText("");
@@ -282,7 +288,7 @@ public class TripsFilterViewModel {
         map.put("adults", String.valueOf(noGuest));
         map.put("checkin",checkin);
         map.put("rooms",String.valueOf(noRooms));
-        map.put("pricemax","$"+price+"-> "+Math.round(savingAmount));
+        map.put("pricemax","$"+price+"-> "+Math.round(price));
         map.put("nights",String.valueOf(2));
 
         return map;

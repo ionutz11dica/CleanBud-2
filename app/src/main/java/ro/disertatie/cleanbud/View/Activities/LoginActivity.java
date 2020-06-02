@@ -180,6 +180,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         final Intent intent = new Intent(getApplicationContext(),StartActivity.class);
 
+        User user = new User();
+        user.setEmail(etEmail.getText().toString());
+        user.setPassword(etPassword.getText().toString());
+        intent.putExtra(Constants.USER_KEY,user);
 
         Single<User> userDb  = userMethods.verifyAvailableAccount(userr.getEmail(),userr.getPassword());
         userDb.subscribeOn(Schedulers.io())

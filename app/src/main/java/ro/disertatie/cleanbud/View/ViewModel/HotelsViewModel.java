@@ -2,6 +2,7 @@ package ro.disertatie.cleanbud.View.ViewModel;
 
 import android.os.Build;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.RequiresApi;
 
@@ -18,6 +19,8 @@ public class HotelsViewModel {
     private HotelsFragment hotelsFragment;
     private HotelsFragmentBinding hotelsFragmentBinding;
     private HotelsFragment.HotelsListener listener;
+    private ArrayList<ResultObjectHotel> hotelArrayList;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -25,6 +28,7 @@ public class HotelsViewModel {
         this.hotelsFragment = hotelsFragment;
         this.hotelsFragmentBinding = hotelsFragmentBinding;
         listener = (HotelsFragment.HotelsListener) hotelsFragment.getContext();
+        hotelArrayList = new ArrayList<>();
         initToolbar();
 
     }
@@ -48,8 +52,14 @@ public class HotelsViewModel {
     }
 
     public void setAdapterHotels(ArrayList<ResultObjectHotel> resultObjectHotels){
-        HotelsAdapter hotelsAdapter = new HotelsAdapter(hotelsFragment.getActivity(),resultObjectHotels);
-
+        HotelsAdapter hotelsAdapter = new HotelsAdapter(hotelsFragment.getActivity(),resultObjectHotels,hotelsFragment);
+        hotelArrayList = resultObjectHotels;
         hotelsFragmentBinding.hotelsLv.setAdapter(hotelsAdapter);
+    }
+
+
+
+    public void onHotelClick(int pos){
+        listener.passHotelDetailsToFragment(hotelArrayList.get(pos),"hotelsDetailsF");
     }
 }

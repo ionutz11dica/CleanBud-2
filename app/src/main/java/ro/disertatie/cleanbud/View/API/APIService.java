@@ -32,7 +32,11 @@ public interface APIService {
     Call<DataLocation> getLocations(@Query("limit") String limit, @Query("sort")String sort, @Query("query") String query);
 
     @Headers({"x-rapidapi-host:tripadvisor1.p.rapidapi.com","x-rapidapi-key:57f292b33cmsh4de81391e4cadfap19928bjsne92187793d2d"})
-    @GET("hotels/list")
+    @GET("hotels/get-details")
     Call<DataHotel> getHotels(@QueryMap Map<String,String> options);
+
+    @Headers({"x-rapidapi-host:tripadvisor1.p.rapidapi.com","x-rapidapi-key:57f292b33cmsh4de81391e4cadfap19928bjsne92187793d2d"})
+    @GET("hotels/get-details")
+    Call<DataHotel> getHotelDetails( @Query("checkin") String checkin,@Query("location_id") String query);
 
 }

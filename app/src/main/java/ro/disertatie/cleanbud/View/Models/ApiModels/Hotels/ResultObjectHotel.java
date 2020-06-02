@@ -9,9 +9,17 @@ public class ResultObjectHotel implements Serializable {
     String location_id;
     @SerializedName("name")
     String name;
+    @SerializedName("latitude")
+    String lat;
+    @SerializedName("longitude")
+    String lon;
 
     @SerializedName("location_string")
     String locationString;
+
+    String description;
+
+    String phone;
 
     Photo photo;
 
@@ -57,5 +65,37 @@ public class ResultObjectHotel implements Serializable {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

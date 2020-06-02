@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -17,7 +18,12 @@ import com.google.android.material.snackbar.Snackbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
 import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
@@ -25,6 +31,7 @@ import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Utils.Constants;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
 
 public class RegisterActivity extends AppCompatActivity {
@@ -61,7 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setMobilePhone(etMobile.getText().toString());
                     user.setPassword(etPassword.getText().toString());
 
-                    userMethods.insertUser(user);
+                   userMethods.insertUser(user);
+
                     Intent intent = new Intent(getApplicationContext(), StartActivity.class);
                     intent.putExtra(Constants.USER_KEY,user);
 

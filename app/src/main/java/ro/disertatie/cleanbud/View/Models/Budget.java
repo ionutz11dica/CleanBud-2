@@ -33,7 +33,6 @@ import static androidx.room.ForeignKey.CASCADE;
                 @Index(value = "budgetTypeId")
         })
 public class Budget implements Serializable {
-
     @PrimaryKey(autoGenerate = true)
     private Integer budgetId;
     private String title;
@@ -44,8 +43,6 @@ public class Budget implements Serializable {
     private Integer userId;
     private String budgetDescription;
     private Integer budgetTypeId;
-
-
 
 
     public Integer getBudgetId() {
@@ -64,20 +61,20 @@ public class Budget implements Serializable {
         this.title = title;
     }
 
-    public float getCurrentAmount() {
-        return currentAmount;
-    }
-
-    public void setCurrentAmount(float currentAmount) {
-        this.currentAmount = currentAmount;
-    }
-
     public float getInitialAmount() {
         return initialAmount;
     }
 
     public void setInitialAmount(float initialAmount) {
         this.initialAmount = initialAmount;
+    }
+
+    public float getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(float currentAmount) {
+        this.currentAmount = currentAmount;
     }
 
     public Date getDate() {
@@ -96,14 +93,6 @@ public class Budget implements Serializable {
         this.userId = userId;
     }
 
-    public Integer getBudgetTypeId() {
-        return budgetTypeId;
-    }
-
-    public void setBudgetTypeId(Integer budgetTypeId) {
-        this.budgetTypeId = budgetTypeId;
-    }
-
     public String getBudgetDescription() {
         return budgetDescription;
     }
@@ -112,5 +101,11 @@ public class Budget implements Serializable {
         this.budgetDescription = budgetDescription;
     }
 
+    public Integer getBudgetTypeId() {
+        return budgetTypeId;
+    }
 
+    public void setBudgetTypeId(Integer budgetTypeId) {
+        this.budgetTypeId = budgetTypeId;
+    }
 }

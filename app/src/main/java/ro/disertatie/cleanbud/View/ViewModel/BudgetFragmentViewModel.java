@@ -64,6 +64,7 @@ import ro.disertatie.cleanbud.View.Models.Income;
 import ro.disertatie.cleanbud.View.Models.Record;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.RecordProtocol;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
 import ro.disertatie.cleanbud.databinding.BudgetComplexDetailsBinding;
 import ro.disertatie.cleanbud.databinding.BudgetFragmentBinding;
@@ -404,7 +405,7 @@ public class BudgetFragmentViewModel {
         protocols = new ArrayList<>();
         progressDialogClass.showDialog("Please wait..","Fetching data from database..");
 
-        Single<List<Budget>> single = budgetMethods.getAllBudgets(1);
+        Single<List<Budget>> single = budgetMethods.getAllBudgets(StaticVar.USER_ID);
         single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Budget>>() {

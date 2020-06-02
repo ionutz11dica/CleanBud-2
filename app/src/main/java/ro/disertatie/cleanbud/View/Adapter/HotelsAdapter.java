@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -31,15 +32,14 @@ import ro.disertatie.cleanbud.View.Utils.RecordProtocol;
 
 public class HotelsAdapter extends BaseAdapter {
     private final Activity context;
-
+    private HotelAdapterListener listener;
     private ArrayList<ResultObjectHotel> hotels;
-    @SuppressLint("SimpleDateFormat")
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd, MMM, yyyy");
 
 
-    public HotelsAdapter(Activity context, ArrayList<ResultObjectHotel> hotels) {
+    public HotelsAdapter(Activity context, ArrayList<ResultObjectHotel> hotels,HotelAdapterListener hotelAdapterListener) {
         this.context = context;
         this.hotels = hotels;
+        this.listener = hotelAdapterListener;
     }
 
 
@@ -75,17 +75,24 @@ public class HotelsAdapter extends BaseAdapter {
                 .with(context)
                 .load(hotels.get(position).getPhoto().getImages().getLarge().getUrl())
                 .centerCrop()
-                .placeholder(R.drawable.ic_launcher_background)
+                .placeholder(R.drawable.ic_businessman)
                 .into(imvHotel);
         nameHotel.setText(hotels.get(position).getName());
         price.setText(hotels.get(position).getPrice());
 
-
-
+        btnDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               listener.onClickAdapter(position);
+            }
+        });
 
 
         return rowView;
     }
 
+    public interface HotelAdapterListener {
+         void onClickAdapter(int id);
+    }
 
 }

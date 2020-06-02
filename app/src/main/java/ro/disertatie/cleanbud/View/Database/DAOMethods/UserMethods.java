@@ -1,15 +1,23 @@
 package ro.disertatie.cleanbud.View.Database.DAOMethods;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
 import ro.disertatie.cleanbud.View.Models.User;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import timber.log.Timber;
 
 public class UserMethods implements UserDAO {
@@ -32,6 +40,10 @@ public class UserMethods implements UserDAO {
         }
         return userMethods;
     }
+
+
+
+
 
     @Override
     public void insertUser(User... user) {

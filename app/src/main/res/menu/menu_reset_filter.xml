@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/menu_main_pdf"
+        android:id="@+id/menu_main_fav"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        app:showAsAction="always"
+        android:title="RESET" />
+    <item
+        android:id="@+id/menu_main_reset"
         android:orderInCategory="200"
         app:showAsAction="always"
         android:title="RESET" />
+
 
 
 </menu>

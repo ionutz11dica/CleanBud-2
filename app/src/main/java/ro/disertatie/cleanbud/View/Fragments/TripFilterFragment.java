@@ -73,12 +73,27 @@ public class TripFilterFragment extends DialogFragment implements Toolbar.OnMenu
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        tripsFilterViewModel.resetFilters();
+        switch (item.getItemId()){
+            case R.id.menu_main_reset:
+                tripsFilterViewModel.resetFilters();
+                return true;
+            case R.id.menu_main_fav:
+                return true;
+        }
+
         return false;
     }
 
     public interface TripFilterListener{
         void onBackButtonPressedTripFilter(String string);
         void passDataToHotels(ArrayList<ResultObjectHotel> list,String fragment);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            tripsFilterViewModel.getSavings(StaticVar.USER_ID);
+        }
     }
 }

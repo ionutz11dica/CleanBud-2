@@ -25,4 +25,5 @@ public interface Constants {
     String USER_KEY = "userkey";
     int REQUEST_CREATE_SAVING_BUDGET = 199;
     String HOTELS_LIST_KEY = "hotelListKey";
+    String HOTELS_KEY = "hotelKey";
 }

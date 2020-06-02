@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,55 +16,45 @@ import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 import ro.disertatie.cleanbud.R;
-import ro.disertatie.cleanbud.View.Adapter.HotelsAdapter;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
 import ro.disertatie.cleanbud.View.Utils.Constants;
-import ro.disertatie.cleanbud.View.ViewModel.HotelsViewModel;
-import ro.disertatie.cleanbud.databinding.HotelsFragmentBinding;
+import ro.disertatie.cleanbud.View.ViewModel.HotelDetailsViewModel;
+import ro.disertatie.cleanbud.databinding.HotelDetailsFragmentBinding;
 
-public class HotelsFragment extends Fragment implements HotelsAdapter.HotelAdapterListener {
-    private HotelsViewModel hotelsViewModel;
-
+public class HotelDetailsFragment extends Fragment {
+    private HotelDetailsViewModel hotelDetailsViewModel;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        HotelsFragmentBinding hotelsFragmentBinding = DataBindingUtil.inflate(inflater,R.layout.hotels_fragment,container,false);
-         hotelsViewModel = new HotelsViewModel(this,hotelsFragmentBinding);
-
-
-        return hotelsFragmentBinding.getRoot();
+        HotelDetailsFragmentBinding hotelDetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.hotel_details_fragment,container,false);
+        hotelDetailsViewModel = new HotelDetailsViewModel(this,hotelDetailsFragmentBinding);
+        hotelDetailsViewModel.setUpQuickCallClick();
+        hotelDetailsViewModel.setupBackClick();
+        return hotelDetailsFragmentBinding.getRoot();
     }
+
+
 
     @Override
     public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof HomeFragment.OnHomeFragmentInteractionListener) {
-
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnHomeFragmentInteractionListener");
         }
     }
 
+    public interface HotelsDetailsListener{
+        void onBackButtonPressedHotelsDetailsListener(String string);
+
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
-
-    }
-
-    @Override
-    public void onClickAdapter(int id) {
-        hotelsViewModel.onHotelClick(id);
-    }
-
-    public interface HotelsListener{
-        void onBackButtonPressedHotelsListener(String string);
-        void passHotelDetailsToFragment(ResultObjectHotel resultObjectHotel,String fragment);
-
     }
 
     @Override
@@ -73,17 +64,11 @@ public class HotelsFragment extends Fragment implements HotelsAdapter.HotelAdapt
             Bundle bundle = getArguments();
             if(bundle!=null)
             {
-                ArrayList<ResultObjectHotel> list = (ArrayList<ResultObjectHotel>) bundle.getSerializable(Constants.HOTELS_LIST_KEY);
-                if(list!=null && !list.isEmpty()){
-                    hotelsViewModel.setAdapterHotels(list);
+                ResultObjectHotel id = (ResultObjectHotel) bundle.getSerializable(Constants.HOTELS_KEY);
+                if(id != null){
+                    hotelDetailsViewModel.setupViews(id);
                 }
             }
         }
     }
-
-
-
-
-
-
 }

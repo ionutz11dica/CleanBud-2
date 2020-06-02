@@ -33,6 +33,7 @@ import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.BudgetFragments;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
+import ro.disertatie.cleanbud.View.Fragments.HotelDetailsFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelsFragment;
 import ro.disertatie.cleanbud.View.Fragments.ReportsFragment;
 import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
@@ -40,9 +41,10 @@ import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
+import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
 
 public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener,
-        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener {
+        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener, HotelDetailsFragment.HotelsDetailsListener {
 
     Fragment homeFragment;
     Fragment currencyFragment;
@@ -50,6 +52,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     Fragment reportsFragment;
     Fragment tripsFilterFragment;
     Fragment hotelsFragment;
+    Fragment hotelsDetailsFragment;
 
     FragmentManager fm ;
     Fragment active;
@@ -70,10 +73,13 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         setContentView(R.layout.activity_start);
         ActivityCompat.requestPermissions(StartActivity.this, new
                 String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+
         openDb();
 
-        if(getIntent().hasExtra(Constants.USER_KEY)){
+         if(getIntent().hasExtra(Constants.USER_KEY)){
             User user = getIntent().getParcelableExtra(Constants.USER_KEY);
+            ProgressDialogClass progressDialogClass = new ProgressDialogClass(this);
+            progressDialogClass.showDialog("Fetching data..", "Please wait");
             if(user!=null){
                 Single<User> userDb  = userMethods.verifyAvailableAccount(user.getEmail(),user.getPassword());
                 userDb.subscribeOn(Schedulers.io())
@@ -87,7 +93,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
                             @Override
                             public synchronized void onSuccess(User user) {
                                 StaticVar.USER_ID = user.getUserId();
-
+                                progressDialogClass.dismissDialog();
                             }
 
                             @Override
@@ -104,6 +110,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         reportsFragment = new ReportsFragment();
         tripsFilterFragment = new TripFilterFragment();
         hotelsFragment = new HotelsFragment();
+        hotelsDetailsFragment = new HotelDetailsFragment();
 
         fm = getSupportFragmentManager();
 
@@ -115,7 +122,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         fm.beginTransaction().add(R.id.fragment_container,reportsFragment,"reportsF").hide(reportsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,tripsFilterFragment,"tripFilterF").hide(tripsFilterFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,hotelsFragment,"hotelsF").hide(hotelsFragment).commit();
-
+        fm.beginTransaction().add(R.id.fragment_container,hotelsDetailsFragment,"hotelsDetailsF").hide(hotelsDetailsFragment).commit();
     }
 
     @Override
@@ -142,7 +149,14 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FragmentManager fm = getSupportFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
+    }
 
     @Override
     public void onBackButtonPressed(String  fragment) {
@@ -186,6 +200,27 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
 
     @Override
     public void onBackButtonPressedHotelsListener(String string) {
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void passHotelDetailsToFragment(ResultObjectHotel id,String fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.HOTELS_KEY,id);
+        fm.findFragmentByTag(fragment).setArguments(bundle);
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(fragment))).commit();
+        active = fm.findFragmentByTag(fragment);
+    }
+
+    @Override
+    public void onBackButtonPressedHotelsDetailsListener(String string) {
         fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
         active = fm.findFragmentByTag(string);
     }
