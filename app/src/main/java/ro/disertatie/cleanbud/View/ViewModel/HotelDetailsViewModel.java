@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.RequiresApi;
@@ -16,13 +17,20 @@ import androidx.core.app.ActivityCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.API.APIClient;
 import ro.disertatie.cleanbud.View.API.APIService;
 import ro.disertatie.cleanbud.View.Activities.StartActivity;
+import ro.disertatie.cleanbud.View.Fragments.Dialogs.GoogleMapDialog;
+import ro.disertatie.cleanbud.View.Fragments.Dialogs.WeatherDialog;
 import ro.disertatie.cleanbud.View.Fragments.HotelDetailsFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelsFragment;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
+import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.databinding.HotelDetailsFragmentBinding;
 
 public class HotelDetailsViewModel {
@@ -32,6 +40,7 @@ public class HotelDetailsViewModel {
     private double lat = 0.0;
     private double lon = 0.0;
     private String phoneNo = "";
+    private String title = "";
     private HotelDetailsFragment.HotelsDetailsListener listener;
 
 
@@ -40,7 +49,8 @@ public class HotelDetailsViewModel {
         this.hotelDetailsFragment = hotelDetailsFragment;
         this.hotelDetailsFragmentBinding = hotelDetailsFragmentBinding;
         listener = (HotelDetailsFragment.HotelsDetailsListener) hotelDetailsFragment.getContext();
-//        initToolbar();
+        apiService = APIClient.getRetrofit4().create(APIService.class);
+        initToolbar();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -77,6 +87,7 @@ public class HotelDetailsViewModel {
         lat = Double.parseDouble(resultObjectHotel.getLat());
         lon = Double.parseDouble(resultObjectHotel.getLon());
         phoneNo = resultObjectHotel.getPhone();
+        title = resultObjectHotel.getName();
     }
 
     public void setUpQuickCallClick() {
@@ -91,11 +102,42 @@ public class HotelDetailsViewModel {
         });
     }
 
+    public void setupGoogleMap(){
+        hotelDetailsFragmentBinding.ibtnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoogleMapDialog googleMapDialog = new GoogleMapDialog();
+                Bundle bundle = new Bundle();
+                bundle.putDouble(Constants.LAT_KEY,lat);
+                bundle.putDouble(Constants.LON_KEY,lon);
+                bundle.putString(Constants.HOTEL_NAME_KEY, title);
+
+                googleMapDialog.setArguments(bundle);
+                googleMapDialog.show(hotelDetailsFragment.getActivity().getSupportFragmentManager(),null);
+
+            }
+        });
+    }
+
     public void setupBackClick(){
         hotelDetailsFragmentBinding.btnBackHotels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onBackButtonPressedHotelsDetailsListener("hotelsF");
+            }
+        });
+    }
+
+    public void setupWeatherClick(){
+        hotelDetailsFragmentBinding.ibtnWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WeatherDialog weatherDialog = new WeatherDialog();
+                Bundle bundle = new Bundle();
+                bundle.putDouble(Constants.LAT_KEY,lat);
+                bundle.putDouble(Constants.LON_KEY,lon);
+                weatherDialog.setArguments(bundle);
+                weatherDialog.show(hotelDetailsFragment.getActivity().getSupportFragmentManager(),null);
             }
         });
     }

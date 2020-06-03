@@ -2,6 +2,7 @@ package ro.disertatie.cleanbud.View.API;
 
 import java.util.Map;
 
+import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Headers;
@@ -12,6 +13,7 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.DataHotel;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Location.DataLocation;
+import ro.disertatie.cleanbud.View.Models.ApiModels.Weather.WeatherResponse;
 import ro.disertatie.cleanbud.View.Utils.CurrencyApi;
 import retrofit2.http.GET;
 import retrofit2.Call;
@@ -35,8 +37,8 @@ public interface APIService {
     @GET("hotels/get-details")
     Call<DataHotel> getHotels(@QueryMap Map<String,String> options);
 
-    @Headers({"x-rapidapi-host:tripadvisor1.p.rapidapi.com","x-rapidapi-key:57f292b33cmsh4de81391e4cadfap19928bjsne92187793d2d"})
-    @GET("hotels/get-details")
-    Call<DataHotel> getHotelDetails( @Query("checkin") String checkin,@Query("location_id") String query);
+
+    @GET("weather?")
+    Single<WeatherResponse> getWeatherByGPS(@Query("lat") String latitude, @Query("lon") String longitude, @Query("units")  String units);
 
 }

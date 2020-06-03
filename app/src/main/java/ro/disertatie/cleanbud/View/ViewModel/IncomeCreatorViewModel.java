@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
@@ -41,9 +42,12 @@ public class IncomeCreatorViewModel {
         this.incomeBottomSheetDialog = incomeBottomSheetDialog;
         this.bottomSheetBinding = bottomSheetBinding;
         openDB();
+        fillEditTextDate();
         buttons = new ImageButton[]{bottomSheetBinding.ibSalary,bottomSheetBinding.ibFree,bottomSheetBinding.ibSales,bottomSheetBinding.ibCash,bottomSheetBinding.ibRent};
     }
-
+    private void fillEditTextDate(){
+        bottomSheetBinding.tieDateIncome.setText(sdf.format(new Date()));
+    }
 
     private Income createIncome() throws ParseException {
         Income income = new Income();

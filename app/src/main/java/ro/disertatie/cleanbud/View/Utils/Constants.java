@@ -26,4 +26,11 @@ public interface Constants {
     int REQUEST_CREATE_SAVING_BUDGET = 199;
     String HOTELS_LIST_KEY = "hotelListKey";
     String HOTELS_KEY = "hotelKey";
+    String LAT_KEY = "latKey";
+    String LON_KEY = "lonKey";
+    String HOTEL_NAME_KEY = "hotelnamekey";
+
+    String API_KEY = "785a1973a8090819c65936a003311745";
+    String METRIC = "metric";
+    String CNT  = "25";
 }
