@@ -29,10 +29,10 @@ import static androidx.room.ForeignKey.CASCADE;
         })
 public class UserTrip {
 
-    @NonNull public final String tripId;
+    @NonNull public final Integer tripId;
     @NonNull public final Integer userId;
 
-    public UserTrip(@NonNull String tripId, @NonNull Integer userId) {
+    public UserTrip(@NonNull Integer tripId, @NonNull Integer userId) {
         this.tripId = tripId;
         this.userId = userId;
     }

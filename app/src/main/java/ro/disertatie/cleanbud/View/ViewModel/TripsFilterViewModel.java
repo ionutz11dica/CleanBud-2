@@ -288,8 +288,7 @@ public class TripsFilterViewModel {
         map.put("adults", String.valueOf(noGuest));
         map.put("checkin",checkin);
         map.put("rooms",String.valueOf(noRooms));
-        map.put("pricemax","$"+price+"-> "+Math.round(price));
-        map.put("nights",String.valueOf(2));
+        map.put("pricesmax","$"+price+"-> "+Math.round(price));
 
         return map;
     }

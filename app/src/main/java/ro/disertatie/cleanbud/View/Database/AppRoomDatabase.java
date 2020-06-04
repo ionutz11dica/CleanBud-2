@@ -18,7 +18,9 @@ import ro.disertatie.cleanbud.View.Database.DAO.ExpenseDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.ExpensesTypeDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.IncomeDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.IncomeTypeDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.TripDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.UserTripDAO;
 import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Models.BudgetType;
 import ro.disertatie.cleanbud.View.Models.EconomyBudget;
@@ -34,7 +36,7 @@ import static ro.disertatie.cleanbud.View.Utils.Constants.DATABASE_NAME;
 
 
 @Database(entities = {User.class, Budget.class, BudgetType.class, Expense.class, ExpenseCategory.class, Income.class, IncomeCategory.class,
-       Trip.class, UserTrip.class, EconomyBudget.class},version = 15,exportSchema = false)
+       Trip.class, UserTrip.class, EconomyBudget.class},version = 19,exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
     //database object
     public abstract UserDAO getUserDao();
@@ -45,6 +47,8 @@ public abstract class AppRoomDatabase extends RoomDatabase {
     public abstract IncomeDAO incomeDAO();
     public abstract IncomeTypeDAO incomeCategoryDAO();
     public abstract EconomyBudgetDAO economyBudgetDAO();
+    public abstract TripDAO tripDAO();
+    public abstract UserTripDAO userTripDAO();
 
     private static volatile AppRoomDatabase appRoomDatabase=null;
 

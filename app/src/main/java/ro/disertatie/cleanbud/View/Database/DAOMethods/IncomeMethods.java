@@ -29,7 +29,7 @@ public class IncomeMethods implements IncomeDAO {
 
     public static IncomeMethods getInstance(IncomeDAO incomeDAO){
         if(incomeMethods == null){
-            synchronized (UserMethods.class){
+            synchronized (IncomeMethods.class){
                 if(incomeMethods==null){
                     incomeMethods = new IncomeMethods(incomeDAO);
                 }

@@ -32,6 +32,7 @@ public class HotelDetailsFragment extends Fragment {
         hotelDetailsViewModel = new HotelDetailsViewModel(this,hotelDetailsFragmentBinding);
         hotelDetailsViewModel.setUpQuickCallClick();
         hotelDetailsViewModel.setupBackClick();
+        hotelDetailsViewModel.setupFavoriteClick();
         hotelDetailsViewModel.setupGoogleMap();
         hotelDetailsViewModel.setupWeatherClick();
         return hotelDetailsFragmentBinding.getRoot();

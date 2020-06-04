@@ -1,40 +1,70 @@
 package ro.disertatie.cleanbud.View.Models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
+import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.Photo;
+
 @Entity(tableName = "trip")
 public class Trip {
-
     @PrimaryKey
-    private int tripId;
-    private float price;
-    private String location;
-    private String description;
-    private String url;
+    private
+    Integer tripId;
+    private String name;
+    private String lat;
+    private String lon;
 
-    public int getTripId() {
+    private String locationString;
+
+    private String description;
+
+    private String phone;
+
+    private String photo;
+
+    private String price;
+
+    public Integer getTripId() {
         return tripId;
     }
 
-    public void setTripId(int tripId) {
+    public void setTripId(Integer tripId) {
         this.tripId = tripId;
     }
 
-    public float getPrice() {
-        return price;
+    public String getName() {
+        return name;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLat() {
+        return lat;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getLocationString() {
+        return locationString;
+    }
+
+    public void setLocationString(String locationString) {
+        this.locationString = locationString;
     }
 
     public String getDescription() {
@@ -45,11 +75,27 @@ public class Trip {
         this.description = description;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

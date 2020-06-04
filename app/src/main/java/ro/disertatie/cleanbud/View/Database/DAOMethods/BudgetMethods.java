@@ -28,7 +28,7 @@ public class BudgetMethods implements BudgetDAO {
 
     public static BudgetMethods getInstance(BudgetDAO budgetDAO){
         if(budgetMethods == null){
-            synchronized (UserMethods.class){
+            synchronized (BudgetMethods.class){
                 if(budgetMethods==null){
                     budgetMethods = new BudgetMethods(budgetDAO);
                 }
