@@ -2,6 +2,8 @@ package ro.disertatie.cleanbud.View.Database.DAOMethods;
 
 import android.util.Log;
 
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.CompletableObserver;
 import io.reactivex.Single;
@@ -10,6 +12,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.View.Database.DAO.TripDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.UserTripDAO;
+import ro.disertatie.cleanbud.View.Models.Trip;
 import ro.disertatie.cleanbud.View.Models.UserTrip;
 import timber.log.Timber;
 
@@ -84,6 +87,11 @@ public class UserTripMethods implements UserTripDAO {
                         Timber.d(e);
                     }
                 });
+    }
+
+    @Override
+    public Single<List<Trip>> getUserFavoriteHotels(Integer userId) {
+        return userTripDAO.getUserFavoriteHotels(userId);
     }
 
 

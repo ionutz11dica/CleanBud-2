@@ -32,19 +32,21 @@ import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.BudgetFragments;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
+import ro.disertatie.cleanbud.View.Fragments.FavoriteHotelsFragment;
 import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelDetailsFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelsFragment;
 import ro.disertatie.cleanbud.View.Fragments.ReportsFragment;
 import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
+import ro.disertatie.cleanbud.View.Models.Trip;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
 
 public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener,
-        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener, HotelDetailsFragment.HotelsDetailsListener {
+        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener, HotelDetailsFragment.HotelsDetailsListener, FavoriteHotelsFragment.FavoriteHotelsListener {
 
     Fragment homeFragment;
     Fragment currencyFragment;
@@ -53,6 +55,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     Fragment tripsFilterFragment;
     Fragment hotelsFragment;
     Fragment hotelsDetailsFragment;
+    Fragment favoriteFragment;
 
     FragmentManager fm ;
     Fragment active;
@@ -111,6 +114,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         tripsFilterFragment = new TripFilterFragment();
         hotelsFragment = new HotelsFragment();
         hotelsDetailsFragment = new HotelDetailsFragment();
+        favoriteFragment = new FavoriteHotelsFragment();
 
         fm = getSupportFragmentManager();
 
@@ -123,6 +127,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         fm.beginTransaction().add(R.id.fragment_container,tripsFilterFragment,"tripFilterF").hide(tripsFilterFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,hotelsFragment,"hotelsF").hide(hotelsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,hotelsDetailsFragment,"hotelsDetailsF").hide(hotelsDetailsFragment).commit();
+        fm.beginTransaction().add(R.id.fragment_container,favoriteFragment,"favoriteF").hide(favoriteFragment).commit();
+
     }
 
     @Override
@@ -221,6 +227,21 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
 
     @Override
     public void onBackButtonPressedHotelsDetailsListener(String string) {
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
+    }
+
+    @Override
+    public void onBackButtonPressedFavorite(String string) {
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
+    }
+
+    @Override
+    public void passDataToHotelDetailsFav(Trip trip, String string) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.HOTELS_KEY,trip);
+        fm.findFragmentByTag(string).setArguments(bundle);
         fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
         active = fm.findFragmentByTag(string);
     }

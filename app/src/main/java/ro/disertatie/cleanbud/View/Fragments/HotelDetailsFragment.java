@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
+import ro.disertatie.cleanbud.View.Models.Trip;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.ViewModel.HotelDetailsViewModel;
 import ro.disertatie.cleanbud.databinding.HotelDetailsFragmentBinding;
@@ -67,9 +68,14 @@ public class HotelDetailsFragment extends Fragment {
             Bundle bundle = getArguments();
             if(bundle!=null)
             {
-                ResultObjectHotel id = (ResultObjectHotel) bundle.getSerializable(Constants.HOTELS_KEY);
+                Object id = bundle.getSerializable(Constants.HOTELS_KEY);
                 if(id != null){
-                    hotelDetailsViewModel.setupViews(id);
+                    if(id instanceof ResultObjectHotel){
+                        hotelDetailsViewModel.setupViews((ResultObjectHotel) id);
+                    }else{
+                        hotelDetailsViewModel.setupViewsFav((Trip) id);
+
+                    }
                 }
             }
         }

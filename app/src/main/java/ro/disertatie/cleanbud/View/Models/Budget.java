@@ -26,11 +26,17 @@ import static androidx.room.ForeignKey.CASCADE;
                     entity = BudgetType.class,
                     parentColumns = "budgetTypeId",
                     childColumns = "budgetTypeId"
-            )
+            ),
+            @ForeignKey(
+
+                    entity = Currency.class,
+                    parentColumns = "currencyId",
+                    childColumns = "currencyId")
         },
         indices = {
                 @Index(value = "userId"),
-                @Index(value = "budgetTypeId")
+                @Index(value = "budgetTypeId"),
+                @Index(value = "currencyId",unique = true)
         })
 public class Budget implements Serializable {
     @PrimaryKey(autoGenerate = true)
@@ -43,6 +49,7 @@ public class Budget implements Serializable {
     private Integer userId;
     private String budgetDescription;
     private Integer budgetTypeId;
+    private Integer currencyId;
 
 
     public Integer getBudgetId() {
@@ -99,6 +106,14 @@ public class Budget implements Serializable {
 
     public void setBudgetDescription(String budgetDescription) {
         this.budgetDescription = budgetDescription;
+    }
+
+    public Integer getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Integer currencyId) {
+        this.currencyId = currencyId;
     }
 
     public Integer getBudgetTypeId() {

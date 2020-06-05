@@ -6,10 +6,12 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.Photo;
 
 @Entity(tableName = "trip")
-public class Trip {
+public class Trip implements Serializable {
     @PrimaryKey
     private
     Integer tripId;

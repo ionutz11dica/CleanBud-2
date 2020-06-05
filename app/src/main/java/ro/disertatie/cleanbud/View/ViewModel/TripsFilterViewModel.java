@@ -121,7 +121,7 @@ public class TripsFilterViewModel {
 
                 @Override
                 public void onSuccess(Float aFloat) {
-                    retriveSavings(aFloat);
+                    retrieveSavings(aFloat);
                     dialogClass.dismissDialog();
                 }
 
@@ -132,7 +132,7 @@ public class TripsFilterViewModel {
             });
     }
 
-    private void retriveSavings(Float aFloat) {
+    private void retrieveSavings(Float aFloat) {
         savingAmount = aFloat;
         initProgressPrice(Math.round(aFloat*0.2f),Math.round(aFloat));
         tripFilterFragmentBinding.tvSavingTotal.setText(Math.round(aFloat)+"$");
@@ -155,6 +155,10 @@ public class TripsFilterViewModel {
                 listener.onBackButtonPressedTripFilter("homeF");
             }
         });
+    }
+
+    public TripFilterFragment.TripFilterListener getListener() {
+        return listener;
     }
 
     public void resetFilters(){

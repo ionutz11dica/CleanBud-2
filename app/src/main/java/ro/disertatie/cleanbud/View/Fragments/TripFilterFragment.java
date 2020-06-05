@@ -78,6 +78,7 @@ public class TripFilterFragment extends DialogFragment implements Toolbar.OnMenu
                 tripsFilterViewModel.resetFilters();
                 return true;
             case R.id.menu_main_fav:
+                tripsFilterViewModel.getListener().onBackButtonPressedTripFilter("favoriteF");
                 return true;
         }
 

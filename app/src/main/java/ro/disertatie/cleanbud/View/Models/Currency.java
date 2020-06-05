@@ -1,22 +1,43 @@
 package ro.disertatie.cleanbud.View.Models;
 
 
+import android.content.Context;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.util.List;
+
+import ro.disertatie.cleanbud.View.Database.DAOMethods.CurrencyMethods;
+
+@Entity(tableName = "currency")
 public class Currency {
 
-    long id;
+    @PrimaryKey
+    private Integer currencyId;
     private String currencyName;
+    private String currencyShortCut;
+    private int drawable;
     private float value;
 
 
-
-    public long getId() {
-        return id;
+    public Currency(Integer id, String currencyName, String currencyShortCut, int drawable, float value) {
+        this.currencyId = id;
+        this.currencyName = currencyName;
+        this.currencyShortCut = currencyShortCut;
+        this.drawable = drawable;
+        this.value = value;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Currency() {
+    }
+
+    public Integer getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Integer currencyId) {
+        this.currencyId = currencyId;
     }
 
     public String getCurrencyName() {
@@ -33,6 +54,23 @@ public class Currency {
 
     public void setValue(float value) {
         this.value = value;
+    }
+
+
+    public String getCurrencyShortCut() {
+        return currencyShortCut;
+    }
+
+    public void setCurrencyShortCut(String currencyShortCut) {
+        this.currencyShortCut = currencyShortCut;
+    }
+
+    public int getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(int drawable) {
+        this.drawable = drawable;
     }
 
 

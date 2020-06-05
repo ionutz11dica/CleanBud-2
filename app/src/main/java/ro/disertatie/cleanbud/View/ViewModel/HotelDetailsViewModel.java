@@ -64,6 +64,7 @@ public class HotelDetailsViewModel {
     private String title = "";
     private HotelDetailsFragment.HotelsDetailsListener listener;
     private boolean isFavorite = false;
+    private boolean isFromFavorite = false;
     private UserTripMethods userTripMethods;
     private TripMethods tripMethods;
 
@@ -91,7 +92,12 @@ public class HotelDetailsViewModel {
         hotelDetailsFragmentBinding.hotelDetailsToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onBackButtonPressedHotelsDetailsListener("hotelsF");
+                if(isFromFavorite){
+                    listener.onBackButtonPressedHotelsDetailsListener("tripFilterF");
+                }else{
+                    listener.onBackButtonPressedHotelsDetailsListener("hotelsF");
+
+                }
             }
         });
     }
@@ -108,15 +114,33 @@ public class HotelDetailsViewModel {
         trip.setPrice(resultObjectHotel.getPrice());
         trip.setLocationString(resultObjectHotel.getLocationString());
 
-
     }
 
     public void setupViews(ResultObjectHotel resultObjectHotel) {
+        isFromFavorite = false;
         setTripObject(resultObjectHotel);
         checkIfIsFavorite();
         Glide
                 .with(hotelDetailsFragment.getContext())
                 .load(resultObjectHotel.getPhoto().getImages().getLarge().getUrl())
+                .centerCrop()
+                .placeholder(R.drawable.ic_businessman)
+                .into(hotelDetailsFragmentBinding.imvHotelDetails);
+        hotelDetailsFragmentBinding.tvHotelNameDetails.setText(resultObjectHotel.getName());
+        hotelDetailsFragmentBinding.tvDescriptionHotel.setText(resultObjectHotel.getDescription());
+        hotelDetailsFragmentBinding.tvNameHotelDesc.setText(resultObjectHotel.getName());
+        hotelDetailsFragmentBinding.tvHotelNameDetails.setText(resultObjectHotel.getName());
+        phoneNo = resultObjectHotel.getPhone();
+        title = resultObjectHotel.getName();
+    }
+
+    public void setupViewsFav(Trip resultObjectHotel) {
+        isFromFavorite = true;
+        trip = resultObjectHotel;
+        checkIfIsFavorite();
+        Glide
+                .with(hotelDetailsFragment.getContext())
+                .load(resultObjectHotel.getPhoto())
                 .centerCrop()
                 .placeholder(R.drawable.ic_businessman)
                 .into(hotelDetailsFragmentBinding.imvHotelDetails);

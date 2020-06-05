@@ -1,5 +1,7 @@
 package ro.disertatie.cleanbud.View.Utils;
 
+import androidx.room.Ignore;
+
 import java.util.HashMap;
 
 public class CurrencyApi {
@@ -16,6 +18,8 @@ public class CurrencyApi {
         this.date = date;
         this.rates = rates;
     }
+
+
 
     public Boolean getSuccess() {
         return success;

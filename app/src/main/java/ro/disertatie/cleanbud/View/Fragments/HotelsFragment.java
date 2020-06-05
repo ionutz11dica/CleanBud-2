@@ -66,6 +66,7 @@ public class HotelsFragment extends Fragment implements HotelsAdapter.HotelAdapt
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);

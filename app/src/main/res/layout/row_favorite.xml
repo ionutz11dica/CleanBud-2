@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:padding="10dp"
+    android:weightSum="1"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imv_favorite"
+        android:layout_width="0dp"
+        android:layout_weight="0.23"
+        android:layout_height="60dp"
+        />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="0.7"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_name_hotel_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingStart="10dp"
+            android:text="test"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textAlignment="textStart"/>
+        <TextView
+            android:id="@+id/tv_price_favorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            android:textColor="#888888"
+            android:text="price"
+            android:lines="1"
+            android:paddingStart="10dp"
+            android:textAlignment="textStart"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.07"
+        android:src="@drawable/ic_arrow_right"/>
+
+</LinearLayout>

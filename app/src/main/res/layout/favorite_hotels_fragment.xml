@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/favorite_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-1dp"
+            android:background="#633a82"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="My Trips"
+            />
+        
+        <EditText
+            android:id="@+id/favorite_search_filter"
+            android:layout_width="match_parent"
+            android:drawableRight="@drawable/ic_search_black_24dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:hint="Filter or search"
+            android:layout_height="50dp"/>
+
+        <ListView
+            android:id="@+id/lv_favorite"
+            android:layout_margin="12dp"
+            android:layout_width="match_parent"
+            android:dividerHeight="1dp"
+            android:layout_height="match_parent"/>
+
+
+    </LinearLayout>
+</layout>

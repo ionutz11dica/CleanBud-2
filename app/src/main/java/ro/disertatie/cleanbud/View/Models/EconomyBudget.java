@@ -23,6 +23,8 @@ public class EconomyBudget implements Serializable {
     private float percentage;
     private Integer userId;
 
+
+
     public Integer getEcoId() {
         return ecoId;
     }
