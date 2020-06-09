@@ -14,6 +14,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
 import ro.disertatie.cleanbud.View.Models.Budget;
+import ro.disertatie.cleanbud.View.Models.BudgetPOJO;
+import ro.disertatie.cleanbud.View.Models.TestPOJO;
 import timber.log.Timber;
 
 public class BudgetMethods implements BudgetDAO {
@@ -123,5 +125,17 @@ public class BudgetMethods implements BudgetDAO {
                         Timber.d(e);
                     }
                 });
+    }
+
+    @Override
+    public Single<List<BudgetPOJO>> getAllBudgetsAmount(Integer userId) {
+        return budgetDAO.getAllBudgetsAmount(userId);
+    }
+
+
+
+    @Override
+    public Single<List<TestPOJO>> getAllExpenseIncome2(Integer currencyId,Integer userId) {
+        return budgetDAO.getAllExpenseIncome2(currencyId,userId);
     }
 }

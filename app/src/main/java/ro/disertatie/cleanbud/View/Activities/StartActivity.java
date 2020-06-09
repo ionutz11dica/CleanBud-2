@@ -47,7 +47,8 @@ import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
 
 public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener,
-        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener, HotelDetailsFragment.HotelsDetailsListener, FavoriteHotelsFragment.FavoriteHotelsListener {
+        ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener, HotelDetailsFragment.HotelsDetailsListener, FavoriteHotelsFragment.FavoriteHotelsListener
+        , AnalyticsFragment.AnalyticsListener {
 
     Fragment homeFragment;
     Fragment currencyFragment;
@@ -252,6 +253,12 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.HOTELS_KEY,trip);
         fm.findFragmentByTag(string).setArguments(bundle);
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
+    }
+
+    @Override
+    public void backPressedAnalytics(String string) {
         fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
         active = fm.findFragmentByTag(string);
     }

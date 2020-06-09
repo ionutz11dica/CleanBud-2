@@ -38,7 +38,7 @@ import static ro.disertatie.cleanbud.View.Utils.Constants.DATABASE_NAME;
 
 
 @Database(entities = {User.class, Budget.class, BudgetType.class, Expense.class, ExpenseCategory.class, Income.class, IncomeCategory.class,
-       Trip.class, UserTrip.class, EconomyBudget.class, Currency.class},version = 21,exportSchema = false)
+       Trip.class, UserTrip.class, EconomyBudget.class, Currency.class},version = 22,exportSchema = false)
 public abstract class AppRoomDatabase extends RoomDatabase {
     //database object
     public abstract UserDAO getUserDao();

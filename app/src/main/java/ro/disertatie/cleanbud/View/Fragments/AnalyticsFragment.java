@@ -24,7 +24,8 @@ public class AnalyticsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AnalyticsFragmentBinding analyticsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.analytics_fragment,container,false);
         analyticsViewModel = new AnalyticsViewModel(this,analyticsFragmentBinding);
-        analyticsViewModel.initLinearGraph();
+        analyticsViewModel.getDataForPieChart();
+        analyticsViewModel.getDataForLinearGraph();
         return analyticsFragmentBinding.getRoot();
     }
 
@@ -37,5 +38,9 @@ public class AnalyticsFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public interface AnalyticsListener{
+        void backPressedAnalytics(String string);
     }
 }

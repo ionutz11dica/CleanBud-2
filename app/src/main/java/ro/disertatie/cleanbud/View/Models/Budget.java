@@ -36,7 +36,7 @@ import static androidx.room.ForeignKey.CASCADE;
         indices = {
                 @Index(value = "userId"),
                 @Index(value = "budgetTypeId"),
-                @Index(value = "currencyId",unique = true)
+                @Index(value = "currencyId")
         })
 public class Budget implements Serializable {
     @PrimaryKey(autoGenerate = true)

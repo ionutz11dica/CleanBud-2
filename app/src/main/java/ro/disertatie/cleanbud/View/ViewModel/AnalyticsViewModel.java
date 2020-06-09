@@ -1,40 +1,69 @@
 package ro.disertatie.cleanbud.View.ViewModel;
 
 import android.graphics.Color;
+import android.os.Build;
+import android.util.Log;
+import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.broooapps.lineargraphview2.DataModel;
-import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.google.android.gms.vision.text.Line;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import ro.disertatie.cleanbud.R;
+import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
+import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.BudgetMethods;
 import ro.disertatie.cleanbud.View.Fragments.AnalyticsFragment;
-import ro.disertatie.cleanbud.View.Utils.IndexAxisValueFormatter;
+import ro.disertatie.cleanbud.View.Models.Budget;
+import ro.disertatie.cleanbud.View.Models.BudgetPOJO;
+import ro.disertatie.cleanbud.View.Models.TestPOJO;
+import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.databinding.AnalyticsFragmentBinding;
 
 public class AnalyticsViewModel {
     private AnalyticsFragment analyticsFragment;
     private AnalyticsFragmentBinding analyticsFragmentBinding;
+    private AnalyticsFragment.AnalyticsListener listener;
+    private BudgetMethods budgetMethods;
 
     public AnalyticsViewModel(AnalyticsFragment analyticsFragment, AnalyticsFragmentBinding analyticsFragmentBinding) {
         this.analyticsFragment = analyticsFragment;
         this.analyticsFragmentBinding = analyticsFragmentBinding;
+        listener = (AnalyticsFragment.AnalyticsListener) analyticsFragment.getContext();
         initTabLayout();
         initTabLayoutOverall();
+
         initCubicLineChart();
+        backListener();
+        openDB();
     }
 
     private void initTabLayout(){
         analyticsFragmentBinding.tabLayout.addTab(analyticsFragmentBinding.tabLayout.newTab().setText("Dollar"));
         analyticsFragmentBinding.tabLayout.addTab(analyticsFragmentBinding.tabLayout.newTab().setText("Euro"));
         analyticsFragmentBinding.tabLayout.addTab(analyticsFragmentBinding.tabLayout.newTab().setText("Leu"));
+
+        analyticsFragmentBinding.analyticsToolbar.setTitleTextAppearance(analyticsFragment.getContext(), R.style.Widget_AppCompat_ActionBar_Solid);
+        analyticsFragmentBinding.analyticsToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
 
     }
 
@@ -44,14 +73,34 @@ public class AnalyticsViewModel {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void backListener(){
+        analyticsFragmentBinding.analyticsToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.backPressedAnalytics("homeF");
+            }
+        });
+    }
 
-    public void initLinearGraph(){
+    public void initLinearGraph(List<TestPOJO> list){
+        float sumExp = 0;
+        float sumInc = 0;
+
+        for (TestPOJO budgetPOJO : list){
+            sumExp += budgetPOJO.getExpAmount();
+            sumInc += budgetPOJO.getIncAmount();
+        }
+
         List<DataModel> dataList = new ArrayList<>();
 
-        dataList.add(new DataModel("Income", "#d291bc", 100));
+        dataList.add(new DataModel("Income", "#d291bc", (int)sumInc));
         dataList.add(new DataModel("Two2", "#ffffff", 5));
-        dataList.add(new DataModel("Expense", "#1b6ca8", 250));
-        analyticsFragmentBinding.incomeVsExpense.setData(dataList,355);
+        dataList.add(new DataModel("Expense", "#1b6ca8", (int)sumExp));
+        analyticsFragmentBinding.tvAnalyticsIncome.setText(String.valueOf(sumInc));
+        analyticsFragmentBinding.tvAnalyticsExpense.setText(String.valueOf(sumExp));
+
+        analyticsFragmentBinding.incomeVsExpense.setData(dataList,(int)sumExp+sumInc);
     }
 
     public void initCubicLineChart(){
@@ -140,5 +189,93 @@ public class AnalyticsViewModel {
 
         // don't forget to refresh the drawing
         analyticsFragmentBinding.overallAnalytics.invalidate();
+    }
+
+    private void initPieChart(List<BudgetPOJO> list){
+        float sum = 0;
+        for (BudgetPOJO budgetPOJO : list){
+            sum += budgetPOJO.getAmountSum();
+        }
+
+
+
+        analyticsFragmentBinding.pieChart.setUsePercentValues(true);
+        analyticsFragmentBinding.pieChart.getDescription().setEnabled(false);
+        analyticsFragmentBinding.pieChart.setExtraOffsets(5,10,5,5);
+
+        analyticsFragmentBinding.pieChart.setDragDecelerationFrictionCoef(0.99f);
+
+        analyticsFragmentBinding.pieChart.setDrawHoleEnabled(true);
+        analyticsFragmentBinding.pieChart.setHoleColor(Color.WHITE);
+        analyticsFragmentBinding.pieChart.setTransparentCircleRadius(60f);
+
+        ArrayList<PieEntry> yValues = new ArrayList<>();
+
+        yValues.add(new PieEntry((list.get(2).getAmountSum()/sum)*100,"Euro"));
+        yValues.add(new PieEntry((list.get(1).getAmountSum()/sum)*100,"Leu"));
+        yValues.add(new PieEntry((list.get(0).getAmountSum()/sum)*100,"Dollar"));
+        analyticsFragmentBinding.pieChart.animateY(1000, Easing.EaseInOutCubic);
+
+        PieDataSet dataSet = new PieDataSet(yValues,"Currency budgets");
+        dataSet.setSliceSpace(1.5f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(ColorTemplate.PASTEL_COLORS);
+
+        PieData data = new PieData((dataSet));
+        data.setValueTextSize(9f);
+        data.setValueTextColor(Color.WHITE);
+
+        analyticsFragmentBinding.pieChart.setData(data);
+
+    }
+
+    public void getDataForPieChart(){
+        Single<List<BudgetPOJO>> single = budgetMethods.getAllBudgetsAmount(StaticVar.USER_ID);
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<BudgetPOJO>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<BudgetPOJO> budgetPOJOS) {
+                        initPieChart(budgetPOJOS);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+    }
+
+    public void getDataForLinearGraph(){
+        Single<List<TestPOJO>> single = budgetMethods.getAllExpenseIncome2(0,StaticVar.USER_ID);
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<TestPOJO>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<TestPOJO> testPOJOS) {
+                        initLinearGraph(testPOJOS);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Test",e.getMessage());
+                    }
+                });
+    }
+
+    private void openDB(){
+        BudgetDAO budgetDAO = AppRoomDatabase.getInstance(analyticsFragment.getContext().getApplicationContext()).getBudgetDao();
+        budgetMethods = BudgetMethods.getInstance(budgetDAO);
+
     }
 }
