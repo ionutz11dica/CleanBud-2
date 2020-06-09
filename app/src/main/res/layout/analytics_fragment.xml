@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:background="#f4f4f4"
+            android:layout_height="match_parent">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/analytics_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleTextColor="#e4e4e4"
+                app:title="Analytics"
+                android:layout_marginTop="-1dp"
+                android:background="@drawable/gradient1"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                />
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/gradient2"
+                app:tabMode="scrollable"
+                app:tabBackground="@drawable/tab_layout_selector"
+                app:tabSelectedTextColor="#888888"
+                app:tabPaddingStart="16dp"
+                app:tabPaddingEnd="16dp"
+                app:tabIndicatorHeight="0dp"
+                app:tabRippleColor="@null"
+                app:tabTextAppearance="@style/TabTextAppearance"/>
+
+            <LinearLayout
+
+                android:layout_margin="10dp"
+                android:elevation="6dp"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Overview"
+                    android:textStyle="bold"
+                    android:textSize="16dp"/>
+                
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_analytics_income"
+                        android:layout_width="0dp"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:text="25.555k"
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textColor="#d291bc"
+                        android:layout_weight="0.49"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#888888"
+                        android:layout_weight="0.002"/>
+
+                    <TextView
+                        android:id="@+id/tv_analytics_expense"
+                        android:layout_width="0dp"
+                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="13dp"
+                        android:text="25.555k"
+
+                        android:textAlignment="center"
+                        android:textStyle="bold"
+                        android:textColor="#1b6ca8"
+                        android:layout_weight="0.49"/>
+
+                </LinearLayout>
+
+
+                <com.broooapps.lineargraphview2.LinearGraphView
+                    android:id="@+id/income_Vs_expense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    app:lgv_border_color="#99000000"
+                    app:lgv_border_anim_duration="1000"
+               />
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                   <View
+                       android:layout_width="12dp"
+                       android:elevation="2dp"
+                       android:layout_gravity="center"
+                       android:layout_marginStart="12dp"
+                       android:background="#d291bc"
+                       android:layout_height="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:text="Income"/>
+
+                    <View
+                        android:layout_width="12dp"
+                        android:elevation="2dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="12dp"
+                        android:background="#1b6ca8"
+                        android:layout_height="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:text="Expense"/>
+                </LinearLayout>
+                
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_margin="12dp"
+                android:orientation="vertical"
+                android:elevation="6dp"
+                android:layout_height="280dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:text="Overall"
+                        android:textStyle="bold"
+                        android:textSize="16dp"/>
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabLayout_overall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+
+                        android:background="@drawable/gradient2"
+                        app:tabBackground="@drawable/tab_layout_selector"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabMode="scrollable"
+                        app:tabPaddingEnd="16dp"
+                        app:tabPaddingStart="16dp"
+                        app:tabRippleColor="@null"
+                        app:tabSelectedTextColor="#888888"
+                        app:tabTextAppearance="@style/TabTextAppearance" />
+
+                </LinearLayout>
+
+
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/overall_analytics"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="195dp" />
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="12dp"
+                        android:elevation="2dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="12dp"
+                        android:background="#d291bc"
+                        android:layout_height="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:text="Income"/>
+
+                    <View
+                        android:layout_width="12dp"
+                        android:elevation="2dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="12dp"
+                        android:background="#1b6ca8"
+                        android:layout_height="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp"
+                        android:text="Expense"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="12dp"
+                android:elevation="6dp"
+                android:background="@color/white"
+                android:layout_height="wrap_content">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/chart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/seekBar1" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </ScrollView>
+</layout>

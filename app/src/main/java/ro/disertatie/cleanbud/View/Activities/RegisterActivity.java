@@ -67,8 +67,9 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setEmail(etEmail.getText().toString());
                     user.setMobilePhone(etMobile.getText().toString());
                     user.setPassword(etPassword.getText().toString());
+                    StaticVar.NAME_USER = user.getName();
 
-                   userMethods.insertUser(user);
+                    userMethods.insertUser(user);
 
                     Intent intent = new Intent(getApplicationContext(), StartActivity.class);
                     intent.putExtra(Constants.USER_KEY,user);

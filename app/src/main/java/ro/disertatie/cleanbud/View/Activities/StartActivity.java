@@ -30,6 +30,7 @@ import ro.disertatie.cleanbud.View.Database.DAO.EconomyBudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAO.UserDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
+import ro.disertatie.cleanbud.View.Fragments.AnalyticsFragment;
 import ro.disertatie.cleanbud.View.Fragments.BudgetFragments;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
 import ro.disertatie.cleanbud.View.Fragments.FavoriteHotelsFragment;
@@ -56,6 +57,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     Fragment hotelsFragment;
     Fragment hotelsDetailsFragment;
     Fragment favoriteFragment;
+    Fragment analyticsFragment;
 
     FragmentManager fm ;
     Fragment active;
@@ -115,6 +117,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         hotelsFragment = new HotelsFragment();
         hotelsDetailsFragment = new HotelDetailsFragment();
         favoriteFragment = new FavoriteHotelsFragment();
+        analyticsFragment = new AnalyticsFragment();
 
         fm = getSupportFragmentManager();
 
@@ -128,6 +131,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         fm.beginTransaction().add(R.id.fragment_container,hotelsFragment,"hotelsF").hide(hotelsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,hotelsDetailsFragment,"hotelsDetailsF").hide(hotelsDetailsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,favoriteFragment,"favoriteF").hide(favoriteFragment).commit();
+        fm.beginTransaction().add(R.id.fragment_container,analyticsFragment,"analyticsF").hide(analyticsFragment).commit();
+
 
     }
 
@@ -148,6 +153,11 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
             case 3 : {
                 fm.beginTransaction().hide(active).show(currencyFragment).commit();
                 active = currencyFragment;
+                break;
+            }
+            case 4 : {
+                fm.beginTransaction().hide(active).show(analyticsFragment).commit();
+                active = analyticsFragment;
                 break;
             }
 

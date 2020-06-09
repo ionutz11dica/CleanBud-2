@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,8 +52,16 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.cv_myTrips)
     CardView cv_myTrips;
 
+    @BindView(R.id.cv_analytics)
+    CardView cvAnalytics;
+
     @BindView(R.id.home_toolbar)
     Toolbar toolbar;
+
+
+
+    @BindView(R.id.tv_home_user)
+    TextView textView;
 
     private EconomyBudgetMethods economyBudgetMethods;
     private EconomyBudgetDAO economyBudgetDAO;
@@ -63,11 +72,13 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment,container,false);
         ButterKnife.bind(this,view);
         toolbar.setTitle("Home");
+        textView.setText(StaticVar.NAME_USER+"'s budget");
         toolbar.setTitleTextAppearance(getContext(),R.style.Widget_AppCompat_ActionBar_Solid);
         openDb();
         currencyClick();
         budgetsClick();
         tripsClick();
+        analyticsClick();
         return view;
     }
 
@@ -87,6 +98,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.onHomeButtonsPressed(2);
+            }
+        });
+    }
+
+    private void analyticsClick(){
+        cvAnalytics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onHomeButtonsPressed(4);
             }
         });
     }

@@ -6,9 +6,6 @@ import android.content.Context;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
-
-import ro.disertatie.cleanbud.View.Database.DAOMethods.CurrencyMethods;
 
 @Entity(tableName = "currency")
 public class Currency {

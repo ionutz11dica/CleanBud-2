@@ -197,6 +197,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public synchronized void onSuccess(User user) {
                         StaticVar.USER_ID = user.getUserId();
+                        StaticVar.NAME_USER = user.getName();
+
                         startActivity(intent);
                     }
 
@@ -214,7 +216,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     void verifyLoginFromDbGoogleAccount(final GoogleSignInAccount account) {
         final User user = new User();
         user.setEmail(account.getEmail());
-
+        user.setName(account.getGivenName());
+        StaticVar.NAME_USER = account.getGivenName();
         final Intent intent = new Intent(getApplicationContext(),StartActivity.class);
 
 

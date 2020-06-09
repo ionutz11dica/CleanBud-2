@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "ro.disertatie.cleanbud"
-        minSdkVersion 19
+        minSdkVersion 22
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -120,4 +120,10 @@ dependencies {
 
     //Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+
+    implementation 'com.github.swapnil1104:LinearGraphView:0.0.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+
 }

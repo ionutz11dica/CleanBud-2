@@ -9,7 +9,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +31,15 @@ import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Activities.BudgetCreatorActivity;
 import ro.disertatie.cleanbud.View.Adapter.BudgetTypeRecyclerViewAdapter;
+import ro.disertatie.cleanbud.View.Adapter.SpinnerAdapter;
 import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
 import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.CurrencyDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.BudgetMethods;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.CurrencyMethods;
 import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Models.BudgetType;
+import ro.disertatie.cleanbud.View.Models.Currency;
 import ro.disertatie.cleanbud.View.Models.User;
 import ro.disertatie.cleanbud.View.Uitility.Utility;
 import ro.disertatie.cleanbud.View.Utils.SpinnerClass;
@@ -50,6 +53,8 @@ public class BudgetCreatorViewModel {
     private ActivityBudgetCreatorBinding activityBudgetCreatorBinding;
     private BudgetTypeRecyclerViewAdapter adapterBud;
     private BudgetMethods budgetMethods;
+    private CurrencyMethods currencyMethods;
+
     private List<BudgetType> budgetTypes = new ArrayList<>();
 
     public BudgetCreatorViewModel(BudgetCreatorActivity budgetCreatorActivity, ActivityBudgetCreatorBinding activityBudgetCreatorBinding) {
@@ -87,12 +92,31 @@ public class BudgetCreatorViewModel {
 
 
     public void setAdapterSpinner(){
-        List<SpinnerClass> spinnerClassList = new ArrayList<>();
-        spinnerClassList.add(new SpinnerClass(R.drawable.ic_write,"In Progress"));
-        spinnerClassList.add(new SpinnerClass(R.drawable.ic_paid,"Paid"));
+        Single<List<Currency>> single = currencyMethods.getCurrencies();
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Currency>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Currency> currencies) {
+                        activityBudgetCreatorBinding.currencySpn.setAdapter(new SpinnerAdapter(budgetCreatorActivity,R.layout.row_spinner,currencies));
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
 
 
     }
+
+
 
 
     public void setDescriptionBudget(){
@@ -139,6 +163,8 @@ public class BudgetCreatorViewModel {
                     budget.setBudgetTypeId(budgetTypes.get(budgetCreatorActivity.selectedBudgetType).getBudgetTypeId());
                     budget.setDate(Calendar.getInstance().getTime());
                     budget.setUserId(StaticVar.USER_ID);
+                    budget.setCurrencyId(activityBudgetCreatorBinding.currencySpn.getSelectedItemPosition());
+
                     budgetMethods.insertBudget(budget);
                     intent.putExtra(ADD_BUDGET_KEY,budget);
                     budgetCreatorActivity.setResult(Activity.RESULT_OK,intent);
@@ -184,5 +210,7 @@ public class BudgetCreatorViewModel {
     private void openDB(){
         BudgetDAO budgetDAO = AppRoomDatabase.getInstance(budgetCreatorActivity.getApplicationContext()).getBudgetDao();
         budgetMethods = BudgetMethods.getInstance(budgetDAO);
+        CurrencyDAO currencyDAO = AppRoomDatabase.getInstance(budgetCreatorActivity.getApplicationContext()).currencyDAO();
+        currencyMethods = CurrencyMethods.getInstance(currencyDAO);
     }
 }

@@ -43,7 +43,7 @@ public class RecordBudgetAdapter extends BaseAdapter {
 
         this.context = context;
         this.protocols = protocols;
-        Collections.shuffle(this.protocols);
+//        Collections.shuffle(this.protocols);
     }
 
 
@@ -95,7 +95,7 @@ public class RecordBudgetAdapter extends BaseAdapter {
             titleRecord.setText(expense.getTitleExpense());
             dateRecord.setText(simpleDateFormat.format(expense.getExpenseDate()));
             //tipul monedei trb adaugat in bd
-            sumRecord.setText("-Lei "+String.format("%.2f",expense.getAmountExpense()));
+            sumRecord.setText("- "+String.format("%.2f",expense.getAmountExpense()));
 
 
         }else if(protocols.get(position) instanceof Income) {
@@ -106,7 +106,7 @@ public class RecordBudgetAdapter extends BaseAdapter {
 
             dateRecord.setText(simpleDateFormat.format(expense.getDateIncome()));
             //tipul monedei trb adaugat in bd
-            sumRecord.setText("+Lei "+String.format("%.2f",expense.getAmountIncome()));
+            sumRecord.setText("+ "+String.format("%.2f",expense.getAmountIncome()));
         }
 
 

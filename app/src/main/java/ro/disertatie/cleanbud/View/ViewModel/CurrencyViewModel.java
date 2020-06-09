@@ -28,6 +28,7 @@ import ro.disertatie.cleanbud.View.API.APIClient;
 import ro.disertatie.cleanbud.View.API.APIService;
 import ro.disertatie.cleanbud.View.Fragments.CurrencyFragment;
 import ro.disertatie.cleanbud.View.Utils.CurrencyApi;
+import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
 import ro.disertatie.cleanbud.databinding.CurrencyFragmentBinding;
 
 public class CurrencyViewModel {
@@ -38,7 +39,7 @@ public class CurrencyViewModel {
     private CurrencyMethods currencyMethods;
     private List<Currency> currencies = new ArrayList<>();
     private boolean isUSD = false;
-    float total = 1.0f;
+    private float total = 1.0f;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public CurrencyViewModel(CurrencyFragment currencyFragment, CurrencyFragmentBinding currencyFragmentBinding) {
@@ -61,6 +62,8 @@ public class CurrencyViewModel {
 
     private void getCurrencyRates() {
         Call<CurrencyApi> call =  apiService.getCurrencyRates();
+        ProgressDialogClass progressDialogClass = new ProgressDialogClass(currencyFragment.getActivity());
+        progressDialogClass.showDialog("Fetching data..","Please wait..");
         call.enqueue(new Callback<CurrencyApi>() {
             @SuppressLint("DefaultLocale")
             @Override
@@ -100,6 +103,7 @@ public class CurrencyViewModel {
                 currencies.add(currency);
 
                 currencyMethods.insertCurrency(currencies);
+                progressDialogClass.dismissDialog();
                 setInitialView(response.body().getDate());
             }
 

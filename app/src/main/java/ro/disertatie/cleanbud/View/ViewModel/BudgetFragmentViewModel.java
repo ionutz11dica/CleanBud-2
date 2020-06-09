@@ -323,6 +323,18 @@ public class BudgetFragmentViewModel {
             complexDetailsBinding.budgetToolbar.setTitle(budgetsList.get(cursorBudgets).getTitle());
             complexDetailsBinding.budgetSumTv.setText(String.valueOf(budgetsList.get(cursorBudgets).getCurrentAmount()));
             complexDetailsBinding.budgetLeftAmount.setText(String.valueOf(budgetsList.get(cursorBudgets).getInitialAmount()) +" initial");
+            switch (budgetsList.get(cursorBudgets).getCurrencyId()){
+                case 0:
+                    complexDetailsBinding.budgetCurrencyTv.setText("$");
+                    break;
+                case 1:
+                    complexDetailsBinding.budgetCurrencyTv.setText("LEI");
+                    break;
+                case 2:
+                    complexDetailsBinding.budgetCurrencyTv.setText("\u20ac");
+                    break;
+
+            }
 
 //        budgetFragmentBinding.layoutBudgetList.budgetCurrencyTv.setText(String.valueOf(budgetsList.get(cursorBudgets).getAmount()));
     }
