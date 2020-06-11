@@ -25,7 +25,9 @@ public class AnalyticsFragment extends Fragment {
         AnalyticsFragmentBinding analyticsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.analytics_fragment,container,false);
         analyticsViewModel = new AnalyticsViewModel(this,analyticsFragmentBinding);
         analyticsViewModel.getDataForPieChart();
-        analyticsViewModel.getDataForLinearGraph();
+        analyticsViewModel.getDataForLinearGraph(0);
+        analyticsViewModel.tabClick();
+        analyticsViewModel.getDataForCubicLineGraph();
         return analyticsFragmentBinding.getRoot();
     }
 

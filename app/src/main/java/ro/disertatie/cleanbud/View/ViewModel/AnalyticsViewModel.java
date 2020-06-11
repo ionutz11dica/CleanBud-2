@@ -18,11 +18,11 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,9 +33,9 @@ import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
 import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.BudgetMethods;
 import ro.disertatie.cleanbud.View.Fragments.AnalyticsFragment;
-import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Models.BudgetPOJO;
-import ro.disertatie.cleanbud.View.Models.TestPOJO;
+import ro.disertatie.cleanbud.View.Models.ExpensePOJO;
+import ro.disertatie.cleanbud.View.Models.IncomeExpensePOJO;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.databinding.AnalyticsFragmentBinding;
 
@@ -67,6 +67,38 @@ public class AnalyticsViewModel {
 
     }
 
+    public void tabClick(){
+        analyticsFragmentBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+                    case 0: {
+                        getDataForLinearGraph(0);
+                        break;
+                    }
+                    case 1: {
+                        getDataForLinearGraph(2);
+                        break;
+                    }
+                    case 2: {
+                        getDataForLinearGraph(1);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
     private void initTabLayoutOverall(){
         analyticsFragmentBinding.tabLayoutOverall.addTab(analyticsFragmentBinding.tabLayoutOverall.newTab().setText("Weekly"));
         analyticsFragmentBinding.tabLayoutOverall.addTab(analyticsFragmentBinding.tabLayoutOverall.newTab().setText("Monthly"));
@@ -83,11 +115,11 @@ public class AnalyticsViewModel {
         });
     }
 
-    public void initLinearGraph(List<TestPOJO> list){
+    public void initLinearGraph(List<IncomeExpensePOJO> list){
         float sumExp = 0;
         float sumInc = 0;
 
-        for (TestPOJO budgetPOJO : list){
+        for (IncomeExpensePOJO budgetPOJO : list){
             sumExp += budgetPOJO.getExpAmount();
             sumInc += budgetPOJO.getIncAmount();
         }
@@ -99,8 +131,10 @@ public class AnalyticsViewModel {
         dataList.add(new DataModel("Expense", "#1b6ca8", (int)sumExp));
         analyticsFragmentBinding.tvAnalyticsIncome.setText(String.valueOf(sumInc));
         analyticsFragmentBinding.tvAnalyticsExpense.setText(String.valueOf(sumExp));
+//        analyticsFragmentBinding.incomeVsExpense.
+        analyticsFragmentBinding.incomeVsExpense.setData(dataList,sumExp+sumInc+5);
 
-        analyticsFragmentBinding.incomeVsExpense.setData(dataList,(int)sumExp+sumInc);
+
     }
 
     public void initCubicLineChart(){
@@ -251,24 +285,50 @@ public class AnalyticsViewModel {
                 });
     }
 
-    public void getDataForLinearGraph(){
-        Single<List<TestPOJO>> single = budgetMethods.getAllExpenseIncome2(0,StaticVar.USER_ID);
+    public void getDataForLinearGraph(int currencyId){
+        Single<List<IncomeExpensePOJO>> single = budgetMethods.getAllExpenseIncome2(currencyId,StaticVar.USER_ID);
         single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<TestPOJO>>() {
+                .subscribe(new SingleObserver<List<IncomeExpensePOJO>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onSuccess(List<TestPOJO> testPOJOS) {
+                    public void onSuccess(List<IncomeExpensePOJO> testPOJOS) {
                         initLinearGraph(testPOJOS);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d("Test",e.getMessage());
+                    }
+                });
+    }
+
+
+    public void getDataForCubicLineGraph(){
+        Single<List<ExpensePOJO>> single = budgetMethods.getExpenseSumByDays(0, StaticVar.USER_ID);
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<ExpensePOJO>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<ExpensePOJO> list) {
+                        if(list.isEmpty()){
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                            Log.d("Test",e.getMessage());
                     }
                 });
     }

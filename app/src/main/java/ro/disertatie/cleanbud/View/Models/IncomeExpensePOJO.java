@@ -2,13 +2,11 @@ package ro.disertatie.cleanbud.View.Models;
 
 import java.io.Serializable;
 
-public class TestPOJO implements Serializable {
+public class IncomeExpensePOJO implements Serializable {
     private Integer budgetId;
     private float expAmount;
     private float incAmount;
 
-    public TestPOJO() {
-    }
 
     public Integer getBudgetId() {
         return budgetId;
