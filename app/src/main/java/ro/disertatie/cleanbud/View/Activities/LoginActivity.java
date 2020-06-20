@@ -1,7 +1,9 @@
 package ro.disertatie.cleanbud.View.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,10 @@ import ro.disertatie.cleanbud.View.Utils.CheckForNetwork;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
+import static ro.disertatie.cleanbud.View.Utils.Constants.EMAIL_PREF;
+import static ro.disertatie.cleanbud.View.Utils.Constants.PASSWORD_PREF;
+import static ro.disertatie.cleanbud.View.Utils.Constants.PREF_USER_LOGIN;
+
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
@@ -59,6 +65,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     UserDAO userDao;
     UserMethods userMethods;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -72,7 +80,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         ButterKnife.bind(this);
         openDb();
         initGoogleSignIn();
-
+        sharedPreferences = getSharedPreferences(PREF_USER_LOGIN, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        initLoginSharedPref();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +98,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
 
+    }
+
+    public void initLoginSharedPref(){
+        String email = sharedPreferences.getString(EMAIL_PREF,"");
+        String password = sharedPreferences.getString(PASSWORD_PREF,"");
+        etEmail.setText(email);
+        etPassword.setText(password);
+    }
+
+    private void saveInSharedPref(){
+        editor.putString(EMAIL_PREF,etEmail.getText().toString());
+        editor.putString(PASSWORD_PREF,etPassword.getText().toString());
+        editor.apply();
     }
 
     void initGoogleSignIn(){
@@ -108,7 +131,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     public void onLoginClick(View View){
+
+
         startActivity(new Intent(this,RegisterActivity.class));
+
         overridePendingTransition(R.anim.slide_in_right,R.anim.stay);
 
     }
@@ -177,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         final User userr = new User();
         userr.setEmail(etEmail.getText().toString());
         userr.setPassword(etPassword.getText().toString());
-
+        saveInSharedPref();
         final Intent intent = new Intent(getApplicationContext(),StartActivity.class);
 
         User user = new User();

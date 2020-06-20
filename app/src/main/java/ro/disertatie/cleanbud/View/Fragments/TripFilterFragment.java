@@ -1,12 +1,15 @@
 package ro.disertatie.cleanbud.View.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import ro.disertatie.cleanbud.R;
+import ro.disertatie.cleanbud.View.Fragments.Dialogs.CreateEconomyBudgetDialog;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
+import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.View.ViewModel.TripsFilterViewModel;
 import ro.disertatie.cleanbud.databinding.TripFilterFragmentBinding;
@@ -72,6 +77,17 @@ public class TripFilterFragment extends DialogFragment implements Toolbar.OnMenu
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK && data != null){
+            if (requestCode == Constants.REQUEST_EDIT_SAVING_BUDGET){
+                float amount = data.getFloatExtra(Constants.AMOUNT_SAVINGS_KEY,0);
+                tripsFilterViewModel.retrieveSavings(amount);
+            }
+        }
+    }
+
+    @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_main_reset:
@@ -79,6 +95,9 @@ public class TripFilterFragment extends DialogFragment implements Toolbar.OnMenu
                 return true;
             case R.id.menu_main_fav:
                 tripsFilterViewModel.getListener().onBackButtonPressedTripFilter("favoriteF");
+                return true;
+            case R.id.menu_main_edit:
+                tripsFilterViewModel.editSavings();
                 return true;
         }
 

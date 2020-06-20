@@ -227,7 +227,7 @@ public class AnalyticsViewModel {
 
     private void initPieChart(List<BudgetPOJO> list){
         float sum = 0;
-        for (BudgetPOJO budgetPOJO : list){
+        for (BudgetPOJO budgetPOJO : list) {
             sum += budgetPOJO.getAmountSum();
         }
 

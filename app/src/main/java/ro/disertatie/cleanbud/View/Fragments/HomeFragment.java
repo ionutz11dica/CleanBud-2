@@ -55,6 +55,9 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.cv_analytics)
     CardView cvAnalytics;
 
+    @BindView(R.id.cv_mySettings)
+    CardView cv_mySettings;
+
     @BindView(R.id.home_toolbar)
     Toolbar toolbar;
 
@@ -79,6 +82,7 @@ public class HomeFragment extends Fragment {
         budgetsClick();
         tripsClick();
         analyticsClick();
+        settingsClick();
         return view;
     }
 
@@ -107,6 +111,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listener.onHomeButtonsPressed(4);
+            }
+        });
+    }
+
+    private void settingsClick(){
+        cvAnalytics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onHomeButtonsPressed(5);
             }
         });
     }

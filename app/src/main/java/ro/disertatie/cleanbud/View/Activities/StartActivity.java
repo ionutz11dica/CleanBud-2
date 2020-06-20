@@ -38,6 +38,7 @@ import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelDetailsFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelsFragment;
 import ro.disertatie.cleanbud.View.Fragments.ReportsFragment;
+import ro.disertatie.cleanbud.View.Fragments.SettingsFragment;
 import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
 import ro.disertatie.cleanbud.View.Models.Trip;
@@ -48,7 +49,7 @@ import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
 
 public class StartActivity extends AppCompatActivity implements HomeFragment.OnHomeFragmentInteractionListener, CurrencyFragment.CurrencyFragmentInteractionListener, BudgetFragments.BudgetInteractionListener,
         ReportsFragment.ReportInteractionListener, TripFilterFragment.TripFilterListener, HotelsFragment.HotelsListener, HotelDetailsFragment.HotelsDetailsListener, FavoriteHotelsFragment.FavoriteHotelsListener
-        , AnalyticsFragment.AnalyticsListener {
+        , AnalyticsFragment.AnalyticsListener, SettingsFragment.SettingsListener {
 
     Fragment homeFragment;
     Fragment currencyFragment;
@@ -59,6 +60,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
     Fragment hotelsDetailsFragment;
     Fragment favoriteFragment;
     Fragment analyticsFragment;
+    Fragment settingFragment;
 
     FragmentManager fm ;
     Fragment active;
@@ -119,6 +121,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         hotelsDetailsFragment = new HotelDetailsFragment();
         favoriteFragment = new FavoriteHotelsFragment();
         analyticsFragment = new AnalyticsFragment();
+        settingFragment = new SettingsFragment();
 
         fm = getSupportFragmentManager();
 
@@ -133,7 +136,7 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         fm.beginTransaction().add(R.id.fragment_container,hotelsDetailsFragment,"hotelsDetailsF").hide(hotelsDetailsFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,favoriteFragment,"favoriteF").hide(favoriteFragment).commit();
         fm.beginTransaction().add(R.id.fragment_container,analyticsFragment,"analyticsF").hide(analyticsFragment).commit();
-
+        fm.beginTransaction().add(R.id.fragment_container,settingFragment,"settingsF").hide(settingFragment).commit();
 
     }
 
@@ -161,6 +164,12 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
                 active = analyticsFragment;
                 break;
             }
+            case 5 : {
+                fm.beginTransaction().hide(active).show(settingFragment).commit();
+                active = settingFragment;
+                break;
+            }
+
 
 
         }
@@ -259,6 +268,12 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
 
     @Override
     public void backPressedAnalytics(String string) {
+        fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
+        active = fm.findFragmentByTag(string);
+    }
+
+    @Override
+    public void backButtonSettings(String string) {
         fm.beginTransaction().hide(active).show(Objects.requireNonNull(fm.findFragmentByTag(string))).commit();
         active = fm.findFragmentByTag(string);
     }

@@ -1,6 +1,8 @@
 package ro.disertatie.cleanbud.View.ViewModel;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -668,10 +670,12 @@ public class BudgetFragmentViewModel {
 
         File file = new File(Environment.getExternalStorageDirectory(), "/" + filename);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        SharedPreferences sharedPreferences = budgetFragments.getActivity().getSharedPreferences(Constants.PREF_USER_LOGIN, Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString(Constants.EMAIL_PREF,"test@yahoo.com");
         shareIntent.setType("application/pdf");
-        shareIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "nicolae.ionut9711@gmail.com" });
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "test" );
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "test");
+        shareIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { email });
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Report Expenses-Incomes" );
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "You can find the information about your budget transactions in the attached PDF file.");
         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
 
 

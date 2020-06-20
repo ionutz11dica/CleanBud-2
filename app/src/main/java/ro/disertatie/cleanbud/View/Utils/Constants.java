@@ -33,4 +33,11 @@ public interface Constants {
     String API_KEY = "785a1973a8090819c65936a003311745";
     String METRIC = "metric";
     String CNT  = "25";
+
+    String PREF_USER_LOGIN = "prefUser";
+
+    String EMAIL_PREF = "emailKey";
+    String PASSWORD_PREF = "passwordKey";
+    String AMOUNT_SAVINGS_KEY = "amountsavingKey";
+    int REQUEST_EDIT_SAVING_BUDGET = 200;
 }

@@ -22,6 +22,7 @@ import ro.disertatie.cleanbud.View.Database.DAO.EconomyBudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
 import ro.disertatie.cleanbud.View.Models.EconomyBudget;
 import ro.disertatie.cleanbud.View.Uitility.Utility;
+import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
 public class CreateEconomyBudgetDialog extends DialogFragment {
@@ -46,6 +47,16 @@ public class CreateEconomyBudgetDialog extends DialogFragment {
         pickerVals = new String[]{"5%","10%","15%"};
         picker1.setDisplayedValues(pickerVals);
         economyBudget = new EconomyBudget();
+        economyBudget.setPercentage(5);
+
+        Bundle bundle = getArguments();
+        if(bundle!=null){
+            float amount = bundle.getFloat(Constants.AMOUNT_SAVINGS_KEY, 0);
+            if(amount != 0){
+                tieAmount.setText(String.valueOf(amount));
+            }
+        }
+
         picker1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -74,6 +85,7 @@ public class CreateEconomyBudgetDialog extends DialogFragment {
                     economyBudget.setUserId(StaticVar.USER_ID);
                     economyBudgetMethods.insertEconomyBudget(economyBudget);
                     Intent intent = new Intent();
+                    intent.putExtra(Constants.AMOUNT_SAVINGS_KEY,economyBudget.getAmount());
                   getTargetFragment().onActivityResult(
                    getTargetRequestCode(), Activity.RESULT_OK, intent);
                    dismiss();

@@ -127,11 +127,11 @@ public class BudgetCreatorViewModel {
 
     public void setBudgetTypeAdapter(){
 
-        budgetTypes.add(new BudgetType(1,"Long Term Bud.",R.drawable.ic_long_term));
-        budgetTypes.add(new BudgetType(2,"Short Term Bud.",R.drawable.ic_short));
-        budgetTypes.add(new BudgetType(3,"Flexible  Bud.",R.drawable.ic_flexible));
-        budgetTypes.add(new BudgetType(4,"Financial Bud.",R.drawable.ic_help));
-        budgetTypes.add(new BudgetType(5,"Expense Bud.",R.drawable.ic_budget_expense));
+        budgetTypes.add(new BudgetType(1,"Long Term Budget",R.drawable.ic_long_term));
+        budgetTypes.add(new BudgetType(2,"Short Term Budget",R.drawable.ic_short));
+        budgetTypes.add(new BudgetType(3,"Flexible  Budget",R.drawable.ic_flexible));
+        budgetTypes.add(new BudgetType(4,"Financial Budget",R.drawable.ic_help));
+        budgetTypes.add(new BudgetType(5,"Expense Budget",R.drawable.ic_budget_expense));
 
         List<Integer> colors = new ArrayList<>();
         colors.add(Color.parseColor("#e3b04b"));

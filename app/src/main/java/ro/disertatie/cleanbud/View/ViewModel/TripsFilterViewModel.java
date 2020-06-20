@@ -12,10 +12,13 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -34,9 +37,12 @@ import ro.disertatie.cleanbud.View.API.APIService;
 import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
 import ro.disertatie.cleanbud.View.Database.DAO.EconomyBudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
+import ro.disertatie.cleanbud.View.Fragments.Dialogs.CreateEconomyBudgetDialog;
+import ro.disertatie.cleanbud.View.Fragments.HomeFragment;
 import ro.disertatie.cleanbud.View.Fragments.HotelsFragment;
 import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.DataHotel;
+import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Location.DataLocation;
 import ro.disertatie.cleanbud.View.Uitility.Utility;
 import ro.disertatie.cleanbud.View.Utils.Constants;
@@ -132,10 +138,21 @@ public class TripsFilterViewModel {
             });
     }
 
-    private void retrieveSavings(Float aFloat) {
+
+    public void retrieveSavings(Float aFloat) {
         savingAmount = aFloat;
         initProgressPrice(Math.round(aFloat*0.2f),Math.round(aFloat));
         tripFilterFragmentBinding.tvSavingTotal.setText(Math.round(aFloat)+"$");
+    }
+
+    public void editSavings(){
+        CreateEconomyBudgetDialog createEconomyBudgetDialog = new CreateEconomyBudgetDialog();
+        Bundle bundle = new Bundle();
+
+        createEconomyBudgetDialog.setTargetFragment(tripFilterFragment,Constants.REQUEST_EDIT_SAVING_BUDGET);
+        bundle.putFloat(Constants.AMOUNT_SAVINGS_KEY,savingAmount);
+        createEconomyBudgetDialog.setArguments(bundle);
+        createEconomyBudgetDialog.show(tripFilterFragment.getActivity().getSupportFragmentManager(),"budgSavings");
     }
 
 
@@ -247,7 +264,31 @@ public class TripsFilterViewModel {
                                     @Override
                                     public void onResponse(Call<DataHotel> call, Response<DataHotel> response) {
                                         if (response.code() == 200) {
-                                            listener.passDataToHotels(response.body().getList(),"hotelsF");
+                                            ArrayList<ResultObjectHotel> resultObjectHotels = new ArrayList<>();
+
+                                            for(ResultObjectHotel res : response.body().getList()){
+                                                String[] str = res.getPrice().split("-");
+                                                int min = 0;
+                                                int max = 0;
+                                                for(String string : str){
+
+                                                   string = string.replace("$","");
+                                                   string = string.replace(" ","");
+                                                   string = string.replace(",","");
+                                                    if(min == 0){
+                                                        min = Integer.parseInt(string);
+                                                    }else{
+                                                        max = Integer.parseInt(string);
+
+                                                    }
+                                                }
+
+                                                if(max <= price){
+                                                    resultObjectHotels.add(res);
+                                                }
+
+                                            }
+                                            listener.passDataToHotels(resultObjectHotels,"hotelsF");
 
                                             dialogClass.dismissDialog();
                                         }
