@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import ro.disertatie.cleanbud.View.Database.DAO.EconomyBudgetDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.EconomyBudgetMethods;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.UserMethods;
 import ro.disertatie.cleanbud.View.Fragments.Dialogs.CreateEconomyBudgetDialog;
+import ro.disertatie.cleanbud.View.Services.Alarm;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 
@@ -116,7 +118,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void settingsClick(){
-        cvAnalytics.setOnClickListener(new View.OnClickListener() {
+        cv_mySettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onHomeButtonsPressed(5);
@@ -197,7 +199,12 @@ public class HomeFragment extends Fragment {
         if(resultCode == Activity.RESULT_OK && data != null){
             if (requestCode == Constants.REQUEST_CREATE_SAVING_BUDGET){
                 Toast.makeText(getContext(),"S-a creat",Toast.LENGTH_LONG).show();
-            }
+                if(getActivity()!=null && getContext() !=null) {
+                    Alarm alarm = new Alarm();
+                    this.getActivity().registerReceiver(alarm, new IntentFilter());
+                    alarm.setAlarm(this.getContext());
+                }
+             }
         }
     }
 

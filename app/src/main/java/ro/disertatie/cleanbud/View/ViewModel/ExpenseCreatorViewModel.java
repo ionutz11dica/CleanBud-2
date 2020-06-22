@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,44 +43,58 @@ public class ExpenseCreatorViewModel {
     private ExpenseMethods expenseMethods;
     private boolean isUpdate = false;
     private int expenseId = 0;
+    private Uri imgUri;
 
     public ExpenseCreatorViewModel(ExpenseCreatorActivity expenseCreatorActivity, ActivityExpenseCreatorBinding activityExpenseCreatorBinding) {
         this.expenseCreatorActivity = expenseCreatorActivity;
         this.activityExpenseCreatorBinding = activityExpenseCreatorBinding;
         openDB();
         setPickerDate();
+        selectImageFromGallery();
     }
 
     public void parseDataFromScanner(String scannedData){
 
-        String[] training = new String[]{"TOTAL","DATA","SUBTOTAL","DATE", "TOTAL LEI","NUMERAR","NUMERAR LEI"};
         String[] rows = scannedData.split("\n");
-        String regex = "([0-9]{2})-([0-9]{2})-([0-9]{4})"; //for dates format
+        String regex = "([0-9]{2})/([0-9]{2})/([0-9]{4})"; //for dates format
         Pattern p = Pattern.compile("[-]?[0-9]*\\.?,?[0-9]+"); // for float numbers
         Matcher matcher;
+        boolean isFound = false;
         for(int i = 0;i <rows.length;i++){
 
-            String[] splits = rows[0].split("\n");
-
-            for(int k=0;k<splits.length;k++){
-                matcher = Pattern.compile(regex).matcher(splits[k]);
+                matcher = Pattern.compile(regex).matcher(rows[i]);
                 if(matcher.find()){
                     StringBuilder sb = new StringBuilder();
-                    sb.append(matcher.group(1)).append("-");
-                    sb.append(matcher.group(2)).append("-");
+                    sb.append(matcher.group(1)).append(",");
+                    sb.append(matcher.group(2)).append(",");
                     sb.append(matcher.group(3));
                     activityExpenseCreatorBinding.tvDateExpense.setText(sb.toString());
                 }
-            }
+                if((" "+rows[i]).contains(" TOTAL ")){
+                    String str = rows[i].replace(" ","");
+                    String strNext = str.replace(",",".");
+
+                    matcher = p.matcher(strNext);
+                    if(matcher.find() && !isFound){
+                        String s = matcher.group();
+                        activityExpenseCreatorBinding.etSumExpense.setText(s);
+                        isFound = true;
+                    }
+                }
 
         }
 
     }
 
+    public Uri getImgUri() {
+        return imgUri;
+    }
+
+    public void setImgUri(Uri imgUri) {
+        this.imgUri = imgUri;
+    }
 
     private void updateDateLabel(){
-
-
         activityExpenseCreatorBinding.tvDateExpense.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -197,6 +213,18 @@ public class ExpenseCreatorViewModel {
         });
     }
 
+    private void selectImageFromGallery(){
+        activityExpenseCreatorBinding.imvReceipt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                expenseCreatorActivity.startActivityForResult(i, Constants.PICK_PHOTO_FOR_OCR);
+            }
+        });
+
+    }
+
     private Expense createExpense() throws ParseException {
         if (budgetId == -1 ||this.categId == -1 ){
             return null;
@@ -209,8 +237,12 @@ public class ExpenseCreatorViewModel {
         if(activityExpenseCreatorBinding.tvDateExpense.getText().toString().equals("dd,MM,yyyy")){
             expense.setExpenseDate(new Date());
         }else{
+            sdf = new SimpleDateFormat("dd,MM,yyyy");
             expense.setExpenseDate(sdf.parse(activityExpenseCreatorBinding.tvDateExpense.getText().toString()));
 
+        }
+        if(imgUri!=null){
+            expense.setImageUri(imgUri.toString());
         }
 
         expense.setExpenseCategoryId(categId);
@@ -230,6 +262,13 @@ public class ExpenseCreatorViewModel {
                 activityExpenseCreatorBinding.etTitleExpense.setText(expense.getTitleExpense());
                 for(int i =0 ;i < ExpenseCategory.populateExpenseTypes().length;i++){
                     activityExpenseCreatorBinding.tvExpenseCategory.setText(ExpenseCategory.populateExpenseTypes()[i].getTitleExpCategory());
+                }
+                if(expense.getImageUri()!=null) {
+                    try {
+                        activityExpenseCreatorBinding.imvReceipt.setImageBitmap(expenseCreatorActivity.decodeBitmapUri(expenseCreatorActivity.getApplicationContext(), Uri.parse(expense.getImageUri())));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 activityExpenseCreatorBinding.etSumExpense.setText(String.valueOf(expense.getAmountExpense()));
                 activityExpenseCreatorBinding.etExpenseDescription.setText(expense.getDescription());

@@ -13,6 +13,7 @@ import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Models.BudgetPOJO;
 import ro.disertatie.cleanbud.View.Models.ExpensePOJO;
 import ro.disertatie.cleanbud.View.Models.IncomeExpensePOJO;
+import ro.disertatie.cleanbud.View.Models.IncomePOJO;
 
 @Dao
 public interface BudgetDAO {
@@ -24,6 +25,9 @@ public interface BudgetDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertBudget(Budget... budgets);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertBudgetUpdated(List<Budget> budgets);
 
     @Update
     void updateBudget(Budget... budgets);
@@ -42,23 +46,33 @@ public interface BudgetDAO {
     Single<List<IncomeExpensePOJO>> getAllExpenseIncome2(Integer currencyId, Integer userId);
 
     @Query("SELECT b.*, e.expAmount, e.timestampExp FROM budget b " +
-            "LEFT JOIN ( SELECT budgetId, expenseDate AS timestampExp, SUM(amountExpense) AS expAmount FROM expense  GROUP BY timestampExp  ) e ON e.budgetId = b.budgetId " +
-            "WHERE  b.userId =:userId and currencyId =:currencyId")
-    Single<List<ExpensePOJO>> getExpenseSumByDays(Integer currencyId, Integer userId);
+            "LEFT JOIN ( SELECT budgetId, expenseDate AS timestampExp, SUM(amountExpense) AS expAmount FROM expense where expenseDate between datetime('now', '-30 days') AND datetime('now', 'localtime')  " +
+            "GROUP BY timestampExp  ) e ON e.budgetId = b.budgetId " +
+            "WHERE b.userId =:userId and currencyId =:currencyId")
+    Single<List<ExpensePOJO>> getExpenseMonthly(Integer currencyId, Integer userId);
+
+    @Query("SELECT b.*, e.expAmount, e.timestampExp FROM budget b " +
+            "LEFT JOIN ( SELECT budgetId, expenseDate AS timestampExp, SUM(amountExpense) AS expAmount FROM expense where expenseDate between datetime('now', '-7 days') AND datetime('now', 'localtime')  " +
+            "GROUP BY timestampExp  ) e ON e.budgetId = b.budgetId " +
+            "WHERE b.userId =:userId and currencyId =:currencyId")
+    Single<List<ExpensePOJO>> getExpenseWeekly(Integer currencyId, Integer userId);
 //
+//datetime('now', 'start of month') AND datetime('now', 'localtime')
+//    ('now','localtime','-30 days') AND date('now', 'localtime')";
 
-    @Query("SELECT b.*, i.expAmount, i.timestampExp FROM budget b " +
-            "LEFT JOIN ( SELECT budgetId, dateIncome AS timestampExp, SUM(amountIncome) AS expAmount FROM income  GROUP BY timestampExp  ) i ON i.budgetId = b.budgetId " +
-            "WHERE  b.userId =:userId and currencyId =:currencyId")
-    Single<List<ExpensePOJO>> getIncomeSumByDays(Integer currencyId, Integer userId);
+    @Query("SELECT b.*, i.incAmount, i.timestampExp FROM budget b " +
+            "LEFT JOIN ( SELECT budgetId, dateIncome AS timestampExp, SUM(amountIncome) AS incAmount FROM income where dateIncome between datetime('now', '-30 days') AND datetime('now', 'localtime')  " +
+            "GROUP BY timestampExp  ) i ON i.budgetId = b.budgetId " +
+            "WHERE b.userId =:userId and currencyId =:currencyId")
+    Single<List<IncomePOJO>> getIncomeMonthly(Integer currencyId, Integer userId);
 
 
+    @Query("SELECT b.*, i.incAmount, i.timestampExp FROM budget b " +
+            "LEFT JOIN ( SELECT budgetId, dateIncome AS timestampExp, SUM(amountIncome) AS incAmount FROM income where dateIncome between datetime('now', '-7 days') AND datetime('now', 'localtime')  " +
+            "GROUP BY timestampExp  ) i ON i.budgetId = b.budgetId " +
+            "WHERE b.userId =:userId and currencyId =:currencyId")
+    Single<List<IncomePOJO>> getIncomeWeekly(Integer currencyId, Integer userId);
 
 
-//    @Query("select sum(e.amountExpense) as expAmount, sum(i.amountIncome) as incAmount " +
-//            "from budget b" +
-//            " join expense e on b.budgetId=e.budgetId " +
-//            " join income i on b.budgetId = i.budgetId  and userId=:userId where currencyId =:currencyId")
-//    Single<List<TestPOJO>> getAllExpenseIncomeDate2(Integer currencyId,Integer userId);
 
 }

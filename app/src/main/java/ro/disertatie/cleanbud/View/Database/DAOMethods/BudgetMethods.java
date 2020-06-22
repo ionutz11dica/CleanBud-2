@@ -16,6 +16,7 @@ import ro.disertatie.cleanbud.View.Models.Budget;
 import ro.disertatie.cleanbud.View.Models.BudgetPOJO;
 import ro.disertatie.cleanbud.View.Models.ExpensePOJO;
 import ro.disertatie.cleanbud.View.Models.IncomeExpensePOJO;
+import ro.disertatie.cleanbud.View.Models.IncomePOJO;
 import timber.log.Timber;
 
 public class BudgetMethods implements BudgetDAO {
@@ -55,6 +56,31 @@ public class BudgetMethods implements BudgetDAO {
     @Override
     public void insertBudget(Budget... budgets) {
         Completable.fromAction(() -> budgetDAO.insertBudget(budgets))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d("Budget","Success");
+                        Timber.d("Successful");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Budget",e.getMessage());
+                        Timber.d(e);
+                    }
+                });
+    }
+
+    @Override
+    public void insertBudgetUpdated(List<Budget> budgets) {
+        Completable.fromAction(() -> budgetDAO.insertBudgetUpdated(budgets))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new CompletableObserver() {
@@ -140,13 +166,23 @@ public class BudgetMethods implements BudgetDAO {
     }
 
     @Override
-    public Single<List<ExpensePOJO>> getExpenseSumByDays(Integer currencyId, Integer userId) {
-        return budgetDAO.getExpenseSumByDays(currencyId,userId);
+    public Single<List<ExpensePOJO>> getExpenseMonthly(Integer currencyId, Integer userId) {
+        return budgetDAO.getExpenseMonthly(currencyId,userId);
     }
 
     @Override
-    public Single<List<ExpensePOJO>> getIncomeSumByDays(Integer currencyId, Integer userId) {
-        return budgetDAO.getIncomeSumByDays(currencyId,userId);
+    public Single<List<ExpensePOJO>> getExpenseWeekly(Integer currencyId, Integer userId) {
+        return budgetDAO.getExpenseWeekly(currencyId,userId);
+    }
+
+    @Override
+    public Single<List<IncomePOJO>> getIncomeMonthly(Integer currencyId, Integer userId) {
+        return budgetDAO.getIncomeMonthly(currencyId,userId);
+    }
+
+    @Override
+    public Single<List<IncomePOJO>> getIncomeWeekly(Integer currencyId, Integer userId) {
+        return budgetDAO.getIncomeWeekly(currencyId, userId);
     }
 
 //    @Override

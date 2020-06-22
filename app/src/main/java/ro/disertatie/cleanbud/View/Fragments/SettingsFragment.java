@@ -38,15 +38,7 @@ public class SettingsFragment extends Fragment {
 
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && data != null){
-            if (requestCode == Constants.REQUEST_BUDGET_CREATOR){
-                // ------ for complete
-            }
-        }
-    }
+
 
     @Override
     public void onAttach(@NotNull Context context) {

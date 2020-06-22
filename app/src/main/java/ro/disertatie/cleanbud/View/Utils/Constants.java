@@ -40,4 +40,11 @@ public interface Constants {
     String PASSWORD_PREF = "passwordKey";
     String AMOUNT_SAVINGS_KEY = "amountsavingKey";
     int REQUEST_EDIT_SAVING_BUDGET = 200;
+
+
+    String NOTIFICATION_PREF = "PrefNotify";
+    String NOTIFICATION_KEY = "notifyOnKey";
+
+    String USER_ID_KEY = "userIdKeyy";
+    int PICK_PHOTO_FOR_OCR = 301;
 }

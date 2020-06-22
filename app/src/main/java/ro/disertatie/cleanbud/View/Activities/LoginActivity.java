@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         user.setName(account.getGivenName());
         StaticVar.NAME_USER = account.getGivenName();
         final Intent intent = new Intent(getApplicationContext(),StartActivity.class);
-
+        intent.putExtra(Constants.USER_KEY,user);
 
         Single<User> userDb  = userMethods.verifyExistenceGoogleAccount(user.getEmail());
         userDb.subscribeOn(Schedulers.io())

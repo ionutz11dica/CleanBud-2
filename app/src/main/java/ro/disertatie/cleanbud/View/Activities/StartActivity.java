@@ -10,6 +10,8 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ import ro.disertatie.cleanbud.View.Fragments.TripFilterFragment;
 import ro.disertatie.cleanbud.View.Models.ApiModels.Hotels.ResultObjectHotel;
 import ro.disertatie.cleanbud.View.Models.Trip;
 import ro.disertatie.cleanbud.View.Models.User;
+import ro.disertatie.cleanbud.View.Services.Alarm;
 import ro.disertatie.cleanbud.View.Utils.Constants;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.View.View.ProgressDialogClass;
@@ -72,6 +75,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
 
     private EconomyBudgetMethods economyBudgetMethods;
     private EconomyBudgetDAO economyBudgetDAO;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -81,15 +86,24 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
         setContentView(R.layout.activity_start);
         ActivityCompat.requestPermissions(StartActivity.this, new
                 String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
+        sharedPreferences = getSharedPreferences(Constants.NOTIFICATION_PREF,MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         openDb();
+
 
          if(getIntent().hasExtra(Constants.USER_KEY)){
             User user = getIntent().getParcelableExtra(Constants.USER_KEY);
             ProgressDialogClass progressDialogClass = new ProgressDialogClass(this);
             progressDialogClass.showDialog("Fetching data..", "Please wait");
             if(user!=null){
-                Single<User> userDb  = userMethods.verifyAvailableAccount(user.getEmail(),user.getPassword());
+                Single<User> userDb;
+                if (user.getPassword() == null){
+                    userDb = userMethods.verifyExistenceGoogleAccount(user.getEmail());
+
+                }else{
+                    userDb = userMethods.verifyAvailableAccount(user.getEmail(),user.getPassword());
+                }
                 userDb.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new SingleObserver<User>() {
@@ -101,6 +115,8 @@ public class StartActivity extends AppCompatActivity implements HomeFragment.OnH
                             @Override
                             public synchronized void onSuccess(User user) {
                                 StaticVar.USER_ID = user.getUserId();
+                                editor.putInt(Constants.USER_ID_KEY,user.getUserId());
+                                editor.apply();
                                 progressDialogClass.dismissDialog();
                             }
 

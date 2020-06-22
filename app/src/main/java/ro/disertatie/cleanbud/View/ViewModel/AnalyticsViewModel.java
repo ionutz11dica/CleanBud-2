@@ -31,19 +31,30 @@ import io.reactivex.schedulers.Schedulers;
 import ro.disertatie.cleanbud.R;
 import ro.disertatie.cleanbud.View.Database.AppRoomDatabase;
 import ro.disertatie.cleanbud.View.Database.DAO.BudgetDAO;
+import ro.disertatie.cleanbud.View.Database.DAO.CurrencyDAO;
 import ro.disertatie.cleanbud.View.Database.DAOMethods.BudgetMethods;
+import ro.disertatie.cleanbud.View.Database.DAOMethods.CurrencyMethods;
 import ro.disertatie.cleanbud.View.Fragments.AnalyticsFragment;
 import ro.disertatie.cleanbud.View.Models.BudgetPOJO;
+import ro.disertatie.cleanbud.View.Models.Currency;
 import ro.disertatie.cleanbud.View.Models.ExpensePOJO;
 import ro.disertatie.cleanbud.View.Models.IncomeExpensePOJO;
+import ro.disertatie.cleanbud.View.Models.IncomePOJO;
 import ro.disertatie.cleanbud.View.Utils.StaticVar;
 import ro.disertatie.cleanbud.databinding.AnalyticsFragmentBinding;
+
+import static ro.disertatie.cleanbud.View.Models.ExpensePOJO.algorithmMonthlyWeekly;
 
 public class AnalyticsViewModel {
     private AnalyticsFragment analyticsFragment;
     private AnalyticsFragmentBinding analyticsFragmentBinding;
     private AnalyticsFragment.AnalyticsListener listener;
     private BudgetMethods budgetMethods;
+
+    private CurrencyMethods currencyMethods;
+    private int currency = 0;
+    private boolean isWeekly = true;
+    LineDataSet set1,set2;
 
     public AnalyticsViewModel(AnalyticsFragment analyticsFragment, AnalyticsFragmentBinding analyticsFragmentBinding) {
         this.analyticsFragment = analyticsFragment;
@@ -67,21 +78,78 @@ public class AnalyticsViewModel {
 
     }
 
+
+    public boolean isWeekly() {
+        return isWeekly;
+    }
+
     public void tabClick(){
         analyticsFragmentBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()){
                     case 0: {
+                        analyticsFragmentBinding.incomeVsExpense.setVisibility(View.GONE);
                         getDataForLinearGraph(0);
+                        currency = 0;
+                        if(isWeekly){
+                            getDataForCubicLineGraphWeekly();
+                        }else{
+                            getDataForCubicLineGraph();
+                        }
                         break;
                     }
                     case 1: {
+                        analyticsFragmentBinding.incomeVsExpense.setVisibility(View.GONE);
                         getDataForLinearGraph(2);
+                        currency = 2;
+                        if(isWeekly){
+                            getDataForCubicLineGraphWeekly();
+                        }else{
+                            getDataForCubicLineGraph();
+                        }
                         break;
                     }
                     case 2: {
+                        analyticsFragmentBinding.incomeVsExpense.setVisibility(View.GONE);
                         getDataForLinearGraph(1);
+                        currency = 1;
+                        if(isWeekly){
+                            getDataForCubicLineGraphWeekly();
+                        }else{
+                            getDataForCubicLineGraph();
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
+        analyticsFragmentBinding.tabLayoutOverall.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()){
+                    case 0: {
+                        getDataForCubicLineGraphWeekly();
+                        isWeekly = true;
+                        break;
+                    }
+                    case 1: {
+                        getDataForCubicLineGraph();
+                        isWeekly = false;
                         break;
                     }
                 }
@@ -103,6 +171,10 @@ public class AnalyticsViewModel {
         analyticsFragmentBinding.tabLayoutOverall.addTab(analyticsFragmentBinding.tabLayoutOverall.newTab().setText("Weekly"));
         analyticsFragmentBinding.tabLayoutOverall.addTab(analyticsFragmentBinding.tabLayoutOverall.newTab().setText("Monthly"));
 
+    }
+
+    public int getCurrency() {
+        return currency;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -133,7 +205,7 @@ public class AnalyticsViewModel {
         analyticsFragmentBinding.tvAnalyticsExpense.setText(String.valueOf(sumExp));
 //        analyticsFragmentBinding.incomeVsExpense.
         analyticsFragmentBinding.incomeVsExpense.setData(dataList,sumExp+sumInc+5);
-
+        analyticsFragmentBinding.incomeVsExpense.setVisibility(View.VISIBLE);
 
     }
 
@@ -150,7 +222,7 @@ public class AnalyticsViewModel {
         l.setEnabled(false);
 
         YAxis leftAxis = analyticsFragmentBinding.overallAnalytics.getAxisLeft();
-        leftAxis.setAxisMaximum(200);
+//        leftAxis.setAxisMaximum(200);
         leftAxis.setAxisMinimum(50);
         leftAxis.setDrawAxisLine(false);
         leftAxis.setDrawZeroLine(false);
@@ -159,47 +231,18 @@ public class AnalyticsViewModel {
         analyticsFragmentBinding.overallAnalytics.getAxisRight().setEnabled(false);
         analyticsFragmentBinding.overallAnalytics.getXAxis().setEnabled(false);
 
-        setData(20,10);
+
 
     }
 
-    private void setData(int count, float range){
-        ArrayList<Entry> yVals = new ArrayList<>();
-
-        for(int i = 0 ;i<count;i++){
-            if(i==5){
-                float val = (float) (0);
-                yVals.add(new Entry(i,val));
-            }else{
-                float val = (float) (Math.random()*range + 100);
-                yVals.add(new Entry(i,val));
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setIncomesPojo( List<IncomePOJO> incomePOJOS,int noDays){
+        for(IncomePOJO incomePOJO : incomePOJOS){
+            if(maxYvalInc < incomePOJO.getIncAmount()){
+                maxYvalInc = (int) incomePOJO.getIncAmount();
             }
-
         }
-
-
-        ArrayList<Entry> yVals1 = new ArrayList<>();
-
-        for(int i = 0 ;i<count;i++){
-            float val = (float) (Math.random()*range + 180);
-            yVals1.add(new Entry(i,val));
-        }
-
-        LineDataSet set1,set2;
-
-        set1 = new LineDataSet(yVals,"Data Set1");
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set1.setDrawCircles(false);
-        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        set1.setLineWidth(3f);
-        set1.setFillAlpha(255);
-        set1.setDrawFilled(true);
-        set1.setDrawValues(false);
-        set1.setFillColor(Color.parseColor("#1b6ca8"));
-        set1.setColor(Color.parseColor("#1b6ca8"));
-
-
-
+        ArrayList<Entry> yVals1 = IncomePOJO.algorithmMonthlyWeekly(incomePOJOS,noDays);
         set2 = new LineDataSet(yVals1,"Data Set2");
         set2.setAxisDependency(YAxis.AxisDependency.LEFT);
         set2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
@@ -216,19 +259,63 @@ public class AnalyticsViewModel {
 
         LineData data = new LineData(set2,set1);
 
+        if(maxYvalExp > maxYvalInc){
+            analyticsFragmentBinding.overallAnalytics.getAxisLeft().setAxisMaximum(maxYvalExp + 200);
+        }else{
+            analyticsFragmentBinding.overallAnalytics.getAxisLeft().setAxisMaximum(maxYvalInc + 200);
+
+        }
+
         data.setDrawValues(false);
 
         analyticsFragmentBinding.overallAnalytics.setData(data);
-        analyticsFragmentBinding.overallAnalytics.animateXY(2000, 2000);
+        analyticsFragmentBinding.overallAnalytics.animateXY(1000, 1000);
 
         // don't forget to refresh the drawing
         analyticsFragmentBinding.overallAnalytics.invalidate();
     }
 
-    private void initPieChart(List<BudgetPOJO> list){
+  private float maxYvalInc = 0;
+    private float maxYvalExp = 0;
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setExpensesPojos( List<ExpensePOJO> expensePOJOS,int noDays) {
+        maxYvalExp = (int) expensePOJOS.get(0).getExpAmount();
+        for(ExpensePOJO expensePOJO : expensePOJOS){
+            if(maxYvalExp < expensePOJO.getExpAmount()){
+                maxYvalExp = (int) expensePOJO.getExpAmount();
+            }
+        }
+
+        ArrayList<Entry> yVals = algorithmMonthlyWeekly(expensePOJOS,noDays);
+
+
+        set1 = new LineDataSet(yVals,"Data Set1");
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setDrawCircles(false);
+        set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        set1.setLineWidth(3f);
+        set1.setFillAlpha(255);
+        set1.setDrawFilled(true);
+        set1.setDrawValues(false);
+        set1.setFillColor(Color.parseColor("#1b6ca8"));
+        set1.setColor(Color.parseColor("#1b6ca8"));
+    }
+
+    private void initPieChart(List<BudgetPOJO> list,float dollar, float leu){
+
         float sum = 0;
+
         for (BudgetPOJO budgetPOJO : list) {
-            sum += budgetPOJO.getAmountSum();
+            if(budgetPOJO.getCurrencyId() == 0){
+                sum += budgetPOJO.getAmountSum()/dollar;
+            }else if(budgetPOJO.getCurrencyId() == 1){
+                sum += budgetPOJO.getAmountSum()/leu;
+            }else{
+                sum += budgetPOJO.getAmountSum();
+            }
+
         }
 
 
@@ -244,10 +331,9 @@ public class AnalyticsViewModel {
         analyticsFragmentBinding.pieChart.setTransparentCircleRadius(60f);
 
         ArrayList<PieEntry> yValues = new ArrayList<>();
-
         yValues.add(new PieEntry((list.get(2).getAmountSum()/sum)*100,"Euro"));
-        yValues.add(new PieEntry((list.get(1).getAmountSum()/sum)*100,"Leu"));
-        yValues.add(new PieEntry((list.get(0).getAmountSum()/sum)*100,"Dollar"));
+        yValues.add(new PieEntry(((list.get(1).getAmountSum()/leu)/sum)*100,"Leu"));
+        yValues.add(new PieEntry(((list.get(0).getAmountSum()/dollar)/sum)*100,"Dollar"));
         analyticsFragmentBinding.pieChart.animateY(1000, Easing.EaseInOutCubic);
 
         PieDataSet dataSet = new PieDataSet(yValues,"Currency budgets");
@@ -275,7 +361,8 @@ public class AnalyticsViewModel {
 
                     @Override
                     public void onSuccess(List<BudgetPOJO> budgetPOJOS) {
-                        initPieChart(budgetPOJOS);
+                        getCurrencies(budgetPOJOS);
+
                     }
 
                     @Override
@@ -309,7 +396,7 @@ public class AnalyticsViewModel {
 
 
     public void getDataForCubicLineGraph(){
-        Single<List<ExpensePOJO>> single = budgetMethods.getExpenseSumByDays(0, StaticVar.USER_ID);
+        Single<List<ExpensePOJO>> single = budgetMethods.getExpenseMonthly(currency, StaticVar.USER_ID);
         single.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<ExpensePOJO>>() {
@@ -318,24 +405,125 @@ public class AnalyticsViewModel {
 
                     }
 
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onSuccess(List<ExpensePOJO> list) {
-                        if(list.isEmpty()){
-
-                        }
+                        setExpensesPojos(list,30);
+                        getDataForCubicLineGraphIncomeMonth();
                     }
 
                     @Override
                     public void onError(Throwable e) {
 
-                            Log.d("Test",e.getMessage());
+                        Log.d("Test",e.getMessage());
+                    }
+                });
+    }
+
+    public void getDataForCubicLineGraphIncomeMonth(){
+        Single<List<IncomePOJO>> single = budgetMethods.getIncomeMonthly(currency, StaticVar.USER_ID);
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<IncomePOJO>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onSuccess(List<IncomePOJO> list) {
+                        setIncomesPojo(list,30);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.d("Test",e.getMessage());
+                    }
+                });
+    }
+
+
+    //WEEKLY
+    public void getDataForCubicLineGraphWeekly(){
+        Single<List<ExpensePOJO>> single = budgetMethods.getExpenseWeekly(currency, StaticVar.USER_ID);
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<ExpensePOJO>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onSuccess(List<ExpensePOJO> list) {
+                        setExpensesPojos(list,7);
+                        getDataForCubicLineGraphIncomeWeek();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.d("Test",e.getMessage());
+                    }
+                });
+    }
+
+    public void getDataForCubicLineGraphIncomeWeek(){
+        Single<List<IncomePOJO>> single = budgetMethods.getIncomeWeekly(currency, StaticVar.USER_ID);
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<IncomePOJO>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onSuccess(List<IncomePOJO> list) {
+                        setIncomesPojo(list,7);
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.d("Test",e.getMessage());
+                    }
+                });
+    }
+
+    private void getCurrencies(List<BudgetPOJO> budgetPOJOS){
+        Single<List<Currency>> single = currencyMethods.getCurrencies();
+        single.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Currency>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Currency> currencies) {
+                        initPieChart(budgetPOJOS,currencies.get(0).getValue(),currencies.get(1).getValue());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
                     }
                 });
     }
 
     private void openDB(){
-        BudgetDAO budgetDAO = AppRoomDatabase.getInstance(analyticsFragment.getContext().getApplicationContext()).getBudgetDao();
+        BudgetDAO budgetDAO = AppRoomDatabase.getInstance(analyticsFragment.getContext()).getBudgetDao();
         budgetMethods = BudgetMethods.getInstance(budgetDAO);
+        CurrencyDAO currencyDAO = AppRoomDatabase.getInstance(analyticsFragment.getContext()).currencyDAO();
+        currencyMethods = CurrencyMethods.getInstance(currencyDAO);
 
     }
 }

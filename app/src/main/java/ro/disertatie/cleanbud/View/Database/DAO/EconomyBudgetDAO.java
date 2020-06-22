@@ -21,6 +21,12 @@ public interface EconomyBudgetDAO {
     @Query("SELECT amount from economy_budget where userId=:userId")
     Single<Float> getSavingsBudget(int userId);
 
+    @Query("SELECT * from economy_budget WHERE userId=:userId")
+    Single<EconomyBudget> getSavingsBudgetPercentage(int userId);
+
+    @Query("UPDATE economy_budget set amount =:newAmount WHERE userId=:userId")
+    void updateEconomyBudget(float newAmount,int userId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertEconomyBudget(EconomyBudget... economyBudgets);
 

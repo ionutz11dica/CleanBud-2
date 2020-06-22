@@ -323,7 +323,8 @@ public class BudgetFragmentViewModel {
     private void changeNextBudget(){
         if (!budgetsList.isEmpty())
             complexDetailsBinding.budgetToolbar.setTitle(budgetsList.get(cursorBudgets).getTitle());
-            complexDetailsBinding.budgetSumTv.setText(String.valueOf(budgetsList.get(cursorBudgets).getCurrentAmount()));
+        complexDetailsBinding.budgetSumTv.setText(String.format("%.1f",budgetsList.get(cursorBudgets).getCurrentAmount()));
+//            complexDetailsBinding.budgetSumTv.setText(String.valueOf(Math.rbudgetsList.get(cursorBudgets).getCurrentAmount()));
             complexDetailsBinding.budgetLeftAmount.setText(String.valueOf(budgetsList.get(cursorBudgets).getInitialAmount()) +" initial");
             switch (budgetsList.get(cursorBudgets).getCurrencyId()){
                 case 0:

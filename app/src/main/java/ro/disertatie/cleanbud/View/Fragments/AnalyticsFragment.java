@@ -19,15 +19,16 @@ import ro.disertatie.cleanbud.databinding.AnalyticsFragmentBinding;
 
 public class AnalyticsFragment extends Fragment {
     private AnalyticsViewModel analyticsViewModel;
+    private AnalyticsFragmentBinding analyticsFragmentBinding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        AnalyticsFragmentBinding analyticsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.analytics_fragment,container,false);
+         analyticsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.analytics_fragment,container,false);
         analyticsViewModel = new AnalyticsViewModel(this,analyticsFragmentBinding);
         analyticsViewModel.getDataForPieChart();
         analyticsViewModel.getDataForLinearGraph(0);
         analyticsViewModel.tabClick();
-        analyticsViewModel.getDataForCubicLineGraph();
+        analyticsViewModel.getDataForCubicLineGraphWeekly();
         return analyticsFragmentBinding.getRoot();
     }
 
@@ -44,5 +45,21 @@ public class AnalyticsFragment extends Fragment {
 
     public interface AnalyticsListener{
         void backPressedAnalytics(String string);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            analyticsFragmentBinding.incomeVsExpense.setVisibility(View.GONE);
+            analyticsViewModel.getDataForLinearGraph(analyticsViewModel.getCurrency());
+            analyticsFragmentBinding.incomeVsExpense.setVisibility(View.VISIBLE);
+            analyticsViewModel.getDataForPieChart();
+            if(analyticsViewModel.isWeekly()){
+                analyticsViewModel.getDataForCubicLineGraphWeekly();
+            }else{
+                analyticsViewModel.getDataForCubicLineGraph();
+            }
+        }
     }
 }

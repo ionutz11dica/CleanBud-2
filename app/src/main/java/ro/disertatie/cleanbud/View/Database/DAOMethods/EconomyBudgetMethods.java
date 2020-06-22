@@ -42,6 +42,34 @@ public class EconomyBudgetMethods implements EconomyBudgetDAO {
     }
 
     @Override
+    public Single<EconomyBudget> getSavingsBudgetPercentage(int userId) {
+        return economyBudgetDAO.getSavingsBudgetPercentage(userId);
+    }
+
+    @Override
+    public void updateEconomyBudget(float newAmount, int userId) {
+        Completable.fromAction(() -> economyBudgetDAO.updateEconomyBudget(newAmount,userId))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Timber.d("Successful");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d(e);
+                    }
+                });
+    }
+
+    @Override
     public void insertEconomyBudget(EconomyBudget... economyBudgets) {
         Completable.fromAction(() -> economyBudgetDAO.insertEconomyBudget(economyBudgets))
                 .observeOn(AndroidSchedulers.mainThread())

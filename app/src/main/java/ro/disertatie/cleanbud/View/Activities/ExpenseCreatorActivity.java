@@ -7,6 +7,7 @@ import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -54,6 +55,7 @@ import ro.disertatie.cleanbud.databinding.ActivityBudgetCreatorBinding;
 import ro.disertatie.cleanbud.databinding.ActivityExpenseCreatorBinding;
 
 import static ro.disertatie.cleanbud.View.Activities.TestOcrActivity.rotate;
+import static ro.disertatie.cleanbud.View.Utils.Constants.PICK_PHOTO_FOR_OCR;
 
 public class ExpenseCreatorActivity extends AppCompatActivity implements ExpenseCategoryDialog.OnCompleteListenerColor {
     private static final String LOG_TAG = "Text API";
@@ -110,6 +112,7 @@ public class ExpenseCreatorActivity extends AppCompatActivity implements Expense
             try {
                 Bitmap bitmap = decodeBitmapUri(this, imageUri);
                 Bitmap bitmap2 = createContrast(bitmap,25);
+                expenseCreatorViewModel.setImgUri(imageUri);
 
                 apiService = APIClient.getRetrofit2().create(APIService.class);
 
@@ -139,6 +142,75 @@ public class ExpenseCreatorActivity extends AppCompatActivity implements Expense
                     e.printStackTrace();
                 }
                 saveImageToExternal(f.getName(),bitmap3);
+                RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), f);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", f.getName(), reqFile);
+                Call<ResponseBody> call = apiService.uploadAttachment(body);
+
+                ProgressDialogClass progressDialogClass = new ProgressDialogClass(this);
+                progressDialogClass.showDialog("Processing Text","Please Wait");
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        try {
+                            assert response.body() != null;
+                            expenseCreatorViewModel.parseDataFromScanner(response.body().string());
+                            progressDialogClass.dismissDialog();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            progressDialogClass.dismissDialog();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        t.printStackTrace();
+                        Toast.makeText(getApplicationContext(),t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Failed to load Image", Toast.LENGTH_SHORT)
+                        .show();
+                Log.e(LOG_TAG, e.toString());
+            }
+        }
+        else if (requestCode == PICK_PHOTO_FOR_OCR && resultCode == Activity.RESULT_OK){
+            try {
+                imageUri = data.getData();
+                expenseCreatorViewModel.setImgUri(imageUri);
+                Bitmap bitmap = decodeBitmapUri(this, imageUri);
+
+                apiService = APIClient.getRetrofit2().create(APIService.class);
+
+
+                File f = new File(getApplicationContext().getCacheDir(), String.valueOf(Calendar.getInstance().getTimeInMillis()+".jpeg"));
+                f.createNewFile();
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                expenseCreatorViewModel.setReceiptImage(bitmap);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100 /*ignored for PNG*/, bos);
+
+                byte[] bitmapdata = bos.toByteArray();
+
+                //write the bytes in file
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(f);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fos.write(bitmapdata);
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                saveImageToExternal(f.getName(),bitmap);
                 RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), f);
                 MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", f.getName(), reqFile);
                 Call<ResponseBody> call = apiService.uploadAttachment(body);
@@ -234,7 +306,7 @@ public class ExpenseCreatorActivity extends AppCompatActivity implements Expense
             throw new IOException();
         }
     }
-    private Bitmap decodeBitmapUri(Context ctx, Uri uri) throws FileNotFoundException {
+    public Bitmap decodeBitmapUri(Context ctx, Uri uri) throws FileNotFoundException {
         int targetW = 600;
         int targetH = 600;
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
